@@ -98,8 +98,8 @@ jobs:
           chmod +x timshel-admin
           mv docker-compose-production.yml timshel-admin/docker-compose.yml
 
-      - name: Decode SSH Key and set permissions
-        run: echo "${{ secrets.SERVER_SSH_KEY }}" | base64 -d > my_ssh && chmod 400 my_ssh
+      - name: Set up SSH Key and set permissions
+        run: printf "%s" "${{ secrets.SERVER_SSH_KEY }}" > my_ssh && chmod 400 my_ssh
 
       - name: Copy files to server
         run: |

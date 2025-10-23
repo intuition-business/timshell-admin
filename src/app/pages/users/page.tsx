@@ -1,4 +1,4 @@
-import Administration from "@/Components/Administration/Administration";
+import Administration from "@/Components/Users/Users";
 
 export default function page() {
   return (

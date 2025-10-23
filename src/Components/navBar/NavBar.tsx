@@ -1,10 +1,10 @@
 import {
-  IconHome,
-  IconUsers,
-  IconUserCog,
   IconBell,
   IconClipboardList,
   IconFileText,
+  IconHome,
+  IconUserCog,
+  IconUsers,
 } from "@tabler/icons-react";
 
 export default function NavBar() {
@@ -25,23 +25,38 @@ export default function NavBar() {
             <IconHome size={18} />
             Inicio
           </a>
-          <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+          <a
+            href="/Administration"
+            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
+          >
             <IconUsers size={18} />
             Usuarios
           </a>
-          <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+          <a
+            href="#"
+            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
+          >
             <IconUserCog size={18} />
             Entrenador
           </a>
-          <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+          <a
+            href="#"
+            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
+          >
             <IconBell size={18} />
             Ejercicios
           </a>
-          <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+          <a
+            href="#"
+            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
+          >
             <IconClipboardList size={18} />
             Planes
           </a>
-          <a href="#" className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+          <a
+            href="#"
+            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
+          >
             <IconFileText size={18} />
             Reportes
           </a>

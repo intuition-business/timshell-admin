@@ -67,7 +67,7 @@ export default function Index() {
                 throw new Error(data?.message || 'Error al enviar OTP');
             }
             else {
-                sessionStorage.setItem('token', data?.token)
+                localStorage.setItem('token', data?.token)
                 router.push('/');
             }
 

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import Image from "next/image";
 import Loading from "@/Components/Loading/loading";
 
 export default function Home() {
@@ -18,20 +17,18 @@ export default function Home() {
     } else {
       setTimeout(() => {
         setLoading(false);
-      }, 1500);
+      }, 1500); // Aquí defines el retraso para simular la carga
     }
   }, [router]);
 
   if (loading) {
-    return (
-      <Loading></Loading>
-    );
+    return <Loading />; // Muestra el componente de loading mientras se verifica el token
   }
 
   return (
     <div>
       <main>
-        <Dashboard></Dashboard>
+        <Dashboard />
       </main>
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import NavBar from "@/Components/navBar/NavBar";
 import { Download, Search } from "lucide-react";
 import {
     Chart as ChartJS,
@@ -108,7 +107,6 @@ export default function Dashboard() {
     // === UI principal ===
     return (
         <div className=" w-full bg-[#0f0f0f] relative flex">
-            <NavBar></NavBar>
             <div className="px-8 py-6">
                 {/* Header */}
                 <div className="mb-6">

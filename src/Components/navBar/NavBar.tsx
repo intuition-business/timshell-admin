@@ -1,74 +1,68 @@
-import {
-  IconBell,
-  IconClipboardList,
-  IconFileText,
-  IconHome,
-  IconUserCog,
-  IconUsers,
-} from "@tabler/icons-react";
+// src/Components/NavBar.tsx
+import { IconHome, IconUsers, IconUserCog, IconClipboardList, IconFileText, IconBell } from "@tabler/icons-react";
+import Link from "next/link"; // Asegúrate de usar Link de Next.js para la navegación
 
 export default function NavBar() {
   return (
-    <aside className="sticky left-0 top-0 h-screen max-w-[325px] w-full bg-[#282828] text-white flex flex-col justify-between rounded-r-3xl shadow-lg">
+    <nav className="sticky left-0 top-0 h-screen max-w-[250px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg">
       {/* Logo */}
       <div>
-        <div className="img-fit gap-2 px-6 py-6">
-          <img src="/logo.png" alt="" />
+        <div className="px-6 py-6">
+          <img src="/logo.png" alt="Logo" />
         </div>
 
-        {/* Menú */}
-        <nav className="mt-4 flex flex-col gap-4 px-6">
-          <a
-            href="#"
-            className="flex items-center gap-3 text-lime-400 font-medium"
-          >
-            <IconHome size={18} />
-            Inicio
-          </a>
-          <a
-            href="/Administration"
-            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
-          >
-            <IconUsers size={18} />
-            Usuarios
-          </a>
-          <a
-            href="#"
-            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
-          >
-            <IconUserCog size={18} />
-            Entrenador
-          </a>
-          <a
-            href="#"
-            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
-          >
-            <IconBell size={18} />
-            Ejercicios
-          </a>
-          <a
-            href="#"
-            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
-          >
-            <IconClipboardList size={18} />
-            Planes
-          </a>
-          <a
-            href="#"
-            className="flex items-center gap-3 text-gray-300 hover:text-lime-400"
-          >
-            <IconFileText size={18} />
-            Reportes
-          </a>
-        </nav>
+        {/* Menú de navegación */}
+        <div className="mt-4 flex flex-col gap-4 px-6">
+          <Link href="/" passHref>
+            <div className="flex items-center gap-3 text-lime-400 font-medium">
+              <IconHome size={18} />
+              Inicio
+            </div>
+          </Link>
+
+          <Link href="/pages/users" passHref>
+            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+              <IconUsers size={18} />
+              Usuarios
+            </div>
+          </Link>
+
+          <Link href="/trainer" passHref>
+            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+              <IconUserCog size={18} />
+              Entrenador
+            </div>
+          </Link>
+
+          <Link href="/exercises" passHref>
+            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+              <IconBell size={18} />
+              Ejercicios
+            </div>
+          </Link>
+
+          <Link href="/plans" passHref>
+            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+              <IconClipboardList size={18} />
+              Planes
+            </div>
+          </Link>
+
+          <Link href="/reports" passHref>
+            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+              <IconFileText size={18} />
+              Reportes
+            </div>
+          </Link>
+        </div>
       </div>
 
       {/* Footer */}
       <footer className="px-6 py-4 text-xs text-gray-400 border-t border-gray-700">
-        © 2025 <span className="">Timshel</span>
+        © 2025 Timshel
         <br />
         Desarrollado por Intuition Business
       </footer>
-    </aside>
+    </nav>
   );
 }

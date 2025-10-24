@@ -1,13 +1,20 @@
 'use client'
 import Loading from "@/Components/Loading/loading";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Index() {
     const router = useRouter()
     const [loading, setLoading] = useState(true);
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const url = useSearchParams();
+
+    console.log(url.get('phone'));
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -33,15 +40,44 @@ export default function Index() {
         }
     };
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         const code = otp.join('');
         if (code.length !== 6) {
             // alert("Por favor ingresa el código completo");
             return;
         }
-        // alert("Código ingresado: " + code);
-        router.push('/')
-         const token = sessionStorage.setItem("token", '15428458');
+        try {
+            const response = await fetch('https://api.timshell.co/api/validate-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phonenumber: '+' + url.get('phone'),
+                    otp: Number(code)
+                }),
+            });
+
+            const data = await response.json();
+            console.log(data);
+            
+
+            if (!response.ok) {
+                /* router.push('/Auth/codigo-otp'); */
+                throw new Error(data?.message || 'Error al enviar OTP');
+            }
+            else {
+                sessionStorage.setItem('token', data?.token)
+                router.push('/');
+            }
+
+            /*  setSuccess('OTP enviado correctamente'); */
+        } catch (err: any) {
+            /* setError(err.message || 'Ocurrió un error'); */
+            /* router.push('/Auth/codigo-otp'); */
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -84,10 +120,12 @@ export default function Index() {
                         </div>
 
                         <button
+                            className={`px-4 py-4 w-full rounded-xl font-semibold my-7 max-w-[500px] transition-all duration-200 ${isSubmitting ? 'bg-gray-500 cursor-not-allowed' : 'bg-[#D4FF00] hover:bg-[#b9de00] cursor-pointer'
+                                }`}
+                            disabled={isSubmitting}
                             onClick={handleConfirm}
-                            className="bg-[#D4FF00] hover:bg-[#b9de00] text-black font-semibold py-3 px-24 rounded-md shadow-lg w-full transition-colors"
                         >
-                            Confirmar
+                            {isSubmitting ? 'Enviando...' : 'Confirmar'}
                         </button>
                     </div>
                 </div>

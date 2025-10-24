@@ -51,21 +51,24 @@ export default function Index() {
                 },
                 body: JSON.stringify({
                     email: email || undefined,
-                    phone: phone || undefined,
+                    phonenumber: '+57' + phone || undefined,
                 }),
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                router.push('/Auth/codigo-otp');
+                /* router.push('/Auth/codigo-otp'); */
                 throw new Error(data?.message || 'Error al enviar OTP');
             }
+            else {
+                router.push(`/Auth/codigo-otp?phone=57${phone}`);
+            }
 
-           /*  setSuccess('OTP enviado correctamente'); */
+            /*  setSuccess('OTP enviado correctamente'); */
         } catch (err: any) {
             /* setError(err.message || 'Ocurrió un error'); */
-            router.push('/Auth/codigo-otp');
+            /* router.push('/Auth/codigo-otp'); */
         } finally {
             setIsSubmitting(false);
         }
@@ -73,7 +76,7 @@ export default function Index() {
 
     if (loading) {
         return (
-          <Loading/>
+            <Loading />
         );
     }
 

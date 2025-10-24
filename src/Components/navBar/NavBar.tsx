@@ -9,7 +9,7 @@ import {
 
 export default function NavBar() {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-[#282828] text-white flex flex-col justify-between rounded-r-3xl shadow-lg">
+    <aside className="sticky left-0 top-0 h-screen max-w-[325px] w-full bg-[#282828] text-white flex flex-col justify-between rounded-r-3xl shadow-lg">
       {/* Logo */}
       <div>
         <div className="img-fit gap-2 px-6 py-6">

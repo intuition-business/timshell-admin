@@ -13,6 +13,8 @@ import {
 } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
 import { IconSettings } from "@tabler/icons-react";
+import { SearchInput } from "@/Components/Inputs/inputs";
+import { TableList } from "@/Components/Table/TableList";
 
 // Registrar componentes de Chart.js
 ChartJS.register(
@@ -104,6 +106,12 @@ export default function Dashboard() {
         },
     };
 
+    const EncabezadosData = [
+        'Entrenador',
+        'Cantidad usuarios',
+        'Desempeño'
+    ]
+
     // === UI principal ===
     return (
         <div className=" w-full bg-[#0f0f0f] relative flex">
@@ -124,12 +132,7 @@ export default function Dashboard() {
 
                     <div className="flex flex-wrap gap-3 mt-4 text-white">
                         <div className="relative">
-                            <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
-                            <input
-                                type="text"
-                                placeholder="Buscador"
-                                className="bg-[#1a1a1a] text-sm pl-9 pr-3 py-2 rounded-lg focus:outline-none"
-                            />
+                            <SearchInput placeholder={"Buscador"} />
                         </div>
                         <select className="bg-[#1a1a1a] text-sm px-4 py-2 rounded-lg">
                             <option>Fecha</option>
@@ -169,9 +172,9 @@ export default function Dashboard() {
                 </div>
 
                 {/* Sección principal */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Movimiento de usuarios */}
-                    <div className="bg-[#1a1a1a] p-5 rounded-xl col-span-2">
+                    <div className="bg-[#282828] p-5 rounded-xl col-span-1">
                         <h3 className="text-[#adff2f] font-semibold mb-2 text-xl">
                             Movimiento de usuarios
                         </h3>
@@ -179,7 +182,7 @@ export default function Dashboard() {
                     </div>
 
                     {/* Top entrenadores */}
-                    <div className="bg-[#1a1a1a] p-5 rounded-xl">
+                    <div className="bg-[#282828] p-5 rounded-xl">
                         <div className="flex justify-between items-center mb-2">
                             <h3 className="text-[#adff2f] font-semibold text-xl">
                                 Top de entrenadores de este mes
@@ -188,37 +191,7 @@ export default function Dashboard() {
                                 Ver más detalles
                             </button>
                         </div>
-                        <div className="space-y-3 mt-4">
-                            {[
-                                { name: "Laura Fernández", users: "49 usuarios", change: "+24", up: true },
-                                { name: "Diego Torres", users: "35 usuarios", change: "-1", up: false },
-                                { name: "María López", users: "32 usuarios", change: "+4", up: true },
-                                { name: "Sofía Ruiz", users: "29 usuarios", change: "0", up: null },
-                            ].map((t, i) => (
-                                <div
-                                    key={i}
-                                    className="flex items-center justify-between bg-[#0f0f0f] rounded-lg px-4 py-2"
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className="h-10 w-10 rounded-full bg-gray-700"></div>
-                                        <div>
-                                            <p className="text-sm font-medium">{t.name}</p>
-                                            <p className="text-gray-400 text-xs">{t.users}</p>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`text-sm font-semibold ${t.up === true
-                                            ? "text-[#adff2f]"
-                                            : t.up === false
-                                                ? "text-red-500"
-                                                : "text-gray-400"
-                                            }`}
-                                    >
-                                        {t.change}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                        <TableList encabezado={EncabezadosData} />
                     </div>
                 </div>
 

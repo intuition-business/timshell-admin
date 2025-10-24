@@ -2,6 +2,7 @@
 
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
+import { TableList } from "../Table/TableList";
 
 type Trainer = {
   name: string;
@@ -91,12 +92,22 @@ export default function TrainerDashboard() {
     t.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const EncabezadosData = [
+    'Nombre',
+    'ID',
+    'Correo electrónico',
+    'Cantidad de usuarios',
+    'Valoración'
+  ]
+
   return (
     <section className="  fp-6 bg-[#101010]   rounded-3xl shadow-lg w-full text-white items-center">
       <div className="w-full   justify-end p-4">
         <div className="flex  w-[55%] p-4 justify-center">
           <h1 className="text-2xl font-bold p-2 text-[#dff400]"> Usuarios</h1>
         </div>
+
+        <TableList encabezado={EncabezadosData} />
 
         <div className=" px-24  w-[95%]">
           <div className="flex items-center justify-center border-amber-10 gap-24">

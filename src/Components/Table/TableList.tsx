@@ -69,7 +69,7 @@ export function CardList({ data }: CardListProps) {
             <span>{t.email}</span>
           </div>
           <div>
-            <span className="text-[#dff400]">{t.plan} usuarios</span>
+            <span className="text-[#dff400]">{t.plan}</span>
           </div>
           <div className="flex mx-2 space-x-4 items-center">
             <div className="h-10 w-10 rounded-full bg-gray-700"></div>

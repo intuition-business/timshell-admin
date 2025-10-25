@@ -27,7 +27,7 @@ export default function NavBar() {
             </div>
           </Link>
 
-          <Link href="/trainer" passHref>
+          <Link href="/pages/trainer" passHref>
             <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
               <IconUserCog size={18} />
               Entrenador

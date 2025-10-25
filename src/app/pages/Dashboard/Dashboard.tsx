@@ -1,20 +1,19 @@
 "use client";
 
-import { Download, Search } from "lucide-react";
-import {
-    Chart as ChartJS,
-    LineElement,
-    BarElement,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    Legend,
-    Tooltip,
-} from "chart.js";
-import { Line, Bar } from "react-chartjs-2";
-import { IconSettings } from "@tabler/icons-react";
-import { SearchInput } from "@/Components/Inputs/inputs";
 import { TableList } from "@/Components/Table/TableList";
+import { IconSettings } from "@tabler/icons-react";
+import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+} from "chart.js";
+import { Download } from "lucide-react";
+import { Bar, Line } from "react-chartjs-2";
 
 // Registrar componentes de Chart.js
 ChartJS.register(
@@ -114,107 +113,111 @@ export default function Dashboard() {
 
     // === UI principal ===
     return (
-        <div className=" w-full bg-[#0f0f0f] relative flex">
-            <div className="px-8 py-6">
-                {/* Header */}
-                <div className="mb-6">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-gray-400 text-lg">
-                                Bienvenido de nuevo
-                            </h1>
-                            <p className="text-2xl font-semibold text-[#adff2f]">Administrador</p>
-                        </div>
-                        <div>
-                            <IconSettings className="text-white p-2 rounded-lg bg-[#1a1a1a] w-10 h-10"></IconSettings>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-wrap gap-3 mt-4 text-white">
-                        <div className="relative">
-                            <SearchInput placeholder={"Buscador"} />
-                        </div>
-                        <select className="bg-[#1a1a1a] text-sm px-4 py-2 rounded-lg">
-                            <option>Fecha</option>
-                        </select>
-                        <select className="bg-[#1a1a1a] text-sm px-4 py-2 rounded-lg">
-                            <option>Estado del usuario</option>
-                        </select>
-                        <button className="bg-[#1a1a1a] flex items-center px-4 py-2 rounded-lg hover:bg-[#222]">
-                            <Download className="mr-2" size={18} />
-                            Descargar Excel
-                        </button>
-                    </div>
-                </div>
-
-                {/* Estadísticas superiores */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-                    {[
-                        { label: "Usuarios activos", value: "309" },
-                        { label: "Usuarios nuevos", value: "100" },
-                        { label: "Usuarios inactivos", value: "806" },
-                        { label: "Usuarios suspendidos", value: "35" },
-                        { label: "Usuarios Totales", value: "1,250", highlight: true },
-                    ].map((item, i) => (
-                        <div
-                            key={i}
-                            className={`rounded-xl p-4 text-center ${item.highlight
-                                ? "bg-[#1a1a1a] border border-[#adff2f]"
-                                : "bg-[#1a1a1a]"
-                                }`}
-                        >
-                            <p className="text-gray-400 text-sm">{item.label}</p>
-                            <h2 className="text-2xl font-semibold mt-1 text-white">
-                                {item.value}
-                            </h2>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Sección principal */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Movimiento de usuarios */}
-                    <div className="bg-[#282828] p-5 rounded-xl col-span-1">
-                        <h3 className="text-[#adff2f] font-semibold mb-2 text-xl">
-                            Movimiento de usuarios
-                        </h3>
-                        <Line data={lineData} options={lineOptions} />
-                    </div>
-
-                    {/* Top entrenadores */}
-                    <div className="bg-[#282828] p-5 rounded-xl">
-                        <div className="flex justify-between items-center mb-2">
-                            <h3 className="text-[#adff2f] font-semibold text-xl">
-                                Top de entrenadores de este mes
-                            </h3>
-                            <button className="text-gray-400 text-sm hover:text-white">
-                                Ver más detalles
-                            </button>
-                        </div>
-                        <TableList encabezado={EncabezadosData} />
-                    </div>
-                </div>
-
-                {/* Ingresos y Planes */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                    <div className="bg-[#1a1a1a] p-5 rounded-xl">
-                        <div className="mb-2">
-                            <h3 className="text-[#adff2f] font-semibold text-xl">
-                                Ingresos generados globales
-                            </h3>
-                            <p className="text-white">Tabla de ingresos totales generales globales a lo largo de los meses. </p>
-                        </div>
-                        <Bar data={barDataIngresos} options={barOptionsIngresos} />
-                    </div>
-
-                    <div className="bg-[#1a1a1a] p-5 rounded-xl">
-                        <h3 className="text-[#adff2f] text-xl font-semibold mb-2">
-                            Planes más usados
-                        </h3>
-                        <Bar data={barDataPlanes} options={barOptionsPlanes} />
-                    </div>
-                </div>
+      <div className=" w-full bg-[#0f0f0f] relative flex">
+        <div className="px-8 py-6">
+          {/* Header */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-gray-400 text-lg">Bienvenido de nuevo</h1>
+                <p className="text-2xl font-semibold text-[#adff2f]">
+                  Administrador
+                </p>
+              </div>
+              <div>
+                <IconSettings className="text-white p-2 rounded-lg bg-[#1a1a1a] w-10 h-10"></IconSettings>
+              </div>
             </div>
+
+            <div className="flex flex-wrap gap-3 mt-4 text-white">
+              <div className="relative">
+                <SearchInput placeholder={"Buscador"} />
+              </div>
+              <select className="bg-[#1a1a1a] text-sm px-4 py-2 rounded-lg">
+                <option>Fecha</option>
+              </select>
+              <select className="bg-[#1a1a1a] text-sm px-4 py-2 rounded-lg">
+                <option>Estado del usuario</option>
+              </select>
+              <button className="bg-[#1a1a1a] flex items-center px-4 py-2 rounded-lg hover:bg-[#222]">
+                <Download className="mr-2" size={18} />
+                Descargar Excel
+              </button>
+            </div>
+          </div>
+
+          {/* Estadísticas superiores */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            {[
+              { label: "Usuarios activos", value: "309" },
+              { label: "Usuarios nuevos", value: "100" },
+              { label: "Usuarios inactivos", value: "806" },
+              { label: "Usuarios suspendidos", value: "35" },
+              { label: "Usuarios Totales", value: "1,250", highlight: true },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className={`rounded-xl p-4 text-center ${
+                  item.highlight
+                    ? "bg-[#1a1a1a] border border-[#adff2f]"
+                    : "bg-[#1a1a1a]"
+                }`}
+              >
+                <p className="text-gray-400 text-sm">{item.label}</p>
+                <h2 className="text-2xl font-semibold mt-1 text-white">
+                  {item.value}
+                </h2>
+              </div>
+            ))}
+          </div>
+
+          {/* Sección principal */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Movimiento de usuarios */}
+            <div className="bg-[#282828] p-5 rounded-xl col-span-1">
+              <h3 className="text-[#adff2f] font-semibold mb-2 text-xl">
+                Movimiento de usuarios
+              </h3>
+              <Line data={lineData} options={lineOptions} />
+            </div>
+
+            {/* Top entrenadores */}
+            <div className="bg-[#282828] p-5 rounded-xl">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-[#adff2f] font-semibold text-xl">
+                  Top de entrenadores de este mes
+                </h3>
+                <button className="text-gray-400 text-sm hover:text-white">
+                  Ver más detalles
+                </button>
+              </div>
+              <TableList encabezado={EncabezadosData} />
+            </div>
+          </div>
+
+          {/* Ingresos y Planes */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <div className="bg-[#1a1a1a] p-5 rounded-xl">
+              <div className="mb-2">
+                <h3 className="text-[#adff2f] font-semibold text-xl">
+                  Ingresos generados globales
+                </h3>
+                <p className="text-white">
+                  Tabla de ingresos totales generales globales a lo largo de los
+                  meses.{" "}
+                </p>
+              </div>
+              <Bar data={barDataIngresos} options={barOptionsIngresos} />
+            </div>
+
+            <div className="bg-[#1a1a1a] p-5 rounded-xl">
+              <h3 className="text-[#adff2f] text-xl font-semibold mb-2">
+                Planes más usados
+              </h3>
+              <Bar data={barDataPlanes} options={barOptionsPlanes} />
+            </div>
+          </div>
         </div>
-    )
+      </div>
+    );
 }

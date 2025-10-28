@@ -1,8 +1,12 @@
-// src/Components/NavBar.tsx
+
+import { useAuth } from "@/app/AuthContext";
 import { IconHome, IconUsers, IconUserCog, IconClipboardList, IconFileText, IconBell } from "@tabler/icons-react";
-import Link from "next/link"; // Asegúrate de usar Link de Next.js para la navegación
+import Link from "next/link";
 
 export default function NavBar() {
+  const auth = useAuth();
+  const role = auth?.role;
+
   return (
     <nav className="sticky left-0 top-0 h-screen max-w-[250px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg">
       {/* Logo */}
@@ -20,40 +24,49 @@ export default function NavBar() {
             </div>
           </Link>
 
-          <Link href="/pages/users" passHref>
-            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
-              <IconUsers size={18} />
-              Usuarios
-            </div>
-          </Link>
+          {/* Mostrar elementos del menú basados en el rol */}
+          {role === "admin" && (
+            <>
+              <Link href="/pages/users" passHref>
+                <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+                  <IconUsers size={18} />
+                  Usuarios
+                </div>
+              </Link>
 
-          <Link href="/pages/trainer" passHref>
-            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
-              <IconUserCog size={18} />
-              Entrenador
-            </div>
-          </Link>
+              <Link href="/pages/trainer" passHref>
+                <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+                  <IconUserCog size={18} />
+                  Entrenador
+                </div>
+              </Link>
 
-          <Link href="/exercises" passHref>
-            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
-              <IconBell size={18} />
-              Ejercicios
-            </div>
-          </Link>
+              <Link href="/plans" passHref>
+                <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+                  <IconClipboardList size={18} />
+                  Planes
+                </div>
+              </Link>
 
-          <Link href="/plans" passHref>
-            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
-              <IconClipboardList size={18} />
-              Planes
-            </div>
-          </Link>
+              <Link href="/reports" passHref>
+                <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+                  <IconFileText size={18} />
+                  Reportes
+                </div>
+              </Link>
+            </>
+          )}
 
-          <Link href="/reports" passHref>
-            <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
-              <IconFileText size={18} />
-              Reportes
-            </div>
-          </Link>
+          {role === "trainer" && (
+            <>
+              <Link href="/exercises" passHref>
+                <div className="flex items-center gap-3 text-gray-300 hover:text-lime-400">
+                  <IconBell size={18} />
+                  Ejercicios
+                </div>
+              </Link>
+            </>
+          )}
         </div>
       </div>
 

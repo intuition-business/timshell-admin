@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import "./globals.css";
 import NavBar from "@/Components/navBar/NavBar";
 import { usePathname } from "next/navigation";
+import { AuthProvider } from "./AuthContext";
 
 export default function RootLayout({
   children,
@@ -28,10 +29,12 @@ export default function RootLayout({
         />
       </head>
       <body style={{ fontFamily: "'Exo 2', sans-serif" }}>
-        <div className="flex w-full">
-          {showNavbar && <NavBar />}
-          <div className="main-content w-full">{children}</div> {/* El contenido de la página */}
-        </div>
+        <AuthProvider>
+          <div className="flex w-full">
+            {showNavbar && <NavBar />}
+            <div className="main-content w-full">{children}</div> {/* El contenido de la página */}
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

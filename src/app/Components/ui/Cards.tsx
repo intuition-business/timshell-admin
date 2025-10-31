@@ -32,7 +32,7 @@ export const RutinasCards: React.FC<RutinasGridProps> = ({
         return (
           <div
             key={i}
-            className="relative bg-gradient-to-b p from-zinc-900 to-zinc-800 shadow-[0_0_15px_rgba(223,244,0,0.2)] rounded-2xl flex flex-col justify-between w-[436px] h-[314px]"
+            className="relative bg-gradient-to-b p from-[#1e1e1e] to-[#1e1e1e] shadow-[0_0_15px_rgba(223,244,0,0.2)] rounded-2xl flex flex-col justify-between w-[436px] h-[314px]"
           >
             <div
               className={`absolute top-0 right-0 flex w-[105px] h-[34px] items-center gap-2 px-3 py-1 rounded-tr-2xl rounded-bl-2xl text-sm font-semibold ${estadoStyles}`}
@@ -58,7 +58,7 @@ export const RutinasCards: React.FC<RutinasGridProps> = ({
 
             <div className="w-full p-[16px] flex justify-center">
               <button
-                className="border border[#d1d1d1] w-full rounded text-gray-50 text-[18px] font-semibold px-4 py-2 transition hover:bg-amber-50 hover:text-black"
+                className="border border[#d1d1d1] w-full rounded text-gray-500 text-[18px] font-semibold px-4 py-2 transition hover:bg-amber-50 hover:text-black"
                 onClick={() => onSelect?.(rutina)}
               >
                 Ver detalles

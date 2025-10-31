@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 interface PaginationProps {
   paginaActual: number;
@@ -21,15 +21,13 @@ export default function Pagination({
         onClick={() => onChange(Math.max(1, paginaActual - 1))}
         disabled={paginaActual === 1}
         className="transition"
-      >
-        <ChevronLeft />
-      </button>
+      ></button>
 
       {[...Array(totalPaginas)].map((_, i) => (
         <button
           key={i}
           onClick={() => onChange(i + 1)}
-          className={`w-8 h-8 rounded-md transition ${
+          className={`w-8 h-8 text-[18px] rounded-md transition ${
             paginaActual === i + 1
               ? "bg-[#dff400] text-black font-bold"
               : "bg-[#222] border border-b-gray-600"

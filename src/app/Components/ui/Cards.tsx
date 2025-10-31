@@ -2,7 +2,7 @@
 
 import { Check, Clock, ShieldAlert } from "lucide-react"; // iconos
 import React from "react";
-import type { RutinasGridProps } from "../typeScript/cardsType";
+import type { RutinasGridProps } from "../typeScript/uiCardsType";
 
 export const RutinasCards: React.FC<RutinasGridProps> = ({
   rutinas,

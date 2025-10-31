@@ -109,6 +109,54 @@ const rutinas: Rutina[] = [
       "Ab Wheel Rollouts",
     ],
   },
+  {
+    grupo: "Abdominales",
+    estado: "Pendiente",
+    fecha: "5/10",
+    ejercicios: [
+      "Crunch abdominal clásico",
+      "Toques de talón",
+      "Russian Twists",
+      "Reverse Crunch",
+      "Ab Wheel Rollouts",
+    ],
+  },
+  {
+    grupo: "Abdominales",
+    estado: "Pendiente",
+    fecha: "5/10",
+    ejercicios: [
+      "Crunch abdominal clásico",
+      "Toques de talón",
+      "Russian Twists",
+      "Reverse Crunch",
+      "Ab Wheel Rollouts",
+    ],
+  },
+  {
+    grupo: "Abdominales",
+    estado: "Pendiente",
+    fecha: "5/10",
+    ejercicios: [
+      "Crunch abdominal clásico",
+      "Toques de talón",
+      "Russian Twists",
+      "Reverse Crunch",
+      "Ab Wheel Rollouts",
+    ],
+  },
+  {
+    grupo: "Abdominales",
+    estado: "Pendiente",
+    fecha: "5/10",
+    ejercicios: [
+      "Crunch abdominal clásico",
+      "Toques de talón",
+      "Russian Twists",
+      "Reverse Crunch",
+      "Ab Wheel Rollouts",
+    ],
+  },
 ];
 
 export default function Interna() {

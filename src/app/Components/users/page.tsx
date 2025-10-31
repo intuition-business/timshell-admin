@@ -1,56 +1,61 @@
 "use client";
 
-// import { useState } from "react";
+import { useEffect, useState } from "react";
 import Inputs from "../Inputs/inputs";
-
-
 import { CardList, TableList } from "../Table/TableList";
 
-export default function TrainerDashboard() {
+interface User {
+  name?: string;
+  id: number;
+  email?: string;
+  phone?: string;
+  trainer_name?: string;
+}
+
+export default function UserDashboard() {
   const EncabezadosData = [
     "Nombre",
     "ID",
+
     "Correo electrónico ",
     "Plan",
     "Entrenador",
   ];
-  const data = [
-    {
-      name: "Laura Fernández",
-      id: "91F3C",
-      email: "laura@email.com",
-      plan: "Intermedio",
-      entrena: "Juliana",
-    },
-    {
-      name: "Diego Torres",
-      id: "TMU-V58P2F",
-      email: "diego@email.com",
-      plan: "Plan avanzado",
-      entrena: "Emilyn",
-    },
-    {
-      name: "Laura Fernández",
-      id: "91F3C",
-      email: "laura@email.com",
-      plan: "Intermedio",
-      entrena: "Juliana",
-    },
-    {
-      name: "Diego Torres",
-      id: "TMU-V58P2F",
-      email: "diego@email.com",
-      plan: "Plan avanzado",
-      entrena: "Emilyn",
-    },
-  ];
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users`, {
+        headers: {
+          "x-access-token": token,
+        },
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.data) {
+            const mappedData = json.data.map((user: User) => ({
+              name: user.name || "",
+              id: user.id.toString(),
+              email: user.email || user.phone || "",
+              plan: "Desconocido",
+              entrena: user.trainer_name || "",
+            }));
+            setData(mappedData);
+          }
+        })
+        .catch((err) => console.error("Error fetching users:", err));
+    } else {
+      console.error("No token found in localStorage");
+    }
+  }, []);
 
   return (
     <section className="  fp-6 bg-[#101010]  rounded-3xl shadow-lg w-full text-white items-center">
       <div className="w-full justify-end p-4">
         <div className="flex mx-7">
           <h1 className="text-3xl font-bold mt-10 p-8 text-[#dff400]">
-            Entrenador
+            Usuarios
           </h1>
         </div>
 

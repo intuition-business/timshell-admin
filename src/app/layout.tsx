@@ -1,9 +1,8 @@
 "use client";
-import { Metadata } from "next";
-import "./globals.css";
-import NavBar from "@/Components/navBar/NavBar";
+import NavBar from "@/app/Components/navBar/NavBar";
 import { usePathname } from "next/navigation";
 import { AuthProvider } from "./AuthContext";
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -22,7 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet"
@@ -32,7 +35,8 @@ export default function RootLayout({
         <AuthProvider>
           <div className="flex w-full">
             {showNavbar && <NavBar />}
-            <div className="main-content w-full">{children}</div> {/* El contenido de la página */}
+            <div className="main-content w-full">{children}</div>{" "}
+            {/* El contenido de la página */}
           </div>
         </AuthProvider>
       </body>

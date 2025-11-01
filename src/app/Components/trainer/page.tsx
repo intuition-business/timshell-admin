@@ -4,45 +4,9 @@
 import Inputs from "../Inputs/inputs";
 
 import { CardList, TableList } from "../Table/TableList";
+import Buttons from "../ui/Buttons";
 
 export default function TrainerDashboard() {
-  // const EncabezadosData = [
-  //   "Nombre",
-  //   "ID",
-  //   "email electrónico ",
-  //   "Plan",
-  //   "Entrenador",
-  // ];
-  // const data = [
-  //   {
-  //     name: "Laura Fernández",
-  //     id: "91F3C",
-  //     email: "laura@email.com",
-  //     plan: "Intermedio",
-  //     entrena: "Juliana",
-  //   },
-  //   {
-  //     name: "Diego Torres",
-  //     id: "TMU-V58P2F",
-  //     email: "diego@email.com",
-  //     plan: "Plan avanzado",
-  //     entrena: "Emilyn",
-  //   },
-  //   {
-  //     name: "Laura Fernández",
-  //     id: "91F3C",
-  //     email: "laura@email.com",
-  //     plan: "Intermedio",
-  //     entrena: "Juliana",
-  //   },
-  //   {
-  //     name: "Diego Torres",
-  //     id: "TMU-V58P2F",
-  //     email: "diego@email.com",
-  //     plan: "Plan avanzado",
-  //     entrena: "Emilyn",
-  //   },
-  // ];
   interface Entrenador {
     name: string;
     id: string;
@@ -130,8 +94,13 @@ export default function TrainerDashboard() {
           </div>
           <div className=" px-16 flex relative -translate-y-4  flex-col w-full gap-2">
             <TableList encabezado={EncabezadosData} data={data} />
-            <CardList data={data} columns={EncabezadosData} />
+            <CardList data={data as any} columns={EncabezadosData} />
+            <div className=" flex justify-end items-center h-[90px]">
+              <Buttons data="Crear entrenador" className="w-[554px] h-[54px]" />
+            </div>
+            <CardList data={data as any} columns={EncabezadosData} />
           </div>
+          <div></div>
         </div>
       </div>
     </section>

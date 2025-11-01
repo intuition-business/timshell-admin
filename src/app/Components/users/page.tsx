@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Inputs from "../Inputs/inputs";
 import { CardList, TableList } from "../Table/TableList";
+import Pagination from "../ui/Pagination";
 
 interface User {
   name?: string;
@@ -92,6 +93,9 @@ export default function UserDashboard() {
             <CardList data={data} columns={EncabezadosData} />
           </div>
         </div>
+      </div>
+      <div className="h-40 w-full p-6 ">
+        <Pagination paginaActual={1} totalPaginas={6} onChange={() => {}} />
       </div>
     </section>
   );

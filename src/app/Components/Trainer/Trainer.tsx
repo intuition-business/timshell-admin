@@ -2,19 +2,11 @@
 
 // import { useState } from "react";
 import Inputs from "../Inputs/inputs";
-
 import { CardList, TableList } from "../Table/TableList";
+import type { Entrenador } from "../typeScript/trainerType";
 import Buttons from "../ui/Buttons";
 
-export default function TrainerDashboard() {
-  interface Entrenador {
-    name: string;
-    id: string;
-    email: string;
-    usuarios: number;
-    valoration: number;
-    image: string;
-  }
+export default function Trainer() {
   const EncabezadosData = [
     "Nombre",
     "ID",
@@ -94,11 +86,11 @@ export default function TrainerDashboard() {
           </div>
           <div className=" px-16 flex relative -translate-y-4  flex-col w-full gap-2">
             <TableList encabezado={EncabezadosData} data={data} />
-            <CardList data={data as any} columns={EncabezadosData} />
+            <CardList data={data} columns={EncabezadosData} />
             <div className=" flex justify-end items-center h-[90px]">
               <Buttons data="Crear entrenador" className="w-[554px] h-[54px]" />
             </div>
-            <CardList data={data as any} columns={EncabezadosData} />
+            <CardList data={data} columns={EncabezadosData} />
           </div>
           <div></div>
         </div>

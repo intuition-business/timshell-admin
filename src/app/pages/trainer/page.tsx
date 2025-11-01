@@ -1,5 +1,5 @@
 
-import TrainerAdmin from "@/app/Components/trainer/page";
+import Trainer from "@/app/Components/Trainer/Trainer";
 
 // import Interna from "@/app/Components/Interna/Interna";
 
@@ -7,7 +7,7 @@ export default function page() {
   return (
     <div className=" w-full bg-[#0f0f0f] relative min-h-full">
       {/* <Interna /> */}
-      <TrainerAdmin />
+      <Trainer />
     </div>
   );
 }

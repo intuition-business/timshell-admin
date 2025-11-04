@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Loading from "@/app/Components/Loading/loading";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import Loading from "@/Components/Loading/loading";
 
 export default function Home() {
   const router = useRouter();

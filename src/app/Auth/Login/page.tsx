@@ -1,6 +1,6 @@
 'use client'
 
-import Loading from "@/Components/Loading/loading";
+import Loading from "@/app/Components/Loading/loading";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

@@ -1,7 +1,7 @@
 "use client";
 
-import { SearchInput } from "@/Components/Inputs/inputs";
-import { TableList } from "@/Components/Table/TableList";
+import { SearchInput } from "@/app/Components/Inputs/inputs";
+import { TableList } from "@/app/Components/Table/TableList";
 import { IconSettings } from "@tabler/icons-react";
 import {
   BarElement,

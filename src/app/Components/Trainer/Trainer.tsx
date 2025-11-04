@@ -2,47 +2,52 @@
 
 // import { useState } from "react";
 import Inputs from "../Inputs/inputs";
-
-
 import { CardList, TableList } from "../Table/TableList";
+import type { Entrenador } from "../typeScript/trainerType";
+import Buttons from "../ui/Buttons";
 
-export default function TrainerDashboard() {
+export default function Trainer() {
   const EncabezadosData = [
     "Nombre",
     "ID",
     "Correo electrónico ",
-    "Plan",
-    "Entrenador",
+    "Cantidad de usuarios",
+    "Valoración",
   ];
-  const data = [
+  const data: Entrenador[] = [
     {
-      name: "Laura Fernández",
+      name: "Sebastián Morales",
       id: "91F3C",
-      email: "laura@email.com",
-      plan: "Intermedio",
-      entrena: "Juliana",
+      email: "sebastian.morales@email.com",
+      usuarios: 49,
+      valoration: 4.7,
+      image: "https://i.pravatar.cc/100?img=1",
+    },
+    {
+      name: "María López",
+      id: "TMU-H35J8D",
+      email: "maria.lopez@email.com",
+      usuarios: 32,
+      valoration: 4.7,
+      image: "https://i.pravatar.cc/100?img=2",
     },
     {
       name: "Diego Torres",
       id: "TMU-V58P2F",
-      email: "diego@email.com",
-      plan: "Plan avanzado",
-      entrena: "Emilyn",
+      email: "diego.torres@email.com",
+      usuarios: 12,
+      valoration: 4.7,
+      image: "https://i.pravatar.cc/100?img=3",
     },
     {
-      name: "Laura Fernández",
-      id: "91F3C",
-      email: "laura@email.com",
-      plan: "Intermedio",
-      entrena: "Juliana",
+      name: "Lucía Ramírez",
+      id: "TMU-E92W3T",
+      email: "lucia.ramirez@email.com",
+      usuarios: 30,
+      valoration: 4.7,
+      image: "https://i.pravatar.cc/100?img=4",
     },
-    {
-      name: "Diego Torres",
-      id: "TMU-V58P2F",
-      email: "diego@email.com",
-      plan: "Plan avanzado",
-      entrena: "Emilyn",
-    },
+    // ...y así para los demás
   ];
 
   return (
@@ -75,17 +80,19 @@ export default function TrainerDashboard() {
         </div>
         <div className=" ">
           <div className="flex  ">
-            <h2 className=" font-bold mx-16 my-6 ">Gestión de usuaria</h2>
-            <p className=" font-bold text-[#dff400] mx-16 my-6">
-              Usuarios activos 200
-            </p>
+            <h2 className=" font-bold text-[#dff400]  mx-16 my-6 ">
+              Gestión de usuaria
+            </h2>
           </div>
-          <div className=" px-16 flex relative -translate-y-4 ">
+          <div className=" px-16 flex relative -translate-y-4  flex-col w-full gap-2">
             <TableList encabezado={EncabezadosData} data={data} />
-          </div>
-          <div className="w- p-0 rounded-2xl px-15 flex flex-col sm:flex-row sm:items-center justify-between">
+            <CardList data={data} columns={EncabezadosData} />
+            <div className=" flex justify-end items-center h-[90px]">
+              <Buttons data="Crear entrenador" className="w-[554px] h-[54px]" />
+            </div>
             <CardList data={data} columns={EncabezadosData} />
           </div>
+          <div></div>
         </div>
       </div>
     </section>

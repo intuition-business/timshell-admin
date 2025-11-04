@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Inputs from "../Inputs/inputs";
+import { CardList, TableList } from "../Table/TableList";
+import Pagination from "../ui/Pagination";
 
 interface User {
   name?: string;
@@ -10,43 +12,42 @@ interface User {
   phone?: string;
   trainer_name?: string;
 }
-import { CardList, TableList } from "../Table/TableList";
 
 export default function UserDashboard() {
   const EncabezadosData = [
     "Nombre",
     "ID",
-    "Contacto",
-    /* "Correo electrónico ", */
+
+    "Correo electrónico ",
     "Plan",
     "Entrenador",
   ];
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users`, {
         headers: {
-          'x-access-token': token
-        }
+          "x-access-token": token,
+        },
       })
-        .then(res => res.json())
-        .then(json => {
+        .then((res) => res.json())
+        .then((json) => {
           if (json.data) {
             const mappedData = json.data.map((user: User) => ({
-              name: user.name || '',
+              name: user.name || "",
               id: user.id.toString(),
-              email: user.email || user.phone || '',
-              plan: 'Desconocido',
-              entrena: user.trainer_name || ''
+              email: user.email || user.phone || "",
+              plan: "Desconocido",
+              entrena: user.trainer_name || "",
             }));
             setData(mappedData);
           }
         })
-        .catch(err => console.error('Error fetching users:', err));
+        .catch((err) => console.error("Error fetching users:", err));
     } else {
-      console.error('No token found in localStorage');
+      console.error("No token found in localStorage");
     }
   }, []);
 
@@ -92,6 +93,9 @@ export default function UserDashboard() {
             <CardList data={data} columns={EncabezadosData} />
           </div>
         </div>
+      </div>
+      <div className="h-40 w-full p-6 ">
+        <Pagination paginaActual={1} totalPaginas={6} onChange={() => {}} />
       </div>
     </section>
   );

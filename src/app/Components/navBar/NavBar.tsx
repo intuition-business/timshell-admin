@@ -4,7 +4,7 @@ import Link from "next/link"; // Asegúrate de usar Link de Next.js para la nave
 
 export default function NavBar() {
   return (
-    <nav className="sticky left-0 top-0 h-screen max-w-[250px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg">
+    <nav className="sticky left-0 top-0 h-screen z-10 max-w-[250px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg">
       {/* Logo */}
       <div>
         <div className="px-6 py-6">

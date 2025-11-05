@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Entrenador } from "./trainerType";
 
 export interface CardItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,7 +15,7 @@ export interface CardItem {
   rating?: number;
 }
 export interface CardListProps {
-  data: CardItem[];
+  data: Entrenador[];
   columns: string[];
 }
 export interface StarsProps {

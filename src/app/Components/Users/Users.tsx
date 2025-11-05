@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Inputs from "../Inputs/inputs";
-import { CardList, TableList } from "../Table/TableList";
+import { CardUsuario, TableList } from "../Table/TableList";
 import Pagination from "../ui/Pagination";
 
 interface User {
@@ -22,7 +22,7 @@ export default function UserDashboard() {
     "Plan",
     "Entrenador",
   ];
-  const [data, setData] = useState([]);
+  const [dataUser, setData] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -87,10 +87,10 @@ export default function UserDashboard() {
             </p>
           </div>
           <div className=" px-16 flex relative -translate-y-4 ">
-            <TableList encabezado={EncabezadosData} data={data} />
+            <TableList encabezado={EncabezadosData} data={dataUser} />
           </div>
           <div className="w- p-0 rounded-2xl px-15 flex flex-col sm:flex-row sm:items-center justify-between">
-            <CardList data={data} columns={EncabezadosData} />
+            <CardUsuario dataUser={dataUser} columns={EncabezadosData} />
           </div>
         </div>
       </div>

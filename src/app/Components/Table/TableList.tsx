@@ -2,6 +2,7 @@ import { Star } from "lucide-react";
 
 import type {
   CardListProps,
+  CardUsuarioProps,
   StarsProps,
   TableListProps,
 } from "../typeScript/tablaType";
@@ -100,5 +101,58 @@ export function CardList({ data }: CardListProps) {
     </div>
   );
 }
-const InputsModule = { TableList, CardList, Stars };
+
+export function CardUsuario({ dataUser }: CardUsuarioProps) {
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      {dataUser.map((t, i) => (
+        <div
+          key={i}
+          className="flex h-[88px] text-[20px] items-center rounded-md bg-[#333] p-[20px] text-white"
+        >
+          <div className="flex items-center w-full space-x-4 px-2">
+            <div className="h-15 w-15 rounded-full overflow-hidden bg-gray-700 flex items-center justify-between">
+              {t.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={t.image}
+                  alt={t.name}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <span className="text-center text-gray-400"></span>
+              )}
+            </div>
+            <span>{t.name}</span>
+          </div>
+
+          <div className="text-center w-full px-2">
+            <span>{t.id}</span>
+          </div>
+
+          <div className="text-center w-full px-2">
+            <span>{t.email}</span>
+          </div>
+
+          <div className="text-center w-full px-2">
+            <span>{t.usuarios}</span>
+          </div>
+
+          {t.plan && (
+            <div className="flex justify-center w-full px-2">
+              <span>{t.plan}</span>
+            </div>
+          )}
+
+          {t.entenador && (
+            <div className="flex justify-center w-full px-2">
+              <span>{t.entenador}</span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+const InputsModule = { TableList, CardList, Stars, CardUsuario };
 export default InputsModule;

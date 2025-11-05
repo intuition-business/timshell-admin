@@ -52,14 +52,14 @@ export default function UserDashboard() {
 
   return (
     <section className="  fp-6 bg-[#101010]  rounded-3xl shadow-lg w-full text-white items-center">
-      <div className="w-full justify-end p-4">
+      <div className="w-full justify-end p-">
         <div className="flex mx-7">
-          <h1 className="text-3xl font-bold mt-10 p-8 text-[#dff400]">
+          <h1 className="text-3xl font-bold mt-8 p-6 text-[#dff400]">
             Usuarios
           </h1>
         </div>
 
-        <div className=" flex gap-3 px-15  ">
+        <div className=" flex gap-3 px-14  ">
           <div className="">
             <Inputs.SearchInput placeholder="Buscar..." />
           </div>
@@ -78,14 +78,16 @@ export default function UserDashboard() {
             />
           </div>
         </div>
-        <div className=" ">
+        <div className="my-7 ">
           <div className="flex  ">
-            <h2 className=" font-bold mx-16 my-6 ">Gestión de usuaria</h2>
-            <p className=" font-bold text-[#dff400] mx-16 my-6">
+            <h2 className=" font-bold mx-16 mb-4 text-[20px] ">
+              Gestión de usuaria
+            </h2>
+            <h2 className="text-[20px] font-bold text-[#dff400] mx-16 my">
               Usuarios activos 200
-            </p>
+            </h2>
           </div>
-          <div className=" px-16 flex relative -translate-y-4 ">
+          <div className=" mb-2  p-0 rounded-2xl px-15 flex flex-col sm:flex-row sm:items-center justify-between">
             <TableList encabezado={EncabezadosData} data={dataUser} />
           </div>
           <div className="w- p-0 rounded-2xl px-15 flex flex-col sm:flex-row sm:items-center justify-between">

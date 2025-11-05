@@ -58,7 +58,7 @@ export function InputDate({ placeholder }: { placeholder?: string }) {
       <input
         type=""
         placeholder={placeholder}
-        className="bg-[#2B2B2B] border border-[#444444] w-full h-15 text-sm  pl-3 pr-10 py-2 min-w-[300px] rounded-lg focus:outline-none appearance-none text-white"
+        className="bg-[#2B2B2B] border border-[#444444] w-full h-15 text-sm  pl-3 pr-10 py-4 min-w-[300px] rounded-lg focus:outline-none appearance-none text-white"
       />
       <IconCalendar className="absolute right-3 top-1/2 -translate-y-1/2  text-white w-5 h-5 pointer-events-none" />
     </div>

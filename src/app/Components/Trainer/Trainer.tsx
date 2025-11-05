@@ -59,7 +59,7 @@ export default function Trainer() {
           </h1>
         </div>
 
-        <div className=" flex gap-3 px-15  ">
+        <div className=" flex gap-3 px-15 ">
           <div className="">
             <Inputs.SearchInput placeholder="Buscar..." />
           </div>
@@ -80,7 +80,7 @@ export default function Trainer() {
         </div>
         <div className=" ">
           <div className="flex  ">
-            <h2 className=" font-bold text-[#dff400]  mx-16 my-6 ">
+            <h2 className=" font-bold text-[#dff400] text-[20px] mx-16 my-6 ">
               Gestión de usuaria
             </h2>
           </div>

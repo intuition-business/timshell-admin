@@ -12,7 +12,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   // Ocultar en estas rutas
-  const hideOn = ["/auth/login", "/auth/codigo-otp"];
+  const hideOn = ["/auth/login", "/auth/codigo-otp", "/auth/admin"];
 
   // Normalizar ambas rutas a minúsculas para evitar problemas de sensibilidad a mayúsculas/minúsculas
   const showNavbar = !hideOn.includes(pathname.toLowerCase());

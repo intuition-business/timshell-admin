@@ -17,7 +17,7 @@ export default function Home() {
     } else {
       setTimeout(() => {
         setLoading(false);
-      }, 1500); // Aquí defines el retraso para simular la carga
+      }, 1000); // Aquí defines el retraso para simular la carga
     }
   }, [router]);
 

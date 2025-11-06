@@ -4,17 +4,14 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Index({setStep}:any) {
+
+export default function ValidacionOtp({ step, email, phone, setStep, setCodigoStepDos }: any) {
     const router = useRouter()
     const [loading, setLoading] = useState(true);
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const url = useSearchParams();
-
-    console.log(url.get('phone'));
-
 
     useEffect(() => {
         setTimeout(() => {
@@ -28,11 +25,10 @@ export default function Index({setStep}:any) {
 
     // Función para manejar el cambio en inputs individuales del OTP
     const handleChange = (index: number, value: string) => {
-        if (/^\d?$/.test(value)) {  // Solo permitir dígitos o vacío
+        if (/^\d?$/.test(value)) {
             const newOtp = [...otp];
             newOtp[index] = value;
             setOtp(newOtp);
-            // Auto foco en siguiente input si se ingresó un número
             if (value && index < otp.length - 1) {
                 const nextInput = document.getElementById(`otp-input-${index + 1}`);
                 nextInput?.focus();
@@ -43,7 +39,7 @@ export default function Index({setStep}:any) {
     const handleConfirm = async () => {
         const code = otp.join('');
         if (code.length !== 6) {
-            // alert("Por favor ingresa el código completo");
+            setError("Por favor ingresa el código completo");
             return;
         }
         try {
@@ -53,27 +49,30 @@ export default function Index({setStep}:any) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    phonenumber: '+' + url.get('phone'),
+                    email: email,
+                    phonenumber: '+57' + phone,
                     otp: Number(code)
                 }),
             });
 
             const data = await response.json();
-            console.log(data);
-            
 
             if (!response.ok) {
                 /* router.push('/Auth/codigo-otp'); */
                 throw new Error(data?.message || 'Error al enviar OTP');
             }
             else {
-                localStorage.setItem('token', data?.token)
-                router.push('/');
+                setSuccess('OTP enviado correctamente');
+                if (step == 2) {
+                    setCodigoStepDos(true);
+                } else {
+                    localStorage.setItem('token', data?.token)
+                    router.push('/');
+                }
             }
 
-            /*  setSuccess('OTP enviado correctamente'); */
         } catch (err: any) {
-            /* setError(err.message || 'Ocurrió un error'); */
+            setError(err.message || 'Ocurrió un error');
             /* router.push('/Auth/codigo-otp'); */
         } finally {
             setIsSubmitting(false);
@@ -84,9 +83,9 @@ export default function Index({setStep}:any) {
         <div className="h-screen w-full bg-[#0f0f0f] relative overflow-hidden">
 
             <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full 
-                  bg-[#D4FF00] opacity-20 blur-[180px]"></div>
+                     bg-[#D4FF00] opacity-20 blur-[180px]"></div>
             <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full 
-                  bg-[#D4FF00] opacity-15 blur-[200px]"></div>
+                     bg-[#D4FF00] opacity-15 blur-[200px]"></div>
 
             <div className="relative z-10 flex flex-col items-center justify-center h-full">
                 <div className="relative z-10 flex items-center justify-center mt-8">
@@ -102,7 +101,7 @@ export default function Index({setStep}:any) {
                     <div className="text-center">
                         <h2 className="text-[#D4FF00] text-center text-[32px] leading-[1.1] font-semibold mb-5">Iniciar sesión</h2>
                         <p className="text-gray-300 mb-8 text-center">
-                            Ingresa el código que te llegó a tu número de teléfono
+                            {step == 2 ? 'Ingresa el código que te llegó a tu Correo' : 'Ingresa el código que te llegó a tu número de teléfono'}
                         </p>
 
                         <div className="flex gap-4 mb-8">

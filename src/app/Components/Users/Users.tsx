@@ -17,7 +17,6 @@ export default function UserDashboard() {
   const EncabezadosData = [
     "Nombre",
     "ID",
-
     "Correo electrónico ",
     "Plan",
     "Entrenador",

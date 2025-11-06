@@ -1,5 +1,5 @@
 import ExerciseCard from "./ExerciseCard";
-import ExerciseRow from "./exerciseUsers";
+import ExerciseUser from "./ExerciseUser";
 
 export default function Page() {
   const exercises = [
@@ -32,7 +32,42 @@ export default function Page() {
       rest: "2 minutos",
     },
   ];
+  //ARRAY DE OBJETOS PARA TABLA EXERCISE
+  const exercises2 = [
+    {
+      id: 1,
+      title: "Bíceps",
+      date: "3 oct",
+      status: "Fallida",
+      exercises: [
+        "Curl de bíceps alternado",
+        "Curl concentrado",
+        "Curl tipo martillo",
+      ],
+      ruiner: [
+        "Extensión de cadera (polea)",
+        "Hip Thrust Máquina",
+        "Sentadilla Smith",
+      ],
+    },
 
+    {
+      id: 2,
+      title: "Cuádriceps y Glúteo",
+      date: "3 oct",
+      status: "Completado",
+      exercises: [
+        "Extensión de cadera (polea)",
+        "Hip Thrust Máquina",
+        "Sentadilla Smith",
+      ],
+      ruiner: [
+        "Extensión de cadera (polea)",
+        "Hip Thrust Máquina",
+        "Sentadilla Smith",
+      ],
+    },
+  ];
   return (
     <main className="min-h-screen bg-[#101010]  p-6 space-y-4">
       {exercises.map((ex, i) => (
@@ -46,20 +81,18 @@ export default function Page() {
         />
       ))}
 
-      <div className="flex flex-col gap-4 mt-8 w-[900px] mx-auto">
-        <ExerciseRow
-          title="Cuádriceps y Glúteo"
-          date="3/10/2025"
-          status="Completado"
-          exercises={[
-            "Extensión de cadera (polea)",
-            "Hip Thrust Máquina",
-            "Sentadilla Smith",
-            "Front Squat (Sentadilla frontal)",
-            "Prensa",
-            "Step-up (Subida a banco)",
-          ]}
-        />
+      <div className="flex flex-col gap- mt-8 w-full mx-auto">
+        {exercises2.map((item) => (
+          <ExerciseUser
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            date={item.date}
+            status={item.status}
+            exercises={item.exercises}
+            ruiner={item.ruiner}
+          />
+        ))}
       </div>
     </main>
   );

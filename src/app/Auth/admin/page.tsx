@@ -35,7 +35,6 @@ export default function Index() {
         return null;
     };
 
-
     const handleSubmit = async () => {
         setError('');
         setSuccess('');
@@ -54,7 +53,8 @@ export default function Index() {
                 },
                 body: JSON.stringify({
                     email: email || undefined,
-                    platform: 'web',
+                    phonenumber: undefined,
+                    /* platform: 'web', */
                 }),
             });
 
@@ -62,6 +62,7 @@ export default function Index() {
 
             if (!response.ok) {
                 /* router.push('/Auth/codigo-otp'); */
+                setStep(2)
                 throw new Error(data?.message || 'Error al enviar OTP');
             }
             else {
@@ -70,6 +71,7 @@ export default function Index() {
             }
             setSuccess('OTP enviado correctamente');
         } catch (err: any) {
+            setStep(2)
             setError(err.message || 'Ocurrió un error');
             setTimeout(() => {
                 setError('');
@@ -97,6 +99,7 @@ export default function Index() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    email: undefined,
                     phonenumber: '+57' + phone || undefined,
                     platform: 'web',
                 }),

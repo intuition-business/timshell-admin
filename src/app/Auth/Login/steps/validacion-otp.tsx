@@ -43,7 +43,7 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
             return;
         }
         try {
-            const response = await fetch('https://api.timshell.co/api/validate-otp', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/validate-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -59,6 +59,7 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
 
             if (!response.ok) {
                 /* router.push('/Auth/codigo-otp'); */
+                setCodigoStepDos(true);
                 throw new Error(data?.message || 'Error al enviar OTP');
             }
             else {

@@ -35,6 +35,7 @@ export interface TableRow {
 }
 
 export interface TableListProps {
-  encabezado: string[];
-  data: TableRow[];
+  encabezado?: string[];
+  data?: TableRow[];
+  home?: boolean | any;
 }

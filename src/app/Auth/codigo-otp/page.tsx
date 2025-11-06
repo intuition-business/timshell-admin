@@ -82,7 +82,6 @@ export default function Index({setStep}:any) {
 
     return (
         <div className="h-screen w-full bg-[#0f0f0f] relative overflow-hidden">
-
             <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full 
                   bg-[#D4FF00] opacity-20 blur-[180px]"></div>
             <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full 

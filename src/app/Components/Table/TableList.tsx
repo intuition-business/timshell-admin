@@ -6,7 +6,7 @@ import type {
   TableListProps,
 } from "../typeScript/tablaType";
 
-export function TableList({ encabezado }: TableListProps) {
+export function TableList({ encabezado, home }: TableListProps) {
   return (
     <>
       <div className="mt-3 w-full rounded-md   ">
@@ -15,7 +15,7 @@ export function TableList({ encabezado }: TableListProps) {
           {encabezado?.map((item, index: number) => (
             <h3
               key={index}
-              className="font-semibold flex justify-center  w-full  text-xl"
+              className={`font-semibold justify-center w-full ${home ? 'text-base' : 'text-xl'} line-clamp-1 text-ellipsis`}
             >
               {item}
             </h3>
@@ -41,8 +41,8 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
             i < fullStars
               ? "text-yellow-400 fill-yellow-400"
               : hasHalf && i === fullStars
-              ? "text-yellow-400 fill-yellow-400 opacity-50"
-              : "text-gray-500"
+                ? "text-yellow-400 fill-yellow-400 opacity-50"
+                : "text-gray-500"
           }
         />
       ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchInput } from "@/app/Components/Inputs/inputs";
+import { InputDate, SearchInput, SelectInput } from "@/app/Components/Inputs/inputs";
 import { TableList } from "@/app/Components/Table/TableList";
 import { IconSettings } from "@tabler/icons-react";
 import {
@@ -38,7 +38,7 @@ export default function Dashboard() {
       {
         label: "Altas mensuales",
         data: [600, 900, 1400, 1300, 1250, 1600, 1500, 1200, 900, 1500, 1600, 1200],
-        borderColor: "#adff2f",
+        borderColor: "#D4FF00",
         backgroundColor: "rgba(173, 255, 47, 0.1)",
         tension: 0.3,
         fill: true,
@@ -72,7 +72,7 @@ export default function Dashboard() {
       {
         label: "Ingresos ($)",
         data: [18, 12, 14, 10, 19, 13, 14, 16, 9, 17, 12, 6],
-        backgroundColor: "#adff2f",
+        backgroundColor: "#D4FF00",
       },
     ],
   };
@@ -92,7 +92,7 @@ export default function Dashboard() {
       {
         label: "Cantidad",
         data: [350, 500, 250, 150],
-        backgroundColor: "#adff2f",
+        backgroundColor: "#D4FF00",
       },
     ],
   };
@@ -114,33 +114,32 @@ export default function Dashboard() {
 
   // === UI principal ===
   return (
-    <div className=" w-full bg-[#0f0f0f] relative">
-      <div className="px-8 py-6">
+    <div className=" w-full relative">
+      <div className="">
         {/* Header */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-gray-400 text-lg">Bienvenido de nuevo</h1>
-              <p className="text-2xl font-semibold text-[#adff2f]">
-                Administrador
-              </p>
+        <div className="mb-9">
+          <div className="flex items-center justify-between mb-9">
+            <div className="flex items-center justify-center gap-5">
+              <div className="img-fit">
+                <img src="/logo-fondo-blanco.jpg" className="w-12 rounded-lg h-12" alt="" />
+              </div>
+              <div>
+                <h1 className="text-white text-lg">Bienvenido de nuevo</h1>
+                <p className="text-2xl font-semibold text-[#D4FF00]">
+                  Administrador
+                </p>
+              </div>
             </div>
             <div>
-              <IconSettings className="text-white p-2 rounded-lg bg-[#1a1a1a] w-10 h-10"></IconSettings>
+              <IconSettings size={50} className="text-white p-2 rounded-lg bg-[#1a1a1a]"></IconSettings>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3 mt-4 text-white">
-            <div className="relative">
-              <SearchInput placeholder={"Buscador"} />
-            </div>
-            <select className="bg-[#1a1a1a] text-sm px-4 py-2 rounded-lg">
-              <option>Fecha</option>
-            </select>
-            <select className="bg-[#1a1a1a] text-sm px-4 py-2 rounded-lg">
-              <option>Estado del usuario</option>
-            </select>
-            <button className="bg-[#1a1a1a] flex items-center px-4 py-2 rounded-lg hover:bg-[#222]">
+          <div className="flex flex-wrap gap-6 text-white">
+            <SearchInput placeholder={"Buscador"} />
+            <InputDate placeholder="Fecha"></InputDate>
+            <SelectInput placeholder="Estado del usuario" options={["Opción 1", "Opción 2"]} IconChevronDown></SelectInput>
+            <button className="bg-white text-[#1A1A1A] flex items-center px-4 py-3 rounded-xl hover:bg-[#d9d9d9] cursor-pointer ms-auto">
               <Download className="mr-2" size={18} />
               Descargar Excel
             </button>
@@ -154,28 +153,28 @@ export default function Dashboard() {
             { label: "Usuarios nuevos", value: "100" },
             { label: "Usuarios inactivos", value: "806" },
             { label: "Usuarios suspendidos", value: "35" },
-            { label: "Usuarios Totales", value: "1,250", highlight: true },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className={`rounded-xl p-4 text-center ${item.highlight
-                ? "bg-[#1a1a1a] border border-[#adff2f]"
-                : "bg-[#1a1a1a]"
-                }`}
-            >
-              <p className="text-gray-400 text-sm">{item.label}</p>
-              <h2 className="text-2xl font-semibold mt-1 text-white">
-                {item.value}
-              </h2>
-            </div>
-          ))}
+            { label: "Usuarios Totales", value: "1,250" },
+          ].map((item, i) => {
+            console.log(i);
+
+            return (
+              <div
+                key={i} className="rounded-xl flex flex-col p-4 text-center bg-[#fff]/10 backdrop-blur-md border-white/10 text-white"
+              >
+                <p className="text-white text-xl mb-1 line-clamp-1" title={item.label}>{item.label}</p>
+                <h2 className={`text-3xl mt-auto font-semibold ${i == 4 ? 'text-[#D4FF00]' : 'text-white'} `}>
+                  {item.value}
+                </h2>
+              </div>
+            )
+          })}
         </div>
 
         {/* Sección principal */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Movimiento de usuarios */}
           <div className="bg-[#282828] p-5 rounded-xl col-span-1">
-            <h3 className="text-[#adff2f] font-semibold mb-2 text-xl">
+            <h3 className="text-[#D4FF00] font-semibold mb-2 text-xl">
               Movimiento de usuarios
             </h3>
             <Line data={lineData} options={lineOptions} />
@@ -184,14 +183,14 @@ export default function Dashboard() {
           {/* Top entrenadores */}
           <div className="bg-[#282828] p-5 rounded-xl">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-[#adff2f] font-semibold text-xl">
+              <h3 className="text-[#D4FF00] font-semibold text-xl">
                 Top de entrenadores de este mes
               </h3>
-              <button className="text-gray-400 text-sm hover:text-white">
+              <button className="font-semibold text-sm hover:text-gray-600 hover:bg-gray-200 cursor-pointer bg-white py-3 px-4 max-w-[230px] w-full rounded-lg">
                 Ver más detalles
               </button>
             </div>
-            <TableList encabezado={EncabezadosData} />
+            <TableList encabezado={EncabezadosData} home={true} />
           </div>
         </div>
 
@@ -199,7 +198,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           <div className="bg-[#1a1a1a] p-5 rounded-xl">
             <div className="mb-2">
-              <h3 className="text-[#adff2f] font-semibold text-xl">
+              <h3 className="text-[#D4FF00] font-semibold text-xl">
                 Ingresos generados globales
               </h3>
               <p className="text-white">
@@ -211,7 +210,7 @@ export default function Dashboard() {
           </div>
 
           <div className="bg-[#1a1a1a] p-5 rounded-xl">
-            <h3 className="text-[#adff2f] text-xl font-semibold mb-2">
+            <h3 className="text-[#D4FF00] text-xl font-semibold mb-2">
               Planes más usados
             </h3>
             <Bar data={barDataPlanes} options={barOptionsPlanes} />

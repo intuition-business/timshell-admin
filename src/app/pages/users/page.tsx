@@ -5,7 +5,7 @@ import Users from "@/app/Components/Users/Users";
 
 export default function page() {
   return (
-    <div className=" w-full bg-[#0f0f0f] relative  h-full">
+    <div className="w-full relative">
       {/* <Interna /> */}
       <Users />
     </div>

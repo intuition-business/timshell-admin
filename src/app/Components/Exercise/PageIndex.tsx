@@ -1,5 +1,4 @@
-import ExerciseCard from "./ExerciseCard";
-import ExerciseUser from "./ExerciseUser";
+import ExercisePage from "./ExercisePage";
 
 export default function Page() {
   const exercises = [
@@ -70,7 +69,7 @@ export default function Page() {
   ];
   return (
     <main className="min-h-screen bg-[#101010]  p-6 space-y-4">
-      {exercises.map((ex, i) => (
+      {/* {exercises.map((ex, i) => (
         <ExerciseCard
           key={i}
           image={ex.image}
@@ -93,7 +92,8 @@ export default function Page() {
             ruiner={item.ruiner}
           />
         ))}
-      </div>
+      </div> */}
+      <ExercisePage />
     </main>
   );
 }

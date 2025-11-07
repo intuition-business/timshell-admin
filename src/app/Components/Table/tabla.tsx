@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Star } from "lucide-react";
 
@@ -8,10 +8,6 @@ import type {
   StarsProps,
   TableListProps,
 } from "../typeScript/tablaType";
-interface CardListProps {
-  data: any[];
-  columns: number;
-}
 
 export function TableList({ encabezado, home, columns }: TableListProps) {
   return (
@@ -70,88 +66,66 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
 };
 
 export function CardList({ data, columns }: CardListProps) {
-  // Opcional: solo para debug si lo deseas conservar
-  useEffect(() => {
-    data.forEach((item, index) => {
-      console.log(
-        `Item ${index + 1} tiene ${Object.keys(item).length} propiedades`
-      );
-    });
-  }, [data]);
+  const respuesta = data.map((data) => {
+    console.log(Object.keys(data).length);
+  });
 
+  useEffect(() => {
+    respuesta;
+  }, []);
   return (
-    <div className="flex flex-col gap-2 w-full">
-      {data.map((t: any, i: number) => (
+    <div className="flex flex-col gap-2  w-full">
+      {data.map((t: any, i) => (
         <div
           key={i}
-          className="grid text-[20px] rounded-md bg-[#333] p-[20px] text-white items-center"
+          className="grid text-[20px] rounded-md  bg-[#333] p-[20px] text-white"
           style={{ gridTemplateColumns: `repeat(${columns}, 250px)` }}
         >
-          {/* Imagen y nombre del usuario */}
+          {/* Columna 1: Nombre */}
           <div className="flex gap-3 items-center w-full px-2">
-            <div className="h-15 w-15 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center">
-              {t.user_image ? (
+            <div className="h-15 w-15 rounded-full overflow-hidden bg-gray-700 flex items-center justify-between">
+              {t.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={t.user_image}
+                  src={t.image}
                   alt={t.name}
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <span className="text-gray-400 text-sm">No foto</span>
+                <span className="text-gray-400"></span>
               )}
             </div>
             <span
               className="max-w-[150px] w-full text-ellipsis overflow-hidden"
               title={t.name}
             >
-              {t.name || "Sin nombre"}
+              {t.name}
             </span>
           </div>
 
-          {/* ID */}
-          <div className="text-center w-full px-2">
-            <span>{t.id || "-"}</span>
+          <div className="w-full  px-2 overflow-hidden">
+            <span>{t.id}</span>
           </div>
 
-          {/* Email o teléfono */}
-          <div className="text-center w-full px-2">
-            <span>{t.email || t.phone || "-"}</span>
+          <div className="w-full px-2 overflow-hidden">
+            <span>{t.email}</span>
           </div>
 
-          {/* Plan */}
-          <div className="text-center w-full px-2">
-            <span>{t.plan_id ? `Plan #${t.plan_id}` : "Desconocido"}</span>
+          <div className="w-full  px-2 overflow-hidden">
+            <span>{t.usuarios}</span>
           </div>
 
-          {/* Valoración */}
-          <div className="flex justify-center w-full px-2">
+          <div className=" flex justify-center w-full px-2 overflow-hidden">
             {t.valoration ? (
               <Stars rating={Number(t.valoration)} size={20} />
-            ) : null}
+            ) : (
+              ""
+            )}
           </div>
-
-          {/* Entrenador */}
-          {t.trainer_name || t.trainer_image ? (
-            <div className="flex flex-col items-center justify-center w-full px-2">
-              {t.trainer_image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={t.trainer_image}
-                  alt={t.trainer_name}
-                  className="h-10 w-10 rounded-full object-cover"
-                />
-              ) : (
-                <span className="text-sm text-gray-400">No foto</span>
-              )}
-              <span>{t.trainer_name || "Sin entrenador"}</span>
-            </div>
-          ) : null}
         </div>
       ))}
     </div>
   );
 }
-
 const InputsModule = { TableList, CardList, Stars };
 export default InputsModule;

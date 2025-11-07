@@ -73,6 +73,7 @@ export function CardList({ data, columns }: CardListProps) {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     respuesta;
   }, []);
 
@@ -130,7 +131,7 @@ export function CardList({ data, columns }: CardListProps) {
 
           {/* Entrenador */}
           {(t.trainer_name || t.trainer_image) && (
-            <div className="flex items-center w-full px-2">
+            <div className="flex items-center gap-9">
               {t.trainer_image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img

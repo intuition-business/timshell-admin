@@ -11,7 +11,6 @@ interface Rutina {
   fecha: string;
   ejercicios: string[];
 }
-
 const rutinas: Rutina[] = [
   {
     grupo: "Cuádriceps y Glúteo",
@@ -158,6 +157,7 @@ const rutinas: Rutina[] = [
     ],
   },
 ];
+
 
 export default function Interna() {
   const getSelection = () => {

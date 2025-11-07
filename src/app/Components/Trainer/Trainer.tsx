@@ -3,7 +3,7 @@
 // import { useState } from "react";
 import Inputs from "../Inputs/inputs";
 import { CardList, TableList } from "../Table/TableList";
-import type { Entrenador } from "../typeScript/trainerType";
+import { UserCardData } from "../typeScript/tablaType";
 import Buttons from "../ui/Buttons";
 
 export default function Trainer() {
@@ -14,14 +14,15 @@ export default function Trainer() {
     "Cantidad de usuarios",
     "Valoración",
   ];
-  const data: Entrenador[] = [
+
+  const data: UserCardData[] = [
     {
       name: "Sebastián Morales",
       id: "91F3C",
       email: "sebastian.morales@email.com",
       usuarios: 49,
       valoration: 4.7,
-      image: "https://i.pravatar.cc/100?img=1"
+      image: "https://i.pravatar.cc/100?img=1",
     },
     {
       name: "María López",
@@ -29,7 +30,7 @@ export default function Trainer() {
       email: "maria.lopez@email.com",
       usuarios: 32,
       valoration: 4.7,
-      image: "https://i.pravatar.cc/100?img=2"
+      image: "https://i.pravatar.cc/100?img=2",
     },
     {
       name: "Diego Torres",
@@ -37,7 +38,7 @@ export default function Trainer() {
       email: "diego.torres@email.com",
       usuarios: 12,
       valoration: 4.7,
-      image: "https://i.pravatar.cc/100?img=3"
+      image: "https://i.pravatar.cc/100?img=3",
     },
     {
       name: "Lucía Ramírez",
@@ -45,7 +46,7 @@ export default function Trainer() {
       email: "lucia.ramirez@email.com",
       usuarios: 30,
       valoration: 4.7,
-      image: "https://i.pravatar.cc/100?img=4"
+      image: "https://i.pravatar.cc/100?img=4",
     },
     {
       name: "María López",
@@ -53,7 +54,7 @@ export default function Trainer() {
       email: "maria.lopez@email.com",
       usuarios: 32,
       valoration: 4.7,
-      image: "https://i.pravatar.cc/100?img=2"
+      image: "https://i.pravatar.cc/100?img=2",
     },
     {
       name: "Diego Torres",
@@ -61,7 +62,7 @@ export default function Trainer() {
       email: "diego.torres@email.com",
       usuarios: 12,
       valoration: 4.7,
-      image: "https://i.pravatar.cc/100?img=3"
+      image: "https://i.pravatar.cc/100?img=3",
     },
     {
       name: "Lucía Ramírez",
@@ -69,7 +70,7 @@ export default function Trainer() {
       email: "lucia.ramirez@email.com",
       usuarios: 30,
       valoration: 4.7,
-      image: "https://i.pravatar.cc/100?img=4"
+      image: "https://i.pravatar.cc/100?img=4",
     },
   ];
 
@@ -77,9 +78,7 @@ export default function Trainer() {
     <section className="  fp-6 rounded-3xl shadow-lg w-full text-white items-center">
       <div className="w-full justify-end p-4">
         <div className="flex">
-          <h1 className="text-3xl font-bold text-[#dff400]">
-            Entrenador
-          </h1>
+          <h1 className="text-3xl font-bold text-[#dff400]">Entrenador</h1>
         </div>
 
         <div className=" flex gap-3">
@@ -110,12 +109,14 @@ export default function Trainer() {
           <div className="flex relative -translate-y-4  flex-col w-full gap-2">
             <TableList encabezado={EncabezadosData} data={data} columns={5} />
             <CardList data={data} columns={5} />
-
           </div>
         </div>
       </div>
       <div className="flex justify-end items-center sticky bottom-0 bg-black w-[calc(100%+96px)] -translate-x-[48px] pr-12 py-4 text-lg">
-        <Buttons data="Crear entrenador" className="max-w-[370px] w-full py-4" />
+        <Buttons
+          data="Crear entrenador"
+          className="max-w-[370px] w-full py-4"
+        />
       </div>
     </section>
   );

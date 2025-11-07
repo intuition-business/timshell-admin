@@ -3,18 +3,8 @@
 import { useEffect, useState } from "react";
 import Inputs from "../Inputs/inputs";
 import { CardList, TableList } from "../Table/TableList";
+import { UsersProps } from "../typeScript/pageType";
 import Pagination from "../ui/Pagination";
-
-interface User {
-  user_image: string;
-  plan_id: any;
-  name?: string;
-  id: number;
-  email?: string;
-  phone?: string;
-  trainer_name?: string;
-  trainer_image?: string;
-}
 
 export default function UserDashboard() {
   const EncabezadosData = [
@@ -37,14 +27,15 @@ export default function UserDashboard() {
         .then((res) => res.json())
         .then((json) => {
           if (json.data) {
-            const mappedData = json.data.map((user: User) => ({
-              id: user.id.toString(),
+            const mappedData = json.data.map((user: UsersProps) => ({
+              id: user.id,
               name: user.name || "",
               email: user.email || user.phone || "",
-              plan: user.plan_id ? `Plan #${user.plan_id}` : "Desconocido",
-              trainer: user.trainer_name || "",
+              phone: user.phone || "",
+              plan_id: user.plan_id,
+              user_image: user.user_image || "",
+              trainer_name: user.trainer_name || "",
               trainer_image: user.trainer_image || "",
-              user_image: user.user_image || "", // <-- agregamos la foto del usuario
             }));
             setData(mappedData);
           }
@@ -83,11 +74,11 @@ export default function UserDashboard() {
             <TableList
               encabezado={EncabezadosData}
               data={dataUser}
-              columns={5}
+              columns={6}
             />
           </div>
-          <div className="w- p-0 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between">
-            <CardList data={dataUser} columns={5} />
+          <div className="">
+            <CardList data={dataUser} columns={6} />
           </div>
         </div>
       </div>

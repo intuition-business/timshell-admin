@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Entrenador } from "./trainerType";
+
 
 export interface CardItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,9 +14,29 @@ export interface CardItem {
   users?: number;
   rating?: number;
 }
+// este ts es de la tabla
+export interface UserCardData {
+  id: number;
+  name: string;
+  email?: string;
+  phone?: string;
+  plan_id?: number | null;
+  valoration?: number | null;
+  user_image?: string | null;
+  trainer_name?: string | null;
+  trainer_image?: string | null;
+  fecha_registro?: string;
+}
+// tabla
 export interface CardListProps {
-  data: Entrenador[];
-  columns?: number | any;
+  data: UserCardData[];
+  columns?: number;
+
+  phone?: string;
+  plan_id?: number | null;
+  trainer_name?: string | null;
+  trainer_image?: string | null; // 👈 agrega esta línea
+  user_image?: string | null;
 }
 export interface StarsProps {
   rating: number;
@@ -33,10 +53,10 @@ export interface TableRow {
   up?: boolean | null;
   change?: string;
 }
-
+// ts de tabla
 export interface TableListProps {
   encabezado?: string[];
-  data?: TableRow[];
-  home?: boolean | any;
-  columns?: number | any;
+  data?: UserCardData[];
+  home?: boolean;
+  columns?: number;
 }

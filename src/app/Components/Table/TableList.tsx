@@ -8,10 +8,7 @@ import type {
   StarsProps,
   TableListProps,
 } from "../typeScript/tablaType";
-interface CardListProps {
-  data: any[];
-  columns: number;
-}
+
 
 export function TableList({ encabezado, home, columns }: TableListProps) {
   return (
@@ -71,25 +68,25 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
 
 export function CardList({ data, columns }: CardListProps) {
   // Opcional: solo para debug si lo deseas conservar
+  const respuesta = data.map((data) => {
+    console.log(Object.keys(data).length);
+  });
+
   useEffect(() => {
-    data.forEach((item, index) => {
-      console.log(
-        `Item ${index + 1} tiene ${Object.keys(item).length} propiedades`
-      );
-    });
-  }, [data]);
+    respuesta;
+  }, []);
 
   return (
-    <div className="flex flex-col gap-2 w-full">
-      {data.map((t: any, i: number) => (
+    <div className="flex flex-col gap-2 w-full ">
+      {data.map((t, i: number) => (
         <div
           key={i}
           className="grid text-[20px] rounded-md bg-[#333] p-[20px] text-white items-center"
           style={{ gridTemplateColumns: `repeat(${columns}, 250px)` }}
         >
           {/* Imagen y nombre del usuario */}
-          <div className="flex gap-3 items-center w-full px-2">
-            <div className="h-15 w-15 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center">
+          <div className="flex gap-3 items-center w-full px-2 ">
+            <div className="h-15 w-15 rounded-full overflow-hidden bg-gray-700 flex items-center justify-center ">
               {t.user_image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -132,21 +129,21 @@ export function CardList({ data, columns }: CardListProps) {
           </div>
 
           {/* Entrenador */}
-          {t.trainer_name || t.trainer_image ? (
-            <div className="flex flex-col items-center justify-center w-full px-2">
+          {(t.trainer_name || t.trainer_image) && (
+            <div className="flex items-center w-full px-2">
               {t.trainer_image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={t.trainer_image}
-                  alt={t.trainer_name}
+                  alt={t.trainer_name || "Entrenador"}
                   className="h-10 w-10 rounded-full object-cover"
                 />
               ) : (
-                <span className="text-sm text-gray-400">No foto</span>
+                <span className="text-xl">No foto</span>
               )}
               <span>{t.trainer_name || "Sin entrenador"}</span>
             </div>
-          ) : null}
+          )}
         </div>
       ))}
     </div>

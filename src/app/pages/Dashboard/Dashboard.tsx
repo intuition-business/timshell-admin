@@ -190,7 +190,7 @@ export default function Dashboard() {
                 Ver más detalles
               </button>
             </div>
-            <TableList encabezado={EncabezadosData} home={true} />
+            <TableList encabezado={EncabezadosData} columns={3} home={true} />
           </div>
         </div>
 

@@ -75,10 +75,10 @@ export default function UserDashboard() {
             </p>
           </div>
           <div className="flex relative -translate-y-4 ">
-            <TableList encabezado={EncabezadosData} data={data} />
+            <TableList encabezado={EncabezadosData} data={data} columns={5} />
           </div>
           <div className="w- p-0 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between">
-            <CardList data={data} columns={EncabezadosData} />
+            <CardList data={data} columns={5} />
           </div>
         </div>
       </div>

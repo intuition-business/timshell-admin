@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-// tabla
+import { Entrenador } from "./trainerType";
+
 export interface CardItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   valoration: any;
@@ -8,13 +9,14 @@ export interface CardItem {
   name: string;
   id: string;
   email: string;
+  plan: string; // ahora es string
+  entrena: string;
   users?: number;
   rating?: number;
 }
-
 export interface CardListProps {
-  data: CardItem[];
-  columns: string[];
+  data: Entrenador[];
+  columns?: number | any;
 }
 export interface StarsProps {
   rating: number;
@@ -36,22 +38,5 @@ export interface TableListProps {
   encabezado?: string[];
   data?: TableRow[];
   home?: boolean | any;
-}
-// tabla usuario
-export interface CardEntreno {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  valoration: any;
-  usuarios: ReactNode;
-  image: string | Blob | undefined;
-  name: string;
-  id: string;
-  plan: string;
-  entenador: string;
-  email: string;
-  users?: number;
-  rating?: number;
-}
-export interface CardUsuarioProps {
-  dataUser: CardEntreno[];
-  columns?: string[];
+  columns?: number | any;
 }

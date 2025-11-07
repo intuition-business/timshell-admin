@@ -18,11 +18,11 @@ interface InputDateProps {
 
 export function SearchInput({ placeholder }: InputDateProps) {
   return (
-    <div className="relative w-full max-w-md">
+    <div className="relative w-full max-w-[400px]">
       <input
         type="text"
         placeholder={placeholder}
-        className="bg-[#2B2B2B] w-full h-12 text-white pr-10 pl-3 py-3 rounded-lg focus:outline-none"
+        className="bg-[#2B2B2B] border border-[#777777] w-full text-white pr-10 pl-3 py-4 rounded-xl focus:outline-none"
       />
       <IconSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8C8C8C] w-6 h-6" />
     </div>
@@ -32,10 +32,10 @@ export function SearchInput({ placeholder }: InputDateProps) {
 export function SelectInput({ placeholder, options }: SelectInputProps) {
   return (
     <>
-      <div className="relative text-white  w-full min-w-[250px]">
+      <div className="relative text-white  w-full max-w-[250px]">
         <select
           defaultValue=""
-          className="bg-[#2B2B2B] text-sm w-full h-12 pl-3 pr-10 py-2 rounded-lg focus:outline-none appearance-none"
+          className="bg-[#2B2B2B] border border-[#777777] w-full pl-3 pr-10 py-4 rounded-xl focus:outline-none appearance-none"
         >
           <option value="" disabled>
             {placeholder || "Selecciona..."}
@@ -54,13 +54,13 @@ export function SelectInput({ placeholder, options }: SelectInputProps) {
 
 export function InputDate({ placeholder }: { placeholder?: string }) {
   return (
-    <div className="relative text-white flex w-full">
+    <div className="relative text-white flex w-full max-w-[200px]">
       <input
-        type=""
+        type="text"
         placeholder={placeholder}
-        className="bg-[#2B2B2B] border border-[#444444] w-full h-15 text-sm  pl-3 pr-10 py-4 min-w-[300px] rounded-lg focus:outline-none appearance-none text-white"
+        className="bg-[#2B2B2B] border border-[#777777] w-full py-4 pl-3 pr-10 min-w-[100px] rounded-xl focus:outline-none appearance-none text-white"
       />
-      <IconCalendar className="absolute right-3 top-1/2 -translate-y-1/2  text-white w-5 h-5 pointer-events-none" />
+      <IconCalendar className="absolute right-3 top-1/2 -translate-y-1/2 text-white w-5 h-5 pointer-events-none" />
     </div>
   );
 }

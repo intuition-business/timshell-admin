@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Inputs from "../Inputs/inputs";
-import { CardUsuario, TableList } from "../Table/TableList";
+import { TableList } from "../Table/TableList";
 import Pagination from "../ui/Pagination";
 
 interface User {
@@ -51,51 +51,38 @@ export default function UserDashboard() {
   }, []);
 
   return (
-    <section className="  fp-6 bg-[#101010]  rounded-3xl shadow-lg w-full text-white items-center">
-      <div className="w-full justify-end p-">
-        <div className="flex mx-7">
-          <h1 className="text-3xl font-bold mt-8 p-6 text-[#dff400]">
-            Usuarios
-          </h1>
+    <section className="w-full text-white items-center">
+      <div className="w-full justify-end">
+        <h1 className="text-3xl font-bold text-[#dff400] mb-9">Usuarios</h1>
+        <div className=" flex gap-6">
+          <Inputs.SearchInput placeholder="Buscar..." />
+          <Inputs.SelectInput
+            placeholder="Tipo de plan"
+            options={["Opción 1", "Opción 2"]}
+            IconChevronDown
+          />
+          <Inputs.SelectInput
+            placeholder="Ordenar"
+            options={["Opción 1", "Opción 2"]}
+            IconChevronDown
+          />
         </div>
-
-        <div className=" flex gap-3 px-14  ">
-          <div className="">
-            <Inputs.SearchInput placeholder="Buscar..." />
-          </div>
-          <div className="">
-            <Inputs.SelectInput
-              placeholder="Tipo de plan"
-              options={["Opción 1", "Opción 2"]}
-              IconChevronDown
-            />
-          </div>
-          <div className="">
-            <Inputs.SelectInput
-              placeholder="Ordenar"
-              options={["Opción 1", "Opción 2"]}
-              IconChevronDown
-            />
-          </div>
-        </div>
-        <div className="my-7 ">
-          <div className="flex  ">
-            <h2 className=" font-bold mx-16 mb-4 text-[20px] ">
-              Gestión de usuaria
-            </h2>
-            <h2 className="text-[20px] font-bold text-[#dff400] mx-16 my">
+        <div className=" ">
+          <div className="flex">
+            <h2 className=" font-bold my-6 ">Gestión de usuaria</h2>
+            <p className=" font-bold text-[#dff400] mx-16 my-6">
               Usuarios activos 200
-            </h2>
+            </p>
           </div>
-          <div className=" mb-2  p-0 rounded-2xl px-15 flex flex-col sm:flex-row sm:items-center justify-between">
-            <TableList encabezado={EncabezadosData} data={dataUser} />
+          <div className="flex relative -translate-y-4 ">
+            <TableList encabezado={EncabezadosData} data={data} />
           </div>
-          <div className="w- p-0 rounded-2xl px-15 flex flex-col sm:flex-row sm:items-center justify-between">
-            <CardUsuario dataUser={dataUser} columns={EncabezadosData} />
+          <div className="w- p-0 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between">
+            <CardList data={data} columns={EncabezadosData} />
           </div>
         </div>
       </div>
-      <div className="h-40 w-full p-6 ">
+      <div className="w-full p-6 mb-11 ">
         <Pagination paginaActual={1} totalPaginas={6} onChange={() => {}} />
       </div>
     </section>

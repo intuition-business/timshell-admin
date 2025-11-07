@@ -54,7 +54,7 @@ export default function Trainer() {
     <section className="  fp-6 bg-[#101010]  rounded-3xl shadow-lg w-full text-white items-center">
       <div className="w-full justify-end p-4">
         <div className="flex mx-7">
-          <h1 className="text-3xl font-bold mt-10 p-8 text-[#dff400]">
+          <h1 className="text-3xl font-bold text-[#dff400]">
             Entrenador
           </h1>
         </div>

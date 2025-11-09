@@ -1,8 +1,6 @@
 "use client";
 
-import { ArrowLeft, Edit3, Search } from "lucide-react";
 import { useState } from "react";
-import Buttons from "../ui/Buttons";
 import ExerciseEditForm from "./ExerciseEditarForm";
 // import ExerciseCreate from "./ExerciseCreate";
 
@@ -51,8 +49,14 @@ export default function ExercisePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#101010] text-white  grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="flex justify-between items-center">
+    <div className="grid grid-cols-2 gap-4 ">
+
+<div className="">
+<ExerciseEditForm onClose={handleCloseForm} exercise={selectedExercise} />
+</div>
+<div className=""></div>
+
+      {/* <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <ArrowLeft className="w-5 h-5 cursor-pointer" />
           <h1 className="text-2xl font-semibold">Cuádriceps y Glúteo</h1>
@@ -70,7 +74,7 @@ export default function ExercisePage() {
         </div>
       </div>
 
-      {/* BUSCADOR */}
+      {/* BUSCADOR 
       <div className="relative w-full max-w-md">
         <input
           type="text"
@@ -80,10 +84,10 @@ export default function ExercisePage() {
           className="bg-[#2B2B2B] w-full text-white pr-10 pl-4 py-3 rounded-lg focus:outline-none"
         />
         <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8C8C8C] w-5 h-5" />
-      </div>
+      </div> */}
 
       {/* LISTA DE EJERCICIOS */}
-      <section className="grid gap-4">
+      {/* <section className="grid gap-4">
         {filtered.map((ex) => (
           <div
             key={ex.id}
@@ -105,9 +109,9 @@ export default function ExercisePage() {
             </Buttons>
           </div>
         ))}
-      </section>
+      </section> */}
 
-      <ExerciseEditForm onClose={handleCloseForm} exercise={selectedExercise} />
+      
     </div>
   );
 }

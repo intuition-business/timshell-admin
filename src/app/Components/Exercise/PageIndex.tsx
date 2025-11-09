@@ -68,7 +68,7 @@ export default function Page() {
     },
   ];
   return (
-    <main className="min-h-screen bg-[#101010]  p-6 space-y-4">
+    <main className="">
       {/* {exercises.map((ex, i) => (
         <ExerciseCard
           key={i}

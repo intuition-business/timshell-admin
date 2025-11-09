@@ -107,12 +107,11 @@ export default function Dashboard() {
   };
 
   const EncabezadosData = [
-    'Entrenador',
-    'Cantidad usuarios',
-    'Desempeño'
+    { label: 'Entrenador', width: '100px' },
+    { label: 'Cantidad usuarios', width: '200px' },
+    { label: 'Desempeño', width: '200px' },
   ]
 
-  // === UI principal ===
   return (
     <div className=" w-full relative">
       <div className="">

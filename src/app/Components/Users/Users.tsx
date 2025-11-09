@@ -15,12 +15,13 @@ interface User {
 
 export default function UserDashboard() {
   const EncabezadosData = [
-    "Nombre",
-    "ID",
-    "Correo electrónico ",
-    "Plan",
-    "Entrenador",
+    { label: "Nombre", width: "250px" },
+    { label: "ID", width: "100px" },
+    { label: "Correo electrónico", width: "300px" },
+    { label: "Plan", width: "150px" },
+    { label: "Entrenador", width: "200px" },
   ];
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -51,42 +52,44 @@ export default function UserDashboard() {
   }, []);
 
   return (
-    <section className="w-full text-white items-center">
-      <div className="w-full justify-end">
-        <h1 className="text-3xl font-bold text-[#dff400] mb-9">
-          Usuarios
-        </h1>
-        <div className=" flex gap-6">
-          <Inputs.SearchInput placeholder="Buscar..." />
-          <Inputs.SelectInput
-            placeholder="Tipo de plan"
-            options={["Opción 1", "Opción 2"]}
-            IconChevronDown
-          />
-          <Inputs.SelectInput
-            placeholder="Ordenar"
-            options={["Opción 1", "Opción 2"]}
-            IconChevronDown
-          />
+    <main>
+      <div className="w-full text-white items-center">
+        <div className="w-full justify-end">
+          <h1 className="text-3xl font-bold text-[#dff400] mb-9">
+            Usuarios
+          </h1>
+          <div className=" flex gap-6">
+            <Inputs.SearchInput placeholder="Buscar..." />
+            <Inputs.SelectInput
+              placeholder="Tipo de plan"
+              options={["Opción 1", "Opción 2"]}
+              IconChevronDown
+            />
+            <Inputs.SelectInput
+              placeholder="Ordenar"
+              options={["Opción 1", "Opción 2"]}
+              IconChevronDown
+            />
+          </div>
+          <div className=" ">
+            <div className="flex">
+              <h2 className=" font-bold my-6 ">Gestión de usuaria</h2>
+              <p className=" font-bold text-[#dff400] mx-16 my-6">
+                Usuarios activos 200
+              </p>
+            </div>
+            <div className="flex relative -translate-y-4 ">
+              <TableList encabezado={EncabezadosData} data={data} columns={5} />
+            </div>
+            <div className="w- p-0 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between">
+              <CardList encabezado={EncabezadosData} data={data} columns={5} />
+            </div>
+          </div>
         </div>
-        <div className=" ">
-          <div className="flex">
-            <h2 className=" font-bold my-6 ">Gestión de usuaria</h2>
-            <p className=" font-bold text-[#dff400] mx-16 my-6">
-              Usuarios activos 200
-            </p>
-          </div>
-          <div className="flex relative -translate-y-4 ">
-            <TableList encabezado={EncabezadosData} data={data} columns={5} />
-          </div>
-          <div className="w- p-0 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between">
-            <CardList data={data} columns={5} />
-          </div>
+        <div className="w-full p-6 mb-11 ">
+          <Pagination paginaActual={1} totalPaginas={6} onChange={() => { }} />
         </div>
       </div>
-      <div className="w-full p-6 mb-11 ">
-        <Pagination paginaActual={1} totalPaginas={6} onChange={() => { }} />
-      </div>
-    </section>
+    </main>
   );
 }

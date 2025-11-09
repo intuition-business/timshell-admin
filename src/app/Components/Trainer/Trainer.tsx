@@ -8,11 +8,11 @@ import Buttons from "../ui/Buttons";
 
 export default function Trainer() {
   const EncabezadosData = [
-    "Nombre",
-    "ID",
-    "Correo electrónico ",
-    "Cantidad de usuarios",
-    "Valoración",
+    { label: "Nombre", width: "250px" },
+    { label: "ID", width: "100px" },
+    { label: "Correo electrónico", width: "300px" },
+    { label: "Cantidad de usuarios", width: "200px" },
+    { label: "Valoración", width: "150px" },
   ];
   const data: Entrenador[] = [
     {
@@ -109,7 +109,7 @@ export default function Trainer() {
           </div>
           <div className="flex relative -translate-y-4  flex-col w-full gap-2">
             <TableList encabezado={EncabezadosData} data={data} columns={5} />
-            <CardList data={data} columns={5} />
+            <CardList encabezado={EncabezadosData} data={data} columns={5} />
 
           </div>
         </div>

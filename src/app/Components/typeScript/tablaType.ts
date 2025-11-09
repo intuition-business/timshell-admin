@@ -17,6 +17,7 @@ export interface CardItem {
 export interface CardListProps {
   data: Entrenador[];
   columns?: number | any;
+  encabezado?: TableHeader[]
 }
 export interface StarsProps {
   rating: number;
@@ -35,8 +36,17 @@ export interface TableRow {
 }
 
 export interface TableListProps {
-  encabezado?: string[];
+  encabezado?: TableHeader[];
   data?: TableRow[];
   home?: boolean | any;
   columns?: number | any;
+}
+
+export interface TableHeader {
+  label: string;
+  width: string;
+}
+
+export interface TableRow {
+  [key: string]: any; 
 }

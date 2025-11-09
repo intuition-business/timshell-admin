@@ -7,7 +7,7 @@ import type {
   StarsProps,
   TableListProps,
 } from "../typeScript/tablaType";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export function TableList({ encabezado, home, columns }: TableListProps) {
 
@@ -15,13 +15,17 @@ export function TableList({ encabezado, home, columns }: TableListProps) {
     <>
       <div className="mt-3 w-full rounded-md">
         {/* encabezado */}
-        <div className={`grid  !bg-[#0e0d0d] p-3  px-5 rounded-lg text-white border border-[#333]}`} style={{ gridTemplateColumns: `repeat(${columns}, ${home ? '200px' : '250px'})` }} >
+        <div className={`grid  !bg-[#0e0d0d] p-3  px-5 rounded-lg text-white border border-[#333]}`} style={{
+          gridTemplateColumns: encabezado
+            ?.map((item) => item.width)
+            .join(" "), // 👈 aquí usas los width personalizados
+        }}>
           {encabezado?.map((item, index: number) => (
             <h3
               key={index}
               className={`col-span-1 font-semibold justify-center w-full ${home ? 'text-base' : 'text-xl'} line-clamp-1 text-ellipsis`}
             >
-              {item}
+              {item.label}
             </h3>
           ))}
         </div>
@@ -57,7 +61,7 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
   );
 };
 
-export function CardList({ data, columns }: CardListProps) {
+export function CardList({ data, columns, encabezado}: CardListProps) {
 
   const respuesta = data.map((data) => {
     console.log(Object.keys(data).length);
@@ -72,7 +76,11 @@ export function CardList({ data, columns }: CardListProps) {
         <div
           key={i}
           className="grid text-[20px] rounded-md  bg-[#333] p-[20px] text-white"
-          style={{ gridTemplateColumns: `repeat(${columns}, 250px)` }}
+          style={{
+            gridTemplateColumns: encabezado
+              ?.map((item) => item.width)
+              .join(" "), // 👈 aquí usas los width personalizados
+          }}
         >
           {/* Columna 1: Nombre */}
           <div className="flex gap-3 items-center w-full px-2">

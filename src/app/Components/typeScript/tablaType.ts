@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+
 import { Entrenador } from "./trainerType";
 
 export interface CardItem {
@@ -17,7 +18,8 @@ export interface CardItem {
 export interface CardListProps {
   data: Entrenador[];
   columns?: number | any;
-  encabezado?: TableHeader[]
+  encabezado?: TableHeader[];
+  onCardClick?: (id: string) => void;
 }
 export interface StarsProps {
   rating: number;

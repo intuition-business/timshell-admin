@@ -2,34 +2,38 @@
 
 import { Star } from "lucide-react";
 
+import { useEffect } from "react";
 import type {
   CardListProps,
   StarsProps,
   TableListProps,
 } from "../typeScript/tablaType";
-import { useEffect } from "react";
 
 export function TableList({ encabezado, home, columns }: TableListProps) {
-
   return (
     <>
       <div className="mt-3 w-full rounded-md">
         {/* encabezado */}
-        <div className={`grid  !bg-[#0e0d0d] p-3  px-5 rounded-lg text-white border border-[#333]}`} style={{
-          gridTemplateColumns: encabezado
-            ?.map((item) => item.width)
-            .join(" "), // 👈 aquí usas los width personalizados
-        }}>
+        <div
+          className={`grid  !bg-[#0e0d0d] p-3  px-5 rounded-lg text-white border border-[#333]}`}
+          style={{
+            gridTemplateColumns: encabezado
+              ?.map((item) => item.width)
+              .join(" "), // 👈 aquí usas los width personalizados
+          }}
+        >
           {encabezado?.map((item, index: number) => (
             <h3
               key={index}
-              className={`col-span-1 font-semibold justify-center w-full ${home ? 'text-base' : 'text-xl'} line-clamp-1 text-ellipsis`}
+              className={`col-span-1 font-semibold justify-center w-full ${
+                home ? "text-base" : "text-xl"
+              } line-clamp-1 text-ellipsis`}
             >
               {item.label}
             </h3>
           ))}
         </div>
-      </div >
+      </div>
     </>
   );
 }
@@ -49,8 +53,8 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
             i < fullStars
               ? "text-yellow-400 fill-yellow-400"
               : hasHalf && i === fullStars
-                ? "text-yellow-400 fill-yellow-400 opacity-50"
-                : "text-gray-500"
+              ? "text-yellow-400 fill-yellow-400 opacity-50"
+              : "text-gray-500"
           }
         />
       ))}
@@ -61,20 +65,25 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
   );
 };
 
-export function CardList({ data, columns, encabezado}: CardListProps) {
-
+export function CardList({
+  data,
+  columns,
+  encabezado,
+  onCardClick,
+}: CardListProps) {
   const respuesta = data.map((data) => {
     console.log(Object.keys(data).length);
-  })
+  });
 
   useEffect(() => {
-    respuesta
-  }, [])
+    respuesta;
+  }, []);
   return (
     <div className="flex flex-col gap-2  w-full">
       {data.map((t: any, i) => (
         <div
           key={i}
+          onClick={() => onCardClick && onCardClick(t.id)}
           className="grid text-[20px] rounded-md  bg-[#333] p-[20px] text-white"
           style={{
             gridTemplateColumns: encabezado
@@ -85,10 +94,10 @@ export function CardList({ data, columns, encabezado}: CardListProps) {
           {/* Columna 1: Nombre */}
           <div className="flex gap-3 items-center w-full px-2">
             <div className="h-15 w-15 rounded-full overflow-hidden bg-gray-700 flex items-center justify-between">
-              {t.image ? (
+              {t.userImage ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={t.image}
+                  src={t.userImage}
                   alt={t.name}
                   className="h-full w-full object-cover"
                 />
@@ -96,7 +105,12 @@ export function CardList({ data, columns, encabezado}: CardListProps) {
                 <span className="text-gray-400"></span>
               )}
             </div>
-            <span className="max-w-[150px] w-full text-ellipsis overflow-hidden" title={t.name}>{t.name}</span>
+            <span
+              className="max-w-[150px] w-full text-ellipsis overflow-hidden"
+              title={t.name}
+            >
+              {t.name}
+            </span>
           </div>
 
           <div className="w-full  px-2 overflow-hidden">
@@ -114,8 +128,25 @@ export function CardList({ data, columns, encabezado}: CardListProps) {
           <div className=" flex justify-center w-full px-2 overflow-hidden">
             {t.valoration ? (
               <Stars rating={Number(t.valoration)} size={20} />
-            ) : ''}
+            ) : (
+              ""
+            )}
           </div>
+          {/* <div className="w-full px-2 overflow-hidden">
+            <div>{t.plan_id ? t.plan || `Plan #${t.plan_id}` : ""}</div>
+          </div> */}
+          {/* <div className="flex items-center justify-cente">
+            {t.trainerImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={t.trainerImage}
+                alt={t.entrena}
+                className="h-12 w-12 rounded-full object-cover"
+              />
+            ) : (
+              ""
+            )}
+          </div> */}
         </div>
       ))}
     </div>

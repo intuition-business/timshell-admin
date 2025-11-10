@@ -1,11 +1,15 @@
 "use client";
 
+import { useRouter } from "next/navigation"; // ✅ Import correcto para App Router
 import { useEffect, useState } from "react";
 import Inputs from "../Inputs/inputs";
 import { CardList, TableList } from "../Table/TableList";
 import Pagination from "../ui/Pagination";
 
 interface User {
+  plan_id: null;
+  user_image: string;
+  plan_name: string;
   name?: string;
   id: number;
   email?: string;
@@ -14,6 +18,9 @@ interface User {
 }
 
 export default function UserDashboard() {
+  const router = useRouter(); // ✅ Ahora funcionará sin errores
+  const [data, setData] = useState([]);
+
   const EncabezadosData = [
     { label: "Nombre", width: "250px" },
     { label: "ID", width: "100px" },
@@ -22,25 +29,24 @@ export default function UserDashboard() {
     { label: "Entrenador", width: "200px" },
   ];
 
-  const [data, setData] = useState([]);
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users`, {
-        headers: {
-          "x-access-token": token,
-        },
+        headers: { "x-access-token": token },
       })
         .then((res) => res.json())
         .then((json) => {
           if (json.data) {
             const mappedData = json.data.map((user: User) => ({
+              id: user.id?.toString() || "",
               name: user.name || "",
-              id: user.id.toString(),
               email: user.email || user.phone || "",
-              plan: "Desconocido",
-              entrena: user.trainer_name || "",
+              plan_id: user.plan_id || null,
+              plan: user.plan_name || "",
+              entrena: user.trainer_name || "Sin entrenador",
+              trainerImage: user.trainer_name || "",
+              userImage: user.user_image || "",
             }));
             setData(mappedData);
           }
@@ -51,14 +57,18 @@ export default function UserDashboard() {
     }
   }, []);
 
+  const handleUserClick = (userId: string) => {
+    console.log("Navegando al usuario:", userId);
+    router.push(`/pages/users/${userId}`);
+  };
+
   return (
     <main>
       <div className="w-full text-white items-center">
         <div className="w-full justify-end">
-          <h1 className="text-3xl font-bold text-[#dff400] mb-9">
-            Usuarios
-          </h1>
-          <div className=" flex gap-6">
+          <h1 className="text-3xl font-bold text-[#dff400] mb-9">Usuarios</h1>
+
+          <div className="flex gap-6">
             <Inputs.SearchInput placeholder="Buscar..." />
             <Inputs.SelectInput
               placeholder="Tipo de plan"
@@ -71,23 +81,32 @@ export default function UserDashboard() {
               IconChevronDown
             />
           </div>
-          <div className=" ">
+
+          <div>
             <div className="flex">
-              <h2 className=" font-bold my-6 ">Gestión de usuaria</h2>
-              <p className=" font-bold text-[#dff400] mx-16 my-6">
+              <h2 className="font-bold my-6">Gestión de usuaria</h2>
+              <p className="font-bold text-[#dff400] mx-16 my-6">
                 Usuarios activos 200
               </p>
             </div>
-            <div className="flex relative -translate-y-4 ">
+
+            <div className="flex relative -translate-y-4">
               <TableList encabezado={EncabezadosData} data={data} columns={5} />
             </div>
-            <div className="w- p-0 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between">
-              <CardList encabezado={EncabezadosData} data={data} columns={5} />
+
+            <div className="p-0 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between">
+              <CardList
+                encabezado={EncabezadosData}
+                data={data}
+                columns={5}
+                onCardClick={handleUserClick} // ✅ clickeable
+              />
             </div>
           </div>
         </div>
-        <div className="w-full p-6 mb-11 ">
-          <Pagination paginaActual={1} totalPaginas={6} onChange={() => { }} />
+
+        <div className="w-full p-6 mb-11">
+          <Pagination paginaActual={1} totalPaginas={6} onChange={() => {}} />
         </div>
       </div>
     </main>

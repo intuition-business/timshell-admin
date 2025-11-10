@@ -1,12 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
-import Inputs from "../Inputs/inputs";
-import { RutinasCards } from "../ui/Cards";
-import Dates from "../ui/Dates";
-import Pagination from "../ui/Pagination";
-import ProfileCard from "../ui/ReusableProfile";
-import ProgressCard from "./components/ProgressCard";
-import WeeklyProgressChart from "./components/WeeklyProgressChart";
+import ProgressCard from "@/app/Components/Interna/components/ProgressCard";
+import { RutinasCards } from "@/app/Components/ui/Cards";
+import Dates from "@/app/Components/ui/Dates";
+import ProfileCard from "@/app/Components/ui/ReusableProfile";
+import { useState } from "react";
+import Inputs from "../../../Components/Inputs/inputs";
 
 interface Rutina {
   grupo: string;
@@ -162,19 +160,51 @@ const rutinas: Rutina[] = [
   },
 ];
 
-export default function Interna() {
-  const getSelection = () => {
-    console.log("Rutina seleccionada");
-  };
-
-  const [paginaActual, setPaginaActual] = useState(1);
-  const [totalPaginas, setTotalPaginas] = useState(5);
+export default function Pages() {
   const [rutinasVisibles, setRutinasVisibles] = useState<Rutina[]>(rutinas);
+  // const params = useParams(); // obtiene los params dinámicos
+  // const { id } = params; // tu [id] dinámico
 
-  useEffect(() => {
-    setRutinasVisibles(rutinas);
-  }, [paginaActual]);
+  // const [user, setUser] = useState<User | null>(null);
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+
+  //   const fetchUser = async () => {
+  //     try {
+  //       const res = await fetch(
+  //         `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users/${id}`,
+  //         {
+  //           headers: { "x-access-token": token },
+  //         }
+  //       );
+
+  //       if (!res.ok) {
+  //         console.error("Usuario no encontrado");
+  //         return;
+  //       }
+
+  //       const json = await res.json();
+
+  //       if (json.data) {
+  //         setUser({
+  //           id: json.data.id,
+  //           name: json.data.name,
+  //           plan: json.data.plan_name,
+  //           userImage: json.data.user_image,
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching user:", err);
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, [id]);
+  // if (!user) {
+  //   return <p>Cargando usuario...</p>;
+  // }
   return (
     <section
       className="min-h-screen w-12/12 text-white p-6"
@@ -188,16 +218,14 @@ export default function Interna() {
           name="Sebastián Morales"
           role="Plan Intermedio"
           imageUrl="https://randomuser.me/api/portraits/men/45.jpg"
-          onClick={() => alert("Ver perfil de Sebastián")}
         />
+        {/* <h2>Perfil del usuario {id}</h2> */}
       </div>
       <div className="w-full py-5 flex justify-cente items-center">
         <ProgressCard weight={79} variation={1.2} height={1.78} />
       </div>
       <div className="flex flex-col p-6 max-w-2xl  gap-5">
         <p className="text-1xl text-[#dff400]">Evolución de tu peso</p>
-        <WeeklyProgressChart dataPoints={[79, 78.5, 78, 77.8, 77.5]} />
-        {/* <WeeklyProgressChart dataPoints={[79, 78.5, 78, 77.8, 77.5]} /> */}
       </div>
       <h2 className="text-[16px] px-3 font-bold mb-8">Rutina diaria</h2>
       <div className="flex flex-col rounded-lg p-4 mb-8 backdrop-blur-sm">
@@ -219,11 +247,11 @@ export default function Interna() {
         <RutinasCards rutinas={rutinasVisibles} onSelect={getSelection} />
       </div>
       <div className="flex justify-center mt-8">
-        <Pagination
+        {/* <Pagination
           paginaActual={paginaActual}
           totalPaginas={totalPaginas}
           onChange={setPaginaActual}
-        />
+        /> */}
       </div>
     </section>
   );

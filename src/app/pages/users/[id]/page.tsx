@@ -348,27 +348,14 @@ export default function Pages() {
       </div>
 
       <div className="flex bg-[#282828] justify-between gap-6 p-6">
-        <div className="w-4/12 ">
-          <div className="flex gap-4 mb-4">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 bg-red-500 rounded-full"></span>
-              <span className="text-white text-sm">Subida de peso</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-              <span className="text-white text-sm">Bajada de peso</span>
-            </div>
-          </div>
+        <div className="w-6/12">
           <WeightChart
             dataPoints={weightData}
             labels={weightLabels}
             title="Evolución de tu peso"
           />
         </div>
-        <div className="w-4/12 bg-[#282828] rounded-2xl shadow-lg p-6">
-          <h3 className="text-[#D4FF00] font-semibold mb-4 text-xl">
-            Movimiento de usuarios
-          </h3>
+        <div className="w-6/12">
           <UserMovementChart />
         </div>
       </div>

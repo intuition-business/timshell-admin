@@ -41,11 +41,11 @@ const UserMovementChart: React.FC<UserMovementChartProps> = ({
       {
         label: "Usuarios activos",
         data: dataPoints,
-        borderColor: "#16459D",
-        backgroundColor: "rgba(22, 69, 157, 0.1)",
+        borderColor: "#dff400",
+        backgroundColor: "rgba(223, 244, 0, 0.1)",
         borderWidth: 3,
         pointRadius: 6,
-        pointBackgroundColor: "#16459D",
+        pointBackgroundColor: "#dff400",
         pointBorderColor: "#ffffff",
         pointBorderWidth: 2,
         pointHoverRadius: 8,
@@ -78,7 +78,7 @@ const UserMovementChart: React.FC<UserMovementChartProps> = ({
         backgroundColor: "rgba(0, 0, 0, 0.8)",
         titleColor: "#dff400",
         bodyColor: "#ffffff",
-        borderColor: "#16459D",
+        borderColor: "#dff400",
         borderWidth: 1,
         cornerRadius: 8,
         displayColors: false,
@@ -127,8 +127,11 @@ const UserMovementChart: React.FC<UserMovementChartProps> = ({
   };
 
   return (
-    <div className="h-80">
-      <Line data={data} options={options} />
+    <div className="bg-white/10 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
+      <div className="mb-4"></div>
+      <div className="h-80">
+        <Line data={data} options={options} />
+      </div>
     </div>
   );
 };

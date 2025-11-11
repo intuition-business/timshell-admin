@@ -41,11 +41,11 @@ const WeightChart: React.FC<WeightChartProps> = ({
       {
         label: "Peso (kg)",
         data: dataPoints,
-        borderColor: "#dff400",
-        backgroundColor: "rgba(223, 244, 0, 0.1)",
+        borderColor: "#ef4444",
+        backgroundColor: "rgba(239, 68, 68, 0.1)",
         borderWidth: 3,
         pointRadius: 6,
-        pointBackgroundColor: "#dff400",
+        pointBackgroundColor: "#ef4444",
         pointBorderColor: "#ffffff",
         pointBorderWidth: 2,
         pointHoverRadius: 8,
@@ -69,16 +69,16 @@ const WeightChart: React.FC<WeightChartProps> = ({
           size: 18,
           weight: "bold" as const,
         },
-        color: "#dff400",
+        color: "#ef4444",
         padding: {
           bottom: 20
         }
       },
       tooltip: {
         backgroundColor: "rgba(0, 0, 0, 0.8)",
-        titleColor: "#dff400",
+        titleColor: "#ef4444",
         bodyColor: "#ffffff",
-        borderColor: "#dff400",
+        borderColor: "#ef4444",
         borderWidth: 1,
         cornerRadius: 8,
         displayColors: false,
@@ -128,7 +128,17 @@ const WeightChart: React.FC<WeightChartProps> = ({
 
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
-      <div className="h-80">
+      <div className="flex gap-4 mb-4">
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 bg-red-500 rounded-full"></span>
+          <span className="text-white text-sm">Subida de peso</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+          <span className="text-white text-sm">Bajada de peso</span>
+        </div>
+      </div>
+      <div className="h-72">
         <Line data={data} options={options} />
       </div>
     </div>

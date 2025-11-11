@@ -1,72 +1,86 @@
 "use client";
 
-import { Check, Clock, ShieldAlert } from "lucide-react"; // iconos
 import React from "react";
+import { Check, Clock, ShieldAlert } from "lucide-react";
 import type { RutinasGridProps } from "../typeScript/uiCardsType";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
-export const RutinasCards: React.FC<RutinasGridProps> = ({
-  rutinas,
-  onSelect,
-}) => {
+export const RutinasCards: React.FC<RutinasGridProps> = ({ rutinas }) => {
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case "completed":
+        return "bg-[#DFF400] text-black";
+      case "pending":
+        return "bg-white text-black";
+      default:
+        return "bg-red-500 text-white";
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "completed":
+        return <Check size={16} />;
+      case "pending":
+        return <Clock size={16} />;
+      default:
+        return <ShieldAlert size={16} />;
+    }
+  };
+
   return (
-    <div className="grid grid-cols-4 gap-8">
-      {rutinas.map((rutina, i) => {
-        const estadoStyles =
-          rutina.estado === "Completado"
-            ? "bg-[#DFF400] text-black"
-            : rutina.estado === "Fallida"
-            ? "bg-red-500 text-white"
-            : rutina.estado === "Pendiente"
-            ? "bg-gray-300 text-gray-800"
-            : "bg-yellow-400 text-black";
-
-        const Icon =
-          rutina.estado === "Completado"
-            ? Check
-            : rutina.estado === "Fallida"
-            ? ShieldAlert
-            : rutina.estado === "Pendiente"
-            ? Clock
-            : Clock;
-
-        return (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {rutinas.map((rutina, index) => (
+        <div
+          key={index}
+          className="relative bg-[#0D0D0D] border border-[#2A2A2A] rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(223,244,0,0.2)] transition-all duration-300 flex flex-col justify-between"
+        >
+          {/* Badge de estado */}
           <div
-            key={i}
-            className="relative bg-gradient-to-b p from-[#1e1e1e] to-[#1e1e1e] shadow-[0_0_15px_rgba(223,244,0,0.2)] rounded-2xl flex flex-col justify-between w-[436px] h-[314px]"
+            className={`absolute top-0 right-0 flex items-center gap-2 px-3 py-1 rounded-tr-2xl rounded-bl-2xl text-sm font-semibold ${getStatusStyle(
+              rutina.status
+            )}`}
           >
-            <div
-              className={`absolute top-0 right-0 flex w-[105px] h-[34px] items-center gap-2 px-3 py-1 rounded-tr-2xl rounded-bl-2xl text-sm font-semibold ${estadoStyles}`}
-            >
-              <Icon size={18} strokeWidth={3} />
-              <span>{rutina.estado}</span>
-            </div>
-
-            <div className=" p-4">
-              <h2 className="text-[20px] font-bold text-white">
-                {rutina.grupo}
-              </h2>
-              <p className="text-[18px] text-gray-400 mb-5">
-                Fecha: {rutina.fecha}
-              </p>
-
-              <ul className="text-[16px] text-gray-300 space-y-1 mb-5">
-                {rutina.ejercicios.slice(0, 4).map((ej, idx) => (
-                  <li key={idx}>• {ej}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="w-full p-[16px] flex justify-center">
-              <button
-                className="border border[#d1d1d1] w-full rounded text-gray-500 text-[18px] font-semibold px-4 py-2 transition hover:bg-amber-50 hover:text-black"
-                onClick={() => onSelect?.(rutina)}
-              >
-                Ver detalles
-              </button>
-            </div>
+            {getStatusIcon(rutina.status)}
+            <span>
+              {rutina.status === "completed"
+                ? "Completada"
+                : rutina.status === "pending"
+                  ? "Pendiente"
+                  : "Sin estado"}
+            </span>
           </div>
-        );
-      })}
+
+          {/* Contenido principal */}
+          <div className="mt-6">
+            <h2 className="text-lg font-bold text-white">
+              {rutina.nombre || "Rutina sin nombre"}
+            </h2>
+            <p className="text-sm text-gray-400 mt-1">
+              Fecha:{" "}
+              {rutina.fecha
+                ? format(new Date(rutina.fecha), "dd/MM", { locale: es })
+                : "Sin fecha"}
+            </p>
+
+            <ul className="text-sm text-gray-200 mt-4 space-y-1">
+              {rutina.ejercicios?.slice(0, 6).map((ej, i) => (
+                <li key={i}>• {ej.nombre_ejercicio}</li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Botón */}
+          <div className="mt-6">
+            <button
+              className="w-full border border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg hover:bg-[#DFF400] hover:text-black transition"
+            >
+              Ver detalles
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

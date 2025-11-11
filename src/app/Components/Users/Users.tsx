@@ -15,6 +15,7 @@ interface User {
   email?: string;
   phone?: string;
   trainer_name?: string;
+  trainer_image?: string;
 }
 
 export default function UserDashboard() {
@@ -44,8 +45,8 @@ export default function UserDashboard() {
               email: user.email || user.phone || "",
               plan_id: user.plan_id || null,
               plan: user.plan_name || "",
-              entrena: user.trainer_name || "Sin entrenador",
-              trainerImage: user.trainer_name || "",
+              trainer_name: user.trainer_name || "Sin entrenador",
+              trainer_image: user.trainer_image || "",
               userImage: user.user_image || "",
             }));
             setData(mappedData);

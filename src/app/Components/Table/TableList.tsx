@@ -25,9 +25,8 @@ export function TableList({ encabezado, home, columns }: TableListProps) {
           {encabezado?.map((item, index: number) => (
             <h3
               key={index}
-              className={`col-span-1 font-semibold justify-center w-full ${
-                home ? "text-base" : "text-xl"
-              } line-clamp-1 text-ellipsis`}
+              className={`col-span-1 font-semibold justify-center w-full ${home ? "text-base" : "text-xl"
+                } line-clamp-1 text-ellipsis`}
             >
               {item.label}
             </h3>
@@ -53,8 +52,8 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
             i < fullStars
               ? "text-yellow-400 fill-yellow-400"
               : hasHalf && i === fullStars
-              ? "text-yellow-400 fill-yellow-400 opacity-50"
-              : "text-gray-500"
+                ? "text-yellow-400 fill-yellow-400 opacity-50"
+                : "text-gray-500"
           }
         />
       ))}
@@ -78,6 +77,8 @@ export function CardList({
   useEffect(() => {
     respuesta;
   }, []);
+  console.log(data);
+
   return (
     <div className="flex flex-col gap-2  w-full">
       {data.map((t: any, i) => (
@@ -121,32 +122,33 @@ export function CardList({
             <span>{t.email}</span>
           </div>
 
-          <div className="w-full  px-2 overflow-hidden">
-            <span>{t.usuarios}</span>
+          <div className="w-full px-2 overflow-hidden">
+            {t.plan_id}
           </div>
+          {t.valoration ? (
+            <div className=" flex justify-center w-full px-2 overflow-hidden">
 
-          <div className=" flex justify-center w-full px-2 overflow-hidden">
-            {t.valoration ? (
               <Stars rating={Number(t.valoration)} size={20} />
+            </div>
+          ) : (
+            ""
+          )}
+
+          <div className="flex items-center justify-cente">
+            {t.trainer_image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <div className="flex items-center gap-2">
+                <img
+                  src={t.trainer_image}
+                  alt={`${t.trainer_name}`}
+                  className="h-12 w-12 rounded-full object-cover"
+                />
+                <p>{t.trainer_name}</p>
+              </div>
             ) : (
               ""
             )}
           </div>
-          {/* <div className="w-full px-2 overflow-hidden">
-            <div>{t.plan_id ? t.plan || `Plan #${t.plan_id}` : ""}</div>
-          </div> */}
-          {/* <div className="flex items-center justify-cente">
-            {t.trainerImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={t.trainerImage}
-                alt={t.entrena}
-                className="h-12 w-12 rounded-full object-cover"
-              />
-            ) : (
-              ""
-            )}
-          </div> */}
         </div>
       ))}
     </div>

@@ -6,6 +6,20 @@ export interface Rutina {
 }
 
 export interface RutinasGridProps {
-  rutinas: Rutina[];
-  onSelect?: (rutina: Rutina) => void;
+  rutinas: {
+    fecha: string;
+    nombre: string;
+    status: string;
+    ejercicios: {
+      nombre_ejercicio: string;
+      Esquema: {
+        Series: number;
+        Descanso: string;
+        "Detalle series": {
+          Reps: number;
+          carga: number | string;
+        }[];
+      };
+    }[];
+  }[];
 }

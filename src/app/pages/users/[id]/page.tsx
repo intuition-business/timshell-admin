@@ -1,9 +1,11 @@
 "use client";
 import ProgressCard from "@/app/Components/Interna/components/ProgressCard";
+import Loading from "@/app/Components/Loading/loading";
 import { RutinasCards } from "@/app/Components/ui/Cards";
 import Dates from "@/app/Components/ui/Dates";
 import ProfileCard from "@/app/Components/ui/ReusableProfile";
-import Loading from "@/app/Components/Loading/loading";
+import UserMovementChart from "@/app/Components/ui/UserMovementChart";
+import WeightChart from "@/app/Components/ui/WeightChart";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Inputs from "../../../Components/Inputs/inputs";
@@ -182,6 +184,56 @@ export default function Pages() {
   const params = useParams(); // obtiene los params dinámicos
   const { id } = params; // tu [id] dinámico
 
+  // Datos de ejemplo para la gráfica de peso
+  const weightData = [79.5, 79.2, 78.8, 78.5, 78.3, 78.1, 77.9];
+  const weightLabels = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+  const lineData = {
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    datasets: [
+      {
+        label: "Altas mensuales vvvvvvvvvvvvvvv",
+        data: [
+          600, 900, 1400, 1300, 1250, 1600, 1500, 1200, 900, 1500, 1600, 1200,
+        ],
+        borderColor: "#D4FF00",
+        backgroundColor: "rgba(173, 255, 47, 0.1)",
+        tension: 0.3,
+        fill: true,
+      },
+      {
+        label: "Media de usuarios",
+        data: [
+          1000, 1100, 1200, 1300, 1250, 1300, 1200, 1100, 1000, 1300, 1250,
+          1150,
+        ],
+        borderColor: "#ff4b4b",
+        backgroundColor: "transparent",
+        borderDash: [5, 5],
+        tension: 0.2,
+      },
+    ],
+  };
+  const lineOptions = {
+    responsive: true,
+    plugins: { legend: { labels: { color: "#fff" } } },
+    scales: {
+      x: { ticks: { color: "#ccc" }, grid: { color: "#222" } },
+      y: { ticks: { color: "#ccc" }, grid: { color: "#222" } },
+    },
+  };
   const getSelection = (rutina: Rutina) => {
     console.log("Rutina seleccionada:", rutina);
   };
@@ -272,22 +324,17 @@ export default function Pages() {
     return <Loading />;
   }
 
-  if (error || !user) {
-    return (
-      <div className="min-h-screen w-12/12 text-white p-6 flex items-center justify-center">
-        <p className="text-red-500 text-xl">
-          {error || "No se pudo cargar la información del usuario"}
-        </p>
-      </div>
-    );
-  }
+  // if (error || !user) {
+  //   return (
+  //     <div className="min-h-screen w-12/12 text-white p-6 flex items-center justify-center">
+  //       <p className="text-red-500 text-xl">
+  //         {error || "No se pudo cargar la información del usuario"}
+  //       </p>
+  //     </div>
+  //   );
+  // }
   return (
-    <section
-      className="min-h-screen w-12/12 text-white p-6"
-      style={{
-        backgroundImage: "url('/8d9f842b-100a-4e7f-a537-bec51029f233.png')",
-      }}
-    >
+    <section className="min-h-screen w-12/12 text-white p-6">
       <h1 className=" px-3 text-3xl text-[#dff400] font-bold ">Usuario</h1>
       <div className=" flex py-3">
         <ProfileCard
@@ -300,8 +347,30 @@ export default function Pages() {
         <ProgressCard weight={79} variation={1.2} height={1.78} />
       </div>
 
-      <div className="flex flex-col p-6 max-w-2xl  gap-5">
-        <p className="text-1xl text-[#dff400]">Evolución de tu peso</p>
+      <div className="flex bg-[#282828] justify-between gap-6 p-6">
+        <div className="w-4/12 ">
+          <div className="flex gap-4 mb-4">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 bg-red-500 rounded-full"></span>
+              <span className="text-white text-sm">Subida de peso</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+              <span className="text-white text-sm">Bajada de peso</span>
+            </div>
+          </div>
+          <WeightChart
+            dataPoints={weightData}
+            labels={weightLabels}
+            title="Evolución de tu peso"
+          />
+        </div>
+        <div className="w-4/12 bg-[#282828] rounded-2xl shadow-lg p-6">
+          <h3 className="text-[#D4FF00] font-semibold mb-4 text-xl">
+            Movimiento de usuarios
+          </h3>
+          <UserMovementChart />
+        </div>
       </div>
       <h2 className="text-[16px] px-3 font-bold mb-8">Rutina diaria</h2>
       <div className="flex flex-col rounded-lg p-4 mb-8 backdrop-blur-sm">

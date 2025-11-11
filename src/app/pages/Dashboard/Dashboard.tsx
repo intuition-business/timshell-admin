@@ -31,13 +31,25 @@ export default function Dashboard() {
   // === Datos de ejemplo ===
   const lineData = {
     labels: [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ],
     datasets: [
       {
-        label: "Altas mensuales",
-        data: [600, 900, 1400, 1300, 1250, 1600, 1500, 1200, 900, 1500, 1600, 1200],
+        label: "Altas mensuales vvvvvvvvvvvvvvv",
+        data: [
+          600, 900, 1400, 1300, 1250, 1600, 1500, 1200, 900, 1500, 1600, 1200,
+        ],
         borderColor: "#D4FF00",
         backgroundColor: "rgba(173, 255, 47, 0.1)",
         tension: 0.3,
@@ -45,7 +57,10 @@ export default function Dashboard() {
       },
       {
         label: "Media de usuarios",
-        data: [1000, 1100, 1200, 1300, 1250, 1300, 1200, 1100, 1000, 1300, 1250, 1150],
+        data: [
+          1000, 1100, 1200, 1300, 1250, 1300, 1200, 1100, 1000, 1300, 1250,
+          1150,
+        ],
         borderColor: "#ff4b4b",
         backgroundColor: "transparent",
         borderDash: [5, 5],

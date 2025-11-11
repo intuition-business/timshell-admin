@@ -3,8 +3,9 @@ import ProgressCard from "@/app/Components/Interna/components/ProgressCard";
 import { RutinasCards } from "@/app/Components/ui/Cards";
 import Dates from "@/app/Components/ui/Dates";
 import ProfileCard from "@/app/Components/ui/ReusableProfile";
-import { useState } from "react";
+import Loading from "@/app/Components/Loading/loading";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import Inputs from "../../../Components/Inputs/inputs";
 
 interface Rutina {
@@ -12,6 +13,18 @@ interface Rutina {
   estado: "Completado" | "Fallida" | "Pendiente";
   fecha: string;
   ejercicios: string[];
+}
+
+interface User {
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  plan_id?: number | null;
+  plan_name?: string;
+  trainer_name?: string;
+  trainer_image?: string;
+  user_image?: string;
 }
 
 const rutinas: Rutina[] = [
@@ -163,6 +176,9 @@ const rutinas: Rutina[] = [
 
 export default function Pages() {
   const [rutinasVisibles, setRutinasVisibles] = useState<Rutina[]>(rutinas);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const params = useParams(); // obtiene los params dinámicos
   const { id } = params; // tu [id] dinámico
 
@@ -170,46 +186,101 @@ export default function Pages() {
     console.log("Rutina seleccionada:", rutina);
   };
 
-  // const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      setError(null);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) return;
+      const token = localStorage.getItem("token");
+      console.log("Token:", token);
+      console.log("ID:", id);
+      console.log(
+        "URL:",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users/${id}`
+      );
 
-  //   const fetchUser = async () => {
-  //     try {
-  //       const res = await fetch(
-  //         `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users/${id}`,
-  //         {
-  //           headers: { "x-access-token": token },
-  //         }
-  //       );
+      if (!token) {
+        setError("No hay token de autenticación");
+        setLoading(false);
+        return;
+      }
 
-  //       if (!res.ok) {
-  //         console.error("Usuario no encontrado");
-  //         return;
-  //       }
+      try {
+        console.log("Iniciando fetch...");
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
 
-  //       const json = await res.json();
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users`,
+          {
+            headers: { "x-access-token": token },
+            signal: controller.signal,
+          }
+        );
 
-  //       if (json.data) {
-  //         setUser({
-  //           id: json.data.id,
-  //           name: json.data.name,
-  //           plan: json.data.plan_name,
-  //           userImage: json.data.user_image,
-  //         });
-  //       }
-  //     } catch (err) {
-  //       console.error("Error fetching user:", err);
-  //     }
-  //   };
+        clearTimeout(timeoutId);
 
-  //   fetchUser();
-  // }, [id]);
-  // if (!user) {
-  //   return <p>Cargando usuario...</p>;
-  // }
+        console.log("Respuesta status:", res.status);
+
+        if (!res.ok) {
+          setError(`Error: ${res.status} - Usuario no encontrado`);
+          setLoading(false);
+          return;
+        }
+
+        const json = await res.json();
+        console.log("Datos recibidos:", json);
+
+        if (json.data) {
+          // Buscar el usuario específico por ID en la lista
+          const userData = json.data.find(
+            (user: any) => user.id?.toString() === id
+          );
+
+          if (userData) {
+            setUser({
+              id: userData.id?.toString() || "",
+              name: userData.name || "",
+              email: userData.email || "",
+              phone: userData.phone || "",
+              plan_id: userData.plan_id || null,
+              plan_name: userData.plan_name || "",
+              trainer_name: userData.trainer_name || "Sin entrenador",
+              trainer_image: userData.trainer_image || "",
+              user_image: userData.user_image || "",
+            });
+          } else {
+            setError(`Usuario con ID ${id} no encontrado`);
+          }
+        } else {
+          setError("No se encontraron datos del usuario");
+        }
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Error desconocido";
+        setError(`Error al cargar usuario: ${errorMessage}`);
+        console.error("Error fetching user:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [id]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error || !user) {
+    return (
+      <div className="min-h-screen w-12/12 text-white p-6 flex items-center justify-center">
+        <p className="text-red-500 text-xl">
+          {error || "No se pudo cargar la información del usuario"}
+        </p>
+      </div>
+    );
+  }
   return (
     <section
       className="min-h-screen w-12/12 text-white p-6"
@@ -218,20 +289,17 @@ export default function Pages() {
       }}
     >
       <h1 className=" px-3 text-3xl text-[#dff400] font-bold ">Usuario</h1>
-      <div className=" flex items-center  py-3">
+      <div className=" flex py-3">
         <ProfileCard
-          name="Sebastián Morales"
-          role="Plan Intermedio"
-          imageUrl="https://randomuser.me/api/portraits/men/45.jpg"
+          name={user.name || "sin nombre"}
+          role={user.plan_name || "Sin plan"}
+          imageUrl={user.user_image || "/default-avatar.png"}
         />
       </div>
       <div className="w-full py-5 flex justify-cente items-center">
         <ProgressCard weight={79} variation={1.2} height={1.78} />
       </div>
-      <p className="text-xl">
-        ID del usuario seleccionado:{" "}
-        <span className="text-[#dff400]">{id}</span>
-      </p>
+
       <div className="flex flex-col p-6 max-w-2xl  gap-5">
         <p className="text-1xl text-[#dff400]">Evolución de tu peso</p>
       </div>

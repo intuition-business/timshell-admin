@@ -33,13 +33,13 @@ interface UserMovementChartProps {
 const UserMovementChart: React.FC<UserMovementChartProps> = ({
   dataPoints = [120, 135, 142, 138, 150, 165, 180],
   labels = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul"],
-  title = "Movimiento de usuarios",
+  title = "Suscripciones mensuales",
 }) => {
   const data = {
     labels,
     datasets: [
       {
-        label: "Usuarios activos",
+        label: "Suscripciones",
         data: dataPoints,
         borderColor: "#dff400",
         backgroundColor: "rgba(223, 244, 0, 0.1)",
@@ -84,7 +84,7 @@ const UserMovementChart: React.FC<UserMovementChartProps> = ({
         displayColors: false,
         callbacks: {
           label: function(context: any) {
-            return `${context.parsed.y} usuarios`;
+            return `${context.parsed.y} suscripciones`;
           }
         }
       },
@@ -96,7 +96,7 @@ const UserMovementChart: React.FC<UserMovementChartProps> = ({
           color: "#ffffff", 
           font: { size: 12 },
           callback: function(value: any) {
-            return value + " users";
+            return value + " susc";
           }
         },
         grid: { 

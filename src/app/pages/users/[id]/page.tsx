@@ -204,7 +204,7 @@ export default function Pages() {
     ],
     datasets: [
       {
-        label: "Altas mensuales vvvvvvvvvvvvvvv",
+        label: "Altas mensuales",
         data: [
           600, 900, 1400, 1300, 1250, 1600, 1500, 1200, 900, 1500, 1600, 1200,
         ],
@@ -324,15 +324,15 @@ export default function Pages() {
     return <Loading />;
   }
 
-  // if (error || !user) {
-  //   return (
-  //     <div className="min-h-screen w-12/12 text-white p-6 flex items-center justify-center">
-  //       <p className="text-red-500 text-xl">
-  //         {error || "No se pudo cargar la información del usuario"}
-  //       </p>
-  //     </div>
-  //   );
-  // }
+  if (error || !user) {
+    return (
+      <div className="min-h-screen w-12/12 text-white p-6 flex items-center justify-center">
+        <p className="text-red-500 text-xl">
+          {error || "No se pudo cargar la información del usuario"}
+        </p>
+      </div>
+    );
+  }
   return (
     <section className="min-h-screen w-12/12 text-white p-6">
       <h1 className=" px-3 text-3xl text-[#dff400] font-bold ">Usuario</h1>
@@ -344,7 +344,7 @@ export default function Pages() {
         />
       </div>
       <div className="w-full py-5 flex justify-cente items-center">
-        <ProgressCard weight={79} variation={1.2} height={1.78} />
+        <ProgressCard weight={80} variation={1.2} height={1.78} />
       </div>
 
       <div className="flex bg-[#282828] justify-between gap-6 p-6">

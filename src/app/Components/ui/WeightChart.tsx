@@ -39,13 +39,27 @@ const WeightChart: React.FC<WeightChartProps> = ({
     labels,
     datasets: [
       {
-        label: "Peso (kg)",
+        label: "Subida de peso",
         data: dataPoints,
         borderColor: "#ef4444",
         backgroundColor: "rgba(239, 68, 68, 0.1)",
         borderWidth: 3,
         pointRadius: 6,
         pointBackgroundColor: "#ef4444",
+        pointBorderColor: "#ffffff",
+        pointBorderWidth: 2,
+        pointHoverRadius: 8,
+        tension: 0.4,
+        fill: true,
+      },
+      {
+        label: "Bajada de peso",
+        data: dataPoints.map(point => point - 5), // Datos de ejemplo para la segunda línea
+        borderColor: "#dff400",
+        backgroundColor: "rgba(223, 244, 0, 0.1)",
+        borderWidth: 3,
+        pointRadius: 6,
+        pointBackgroundColor: "#dff400",
         pointBorderColor: "#ffffff",
         pointBorderWidth: 2,
         pointHoverRadius: 8,
@@ -69,16 +83,16 @@ const WeightChart: React.FC<WeightChartProps> = ({
           size: 18,
           weight: "bold" as const,
         },
-        color: "#ef4444",
+        color: "#dff400",
         padding: {
           bottom: 20
         }
       },
       tooltip: {
         backgroundColor: "rgba(0, 0, 0, 0.8)",
-        titleColor: "#ef4444",
+        titleColor: "#dff400",
         bodyColor: "#ffffff",
-        borderColor: "#ef4444",
+        borderColor: "#dff400",
         borderWidth: 1,
         cornerRadius: 8,
         displayColors: false,

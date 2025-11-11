@@ -4,6 +4,7 @@ import { RutinasCards } from "@/app/Components/ui/Cards";
 import Dates from "@/app/Components/ui/Dates";
 import ProfileCard from "@/app/Components/ui/ReusableProfile";
 import { useState } from "react";
+import { useParams } from "next/navigation";
 import Inputs from "../../../Components/Inputs/inputs";
 
 interface Rutina {
@@ -162,8 +163,12 @@ const rutinas: Rutina[] = [
 
 export default function Pages() {
   const [rutinasVisibles, setRutinasVisibles] = useState<Rutina[]>(rutinas);
-  // const params = useParams(); // obtiene los params dinámicos
-  // const { id } = params; // tu [id] dinámico
+  const params = useParams(); // obtiene los params dinámicos
+  const { id } = params; // tu [id] dinámico
+
+  const getSelection = (rutina: Rutina) => {
+    console.log("Rutina seleccionada:", rutina);
+  };
 
   // const [user, setUser] = useState<User | null>(null);
 
@@ -247,7 +252,7 @@ export default function Pages() {
         </div>
       </div>
       <div className="grid mt-2 w-12/12 px-8">
-        <RutinasCards rutinas={rutinasVisibles} onSelect={getSelection} />
+        <RutinasCards rutinas={rutinasVisibles} />
       </div>
       <div className="flex justify-center mt-8">
         {/* <Pagination

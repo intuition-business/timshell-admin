@@ -30,7 +30,7 @@ interface User {
 }
 
 export default function Pages() {
-  const [rutinasVisibles, setRutinasVisibles] = useState<Rutina[]>({});
+  const [rutinasVisibles, setRutinasVisibles] = useState<Rutina[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

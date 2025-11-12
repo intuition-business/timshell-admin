@@ -6,7 +6,7 @@ import ProfileCard from "@/app/Components/ui/ReusableProfile";
 import { RutsCards } from "@/app/Components/ui/RutsCards";
 import UserMovementChart from "@/app/Components/ui/UserMovementChart";
 import WeightChart from "@/app/Components/ui/WeightChart";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Inputs from "../../../Components/Inputs/inputs";
 
@@ -37,6 +37,7 @@ export default function Pages() {
 
   const params = useParams();
   const { id } = params;
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token") || "";
@@ -44,15 +45,13 @@ export default function Pages() {
       try {
         const url = `https://api.timshell.co/api/routines/ia/?user_id=${id}`;
         console.log("URL de la API:", url);
-        const response = await fetch(url,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-              "x-access-token": token,
-            },
-          }
-        );
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "x-access-token": token,
+          },
+        });
 
         if (!response.ok) {
           if (response.status === 404) {
@@ -63,7 +62,9 @@ export default function Pages() {
           const errorText = await response.text();
           console.log("Error response:", response.status, response.statusText);
           console.log("Error body:", errorText);
-          throw new Error(`Error al obtener las rutinas: ${response.status} ${response.statusText}`);
+          throw new Error(
+            `Error al obtener las rutinas: ${response.status} ${response.statusText}`
+          );
         }
 
         const data = await response.json();
@@ -129,8 +130,12 @@ export default function Pages() {
       y: { ticks: { color: "#ccc" }, grid: { color: "#222" } },
     },
   };
-  const getSelection = (rutina: Rutina) => {
-    console.log("Rutina seleccionada:", rutina);
+  // const getSelection = (rutina: Rutina) => {
+  //   console.log("Rutina seleccionada:", rutina);
+  // };
+
+  const handleVerDetalles = (rutinaId: string | number, userId: string) => {
+    router.push(`/pages/users/${userId}/page/${rutinaId}`);
   };
 
   useEffect(() => {
@@ -167,7 +172,7 @@ export default function Pages() {
 
         clearTimeout(timeoutId);
 
-        console.log("Respuesta status:", res.status);
+        console.log("Respues", res.status);
 
         if (!res.ok) {
           setError(`Error: ${res.status} - Usuario no encontrado`);
@@ -271,7 +276,10 @@ export default function Pages() {
         </div>
       </div>
       <div className="grid mt-2 w-12/12 px-8">
-        <RutsCards rutinas={rutinasVisibles} />
+        <RutsCards
+          rutinas={rutinasVisibles}
+          onVerDetalles={handleVerDetalles}
+        />
       </div>
       <div className="flex justify-center mt-8">
         {/* <Pagination

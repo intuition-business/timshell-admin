@@ -6,7 +6,7 @@ import { Check, Clock, ShieldAlert } from "lucide-react";
 import React from "react";
 import type { RutinasGridProps } from "../typeScript/uiCardsType";
 
-export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas }) => {
+export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerDetalles }) => {
   const getStatusStyle = (status: string) => {
     switch (status) {
       case "completed":
@@ -73,7 +73,10 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas }) => {
 
           {/* Botón */}
           <div className="mt-6">
-            <button className="w-full border border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg hover:bg-[#DFF400] hover:text-black transition">
+            <button 
+              onClick={() => onVerDetalles?.(rutina.id || index, user_id || "")}
+              className="w-full border border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg hover:bg-[#DFF400] hover:text-black transition"
+            >
               Ver detalles
             </button>
           </div>

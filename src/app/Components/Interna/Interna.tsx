@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import Inputs from "../Inputs/inputs";
-import { RutinasCards } from "../ui/Cards";
 import Dates from "../ui/Dates";
 import Pagination from "../ui/Pagination";
 import ProfileCard from "../ui/ReusableProfile";
+import { RutinasCards } from "../ui/RutsCards";
 import ProgressCard from "./components/ProgressCard";
 import WeeklyProgressChart from "./components/WeeklyProgressChart";
 

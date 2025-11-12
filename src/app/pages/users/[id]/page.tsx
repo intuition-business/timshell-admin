@@ -1,9 +1,9 @@
 "use client";
 import ProgressCard from "@/app/Components/Interna/components/ProgressCard";
 import Loading from "@/app/Components/Loading/loading";
-import { RutinasCards } from "@/app/Components/ui/Cards";
 import Dates from "@/app/Components/ui/Dates";
 import ProfileCard from "@/app/Components/ui/ReusableProfile";
+import { RutsCards } from "@/app/Components/ui/RutsCards";
 import UserMovementChart from "@/app/Components/ui/UserMovementChart";
 import WeightChart from "@/app/Components/ui/WeightChart";
 import { useParams } from "next/navigation";
@@ -29,161 +29,56 @@ interface User {
   user_image?: string;
 }
 
-const rutinas: Rutina[] = [
-  {
-    grupo: "Cuádriceps y Glúteo",
-    estado: "Completado",
-    fecha: "3/10",
-    ejercicios: [
-      "Extensión de cadera (polea)",
-      "Sentadilla Smith",
-      "Prensa",
-      "Hip Thrust Máquina",
-      "Front Squat",
-    ],
-  },
-  {
-    grupo: "Bíceps",
-    estado: "Fallida",
-    fecha: "4/10",
-    ejercicios: [
-      "Curl de bíceps alternado",
-      "Curl tipo martillo",
-      "Curl concentrado",
-      "Curl con barra recta o EZ",
-      "Máquina de bíceps",
-    ],
-  },
-  {
-    grupo: "Abdominales",
-    estado: "Pendiente",
-    fecha: "5/10",
-    ejercicios: [
-      "Crunch abdominal clásico",
-      "Toques de talón",
-      "Russian Twists",
-      "Reverse Crunch",
-      "Ab Wheel Rollouts",
-    ],
-  },
-  {
-    grupo: "Espalda",
-    estado: "Completado",
-    fecha: "6/10",
-    ejercicios: [
-      "Dominadas",
-      "Remo con barra",
-      "Jalones al pecho",
-      "Remo en máquina",
-      "Face Pulls",
-    ],
-  },
-  {
-    grupo: "Pecho",
-    estado: "Fallida",
-    fecha: "7/10",
-    ejercicios: [
-      "Press de banca",
-      "Aperturas con mancuernas",
-      "Fondos",
-      "Press de banca inclinado",
-      "Pec Deck",
-    ],
-  },
-  {
-    grupo: "Hombros",
-    estado: "Completado",
-    fecha: "8/10",
-    ejercicios: [
-      "Press militar",
-      "Elevaciones laterales",
-      "Elevaciones frontales",
-      "Pájaros",
-      "Press Arnold",
-    ],
-  },
-  {
-    grupo: "Hombros",
-    estado: "Completado",
-    fecha: "8/10",
-    ejercicios: [
-      "Press militar",
-      "Elevaciones laterales",
-      "Elevaciones frontales",
-      "Pájaros",
-      "Press Arnold",
-    ],
-  },
-  {
-    grupo: "Abdominales",
-    estado: "Pendiente",
-    fecha: "5/10",
-    ejercicios: [
-      "Crunch abdominal clásico",
-      "Toques de talón",
-      "Russian Twists",
-      "Reverse Crunch",
-      "Ab Wheel Rollouts",
-    ],
-  },
-  {
-    grupo: "Abdominales",
-    estado: "Pendiente",
-    fecha: "5/10",
-    ejercicios: [
-      "Crunch abdominal clásico",
-      "Toques de talón",
-      "Russian Twists",
-      "Reverse Crunch",
-      "Ab Wheel Rollouts",
-    ],
-  },
-  {
-    grupo: "Abdominales",
-    estado: "Pendiente",
-    fecha: "5/10",
-    ejercicios: [
-      "Crunch abdominal clásico",
-      "Toques de talón",
-      "Russian Twists",
-      "Reverse Crunch",
-      "Ab Wheel Rollouts",
-    ],
-  },
-  {
-    grupo: "Abdominales",
-    estado: "Pendiente",
-    fecha: "5/10",
-    ejercicios: [
-      "Crunch abdominal clásico",
-      "Toques de talón",
-      "Russian Twists",
-      "Reverse Crunch",
-      "Ab Wheel Rollouts",
-    ],
-  },
-  {
-    grupo: "Abdominales",
-    estado: "Pendiente",
-    fecha: "5/10",
-    ejercicios: [
-      "Crunch abdominal clásico",
-      "Toques de talón",
-      "Russian Twists",
-      "Reverse Crunch",
-      "Ab Wheel Rollouts",
-    ],
-  },
-];
-
 export default function Pages() {
-  const [rutinasVisibles, setRutinasVisibles] = useState<Rutina[]>(rutinas);
+  const [rutinasVisibles, setRutinasVisibles] = useState<Rutina[]>({});
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const params = useParams(); // obtiene los params dinámicos
-  const { id } = params; // tu [id] dinámico
 
+  const params = useParams();
+  const { id } = params;
+
+  useEffect(() => {
+    const token = localStorage.getItem("token") || "";
+    const obtenerRutinas = async () => {
+      try {
+        const url = `https://api.timshell.co/api/routines/ia/?user_id=${id}`;
+        console.log("URL de la API:", url);
+        const response = await fetch(url,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+              "x-access-token": token,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            console.log("No se encontraron rutinas para este usuario");
+            setRutinasVisibles([]); // Establece rutinas vacías
+            return;
+          }
+          const errorText = await response.text();
+          console.log("Error response:", response.status, response.statusText);
+          console.log("Error body:", errorText);
+          throw new Error(`Error al obtener las rutinas: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Datos recibidos de la API:", data);
+        console.log("Rutinas:", data.response);
+        setRutinasVisibles(data.response); // Guarda las rutinas en el estado
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    if (id && token) {
+      obtenerRutinas();
+    }
+  }, [id]);
   // Datos de ejemplo para la gráfica de peso
   const weightData = [79.5, 79.2, 78.8, 78.5, 78.3, 78.1, 77.9];
   const weightLabels = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
@@ -343,11 +238,11 @@ export default function Pages() {
           imageUrl={user.user_image || "/default-avatar.png"}
         />
       </div>
-      <div className="w-full py-5 flex justify-cente items-center">
+      <div className="w-full py-5  items-center">
         <ProgressCard weight={80} variation={1.2} height={1.78} />
       </div>
 
-      <div className="flex bg-[#282828] justify-between gap-6 p-6">
+      <div className="flex  justify-between gap-6 p-6">
         <div className="w-6/12">
           <WeightChart
             dataPoints={weightData}
@@ -376,7 +271,7 @@ export default function Pages() {
         </div>
       </div>
       <div className="grid mt-2 w-12/12 px-8">
-        <RutinasCards rutinas={rutinasVisibles} />
+        <RutsCards rutinas={rutinasVisibles} />
       </div>
       <div className="flex justify-center mt-8">
         {/* <Pagination

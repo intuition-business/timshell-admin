@@ -7,6 +7,7 @@ export interface Rutina {
 
 export interface RutinasGridProps {
   rutinas: {
+    id?: string;
     fecha: string;
     nombre: string;
     status: string;
@@ -22,4 +23,6 @@ export interface RutinasGridProps {
       };
     }[];
   }[];
+  user_id?: string;
+  onVerDetalles?: (rutinaId: string | number, user_id: string) => void;
 }

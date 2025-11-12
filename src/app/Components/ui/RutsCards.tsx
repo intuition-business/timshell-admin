@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
-import { Check, Clock, ShieldAlert } from "lucide-react";
-import type { RutinasGridProps } from "../typeScript/uiCardsType";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { Check, Clock, ShieldAlert } from "lucide-react";
+import React from "react";
+import type { RutinasGridProps } from "../typeScript/uiCardsType";
 
-export const RutinasCards: React.FC<RutinasGridProps> = ({ rutinas }) => {
+export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerDetalles }) => {
   const getStatusStyle = (status: string) => {
     switch (status) {
       case "completed":
@@ -47,8 +47,8 @@ export const RutinasCards: React.FC<RutinasGridProps> = ({ rutinas }) => {
               {rutina.status === "completed"
                 ? "Completada"
                 : rutina.status === "pending"
-                  ? "Pendiente"
-                  : "Sin estado"}
+                ? "Pendiente"
+                : "Sin estado"}
             </span>
           </div>
 
@@ -73,7 +73,8 @@ export const RutinasCards: React.FC<RutinasGridProps> = ({ rutinas }) => {
 
           {/* Botón */}
           <div className="mt-6">
-            <button
+            <button 
+              onClick={() => onVerDetalles?.(rutina.id || index, user_id || "")}
               className="w-full border border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg hover:bg-[#DFF400] hover:text-black transition"
             >
               Ver detalles
@@ -85,5 +86,5 @@ export const RutinasCards: React.FC<RutinasGridProps> = ({ rutinas }) => {
   );
 };
 
-const CardsGrid = { RutinasCards };
+const CardsGrid = { RutsCards };
 export default CardsGrid;

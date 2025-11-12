@@ -31,13 +31,25 @@ export default function Dashboard() {
   // === Datos de ejemplo ===
   const lineData = {
     labels: [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ],
     datasets: [
       {
-        label: "Altas mensuales",
-        data: [600, 900, 1400, 1300, 1250, 1600, 1500, 1200, 900, 1500, 1600, 1200],
+        label: "Altas mensuales vvvvvvvvvvvvvvv",
+        data: [
+          600, 900, 1400, 1300, 1250, 1600, 1500, 1200, 900, 1500, 1600, 1200,
+        ],
         borderColor: "#D4FF00",
         backgroundColor: "rgba(173, 255, 47, 0.1)",
         tension: 0.3,
@@ -45,7 +57,10 @@ export default function Dashboard() {
       },
       {
         label: "Media de usuarios",
-        data: [1000, 1100, 1200, 1300, 1250, 1300, 1200, 1100, 1000, 1300, 1250, 1150],
+        data: [
+          1000, 1100, 1200, 1300, 1250, 1300, 1200, 1100, 1000, 1300, 1250,
+          1150,
+        ],
         borderColor: "#ff4b4b",
         backgroundColor: "transparent",
         borderDash: [5, 5],
@@ -120,7 +135,12 @@ export default function Dashboard() {
           <div className="flex items-center justify-between mb-9">
             <div className="flex items-center justify-center gap-5">
               <div className="img-fit">
-                <img src="/logo-fondo-blanco.jpg" className="w-12 rounded-lg h-12" alt="" />
+                <img
+                  src="/logo-fondo-blanco.jpg"
+                  className="w-12 rounded-lg h-12"
+                  alt=""
+                />
+                sssss
               </div>
               <div>
                 <h1 className="text-white text-lg">Bienvenido de nuevo</h1>
@@ -130,14 +150,21 @@ export default function Dashboard() {
               </div>
             </div>
             <div>
-              <IconSettings size={50} className="text-white p-2 rounded-lg bg-[#1a1a1a]"></IconSettings>
+              <IconSettings
+                size={50}
+                className="text-white p-2 rounded-lg bg-[#1a1a1a]"
+              ></IconSettings>
             </div>
           </div>
 
           <div className="flex flex-wrap gap-6 text-white">
             <SearchInput placeholder={"Buscador"} />
             <InputDate placeholder="Fecha"></InputDate>
-            <SelectInput placeholder="Estado del usuario" options={["Opción 1", "Opción 2"]} IconChevronDown></SelectInput>
+            <SelectInput
+              placeholder="Estado del usuario"
+              options={["Opción 1", "Opción 2"]}
+              IconChevronDown
+            ></SelectInput>
             <button className="bg-white text-[#1A1A1A] flex items-center px-4 py-3 rounded-xl hover:bg-[#d9d9d9] cursor-pointer ms-auto">
               <Download className="mr-2" size={18} />
               Descargar Excel
@@ -158,14 +185,24 @@ export default function Dashboard() {
 
             return (
               <div
-                key={i} className="rounded-xl flex flex-col p-4 text-center bg-[#fff]/10 backdrop-blur-md border-white/10 text-white"
+                key={i}
+                className="rounded-xl flex flex-col p-4 text-center bg-[#fff]/10 backdrop-blur-md border-white/10 text-white"
               >
-                <p className="text-white text-xl mb-1 line-clamp-1" title={item.label}>{item.label}</p>
-                <h2 className={`text-3xl mt-auto font-semibold ${i == 4 ? 'text-[#D4FF00]' : 'text-white'} `}>
+                <p
+                  className="text-white text-xl mb-1 line-clamp-1"
+                  title={item.label}
+                >
+                  {item.label}
+                </p>
+                <h2
+                  className={`text-3xl mt-auto font-semibold ${
+                    i == 4 ? "text-[#D4FF00]" : "text-white"
+                  } `}
+                >
                   {item.value}
                 </h2>
               </div>
-            )
+            );
           })}
         </div>
 

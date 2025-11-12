@@ -1,4 +1,5 @@
-import ExercisePage from "./ExercisePage";
+import ExerciseCard from "./ExerciseCard";
+import ExerciseUser from "./ExerciseUser";
 
 export default function Page() {
   const exercises = [
@@ -69,7 +70,7 @@ export default function Page() {
   ];
   return (
     <main className="">
-      {/* {exercises.map((ex, i) => (
+      {exercises.map((ex, i) => (
         <ExerciseCard
           key={i}
           image={ex.image}
@@ -92,8 +93,8 @@ export default function Page() {
             ruiner={item.ruiner}
           />
         ))}
-      </div> */}
-      <ExercisePage />
+      </div>
+      {/* <ExercisePage /> */}
     </main>
   );
 }

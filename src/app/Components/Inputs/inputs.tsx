@@ -18,7 +18,7 @@ interface InputDateProps {
 
 export function SearchInput({ placeholder }: InputDateProps) {
   return (
-    <div className="relative w-full max-w-[400px]">
+    <div className="relative w-full ">
       <input
         type="text"
         placeholder={placeholder}

@@ -3,8 +3,12 @@
 import { useState } from "react";
 import Buttons from "../ui/Buttons";
 
-export default function ExerciseCreate() {
-  const [title, setTitle] = useState("Extensión de cadera (polea)");
+interface ExerciseCreateProps {
+  exerciseName?: string | null;
+}
+
+export default function ExerciseCreate({ exerciseName }: ExerciseCreateProps) {
+  const [title, setTitle] = useState(exerciseName || "Extensión de cadera (polea)");
   const [description, setDescription] = useState(
     "Inclínate hacia adelante y flexiona la cadera, rodilla semiflexionada. Busca llevar el talón hacia atrás y no hacia arriba."
   );
@@ -26,7 +30,7 @@ export default function ExerciseCreate() {
       className="bg-[#1F1F1F] text-white p-6 rounded-2xl shadow-md w-full max-w-2xl mx-auto space-y-6"
     >
       <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00]">
-        Editar ejercicio
+        {exerciseName ? `Editar: ${exerciseName}` : "Crear nuevo ejercicio"}
       </h2>
 
       {/* Campo Título */}

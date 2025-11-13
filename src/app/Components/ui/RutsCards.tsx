@@ -35,8 +35,8 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {rutinas.map((rutina, index) => {
-        const fechaUTC = rutina.fecha?.replace("Z", ""); 
-        const fechaLocal = new Date(fechaUTC);
+         const fechaUTC = rutina.fecha?.replace("Z", "") || ""; 
+         const fechaLocal = fechaUTC ? new Date(fechaUTC) : null;
 
         const fechaFormateada = fechaLocal
           ? format(fechaLocal, "yyyy-MM-dd")
@@ -85,10 +85,10 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
             {/* Botón */}
             <div className="mt-6">
               <button
-                onClick={() => {
-                  const cleanName = rutina.nombre ? encodeURIComponent(rutina.nombre).replace(/%20/g, ' ') : '';
-                  router.push(`${user_id}/${fechaFormateada}?name=${cleanName}`);
-                }}
+                 onClick={() => {
+                   const cleanName = rutina.nombre ? encodeURIComponent(rutina.nombre).replace(/%20/g, ' ') : '';
+                   router.push(`/pages/users/${user_id}/${fechaFormateada}?name=${cleanName}`);
+                 }}
 
                 className="w-full border border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg hover:bg-[#DFF400] hover:text-black transition"
               >

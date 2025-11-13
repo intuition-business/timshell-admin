@@ -9,11 +9,11 @@ export default function RutinaPage() {
   const searchParams = useSearchParams();
 
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
-  const exercise = Array.isArray(params.exercise) ? params.exercise[0] : params.exercise;
+  const date = Array.isArray(params.date) ? params.date[0] : params.date;
   const exerciseNameParam = searchParams.get("name");
   const exerciseName = exerciseNameParam ? decodeURIComponent(exerciseNameParam) : "";
 
-  const [rutina, setRutina] = useState<any>(null);
+  const [rutina, setRutina] = useState<unknown>(null);
   const [rutinaName, setRutinaName] = useState('')
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +23,7 @@ export default function RutinaPage() {
       try {
         const token = localStorage.getItem("token") || "";
 
-        const url = `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${exercise}&routine_name=${exerciseName}&user_id=${id}`;
+        const url = `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${date}&routine_name=${exerciseName}&user_id=${id}`;
 
         const response = await fetch(url, {
           headers: {
@@ -43,10 +43,10 @@ export default function RutinaPage() {
         setLoading(false);
       }
     };
-    if (id && exercise && exerciseName) {
+    if (id && date && exerciseName) {
       obtenerRutina();
     }
-  }, [id, exercise, exerciseName]);
+  }, [id, date, exerciseName]);
 
   console.log(rutina);
 
@@ -69,9 +69,11 @@ export default function RutinaPage() {
 
   return (
     <section className="min-h-screen text-white">
-      <h2 className="text-[32px] mb-12 font-semibold text-[#D4FF00]">{rutinaName}</h2>
+      <h2 className="text-[32px] mb-12 font-semibold text-[#D4FF00]">
+        pagina{rutinaName}
+      </h2>
       <div className="grid gap-4 grid-cols-2">
-        {rutina.map((ejercicio: any, key: any) => (
+        {Array.isArray(rutina) && rutina.map((ejercicio: unknown, key: number) => (
           <ExerciseCard
             key={key}
             image={ejercicio?.thumbnail_url}
@@ -79,8 +81,7 @@ export default function RutinaPage() {
             series={ejercicio?.Esquema?.Series}
             rest={ejercicio?.Esquema?.Descanso}
           />
-        )
-        )}
+        ))}
       </div>
     </section>
   );

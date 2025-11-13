@@ -1,8 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation"; // ✅ Import correcto para App Router
+import { useRouter } from "next/navigation"; 
 import { useEffect, useState } from "react";
-import Inputs from "../Inputs/inputs";
+import Inputs, { SearchInput, SelectInput } from "../Inputs/inputs";
 import { CardList, TableList } from "../Table/TableList";
 import Pagination from "../ui/Pagination";
 
@@ -19,7 +19,7 @@ interface User {
 }
 
 export default function UserDashboard() {
-  const router = useRouter(); // ✅ Ahora funcionará sin errores
+  const router = useRouter(); 
   const [data, setData] = useState([]);
 
   const EncabezadosData = [
@@ -30,6 +30,7 @@ export default function UserDashboard() {
     { label: "Entrenador", width: "200px" },
   ];
 
+  // fetch para consultar usuarios
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -59,7 +60,6 @@ export default function UserDashboard() {
   }, []);
 
   const handleUserClick = (userId: string) => {
-    console.log("Navegando al usuario:", userId);
     router.push(`/pages/users/${userId}`);
   };
 
@@ -70,13 +70,13 @@ export default function UserDashboard() {
           <h1 className="text-3xl font-bold text-[#dff400] mb-9">Usuarios</h1>
 
           <div className="flex gap-6">
-            <Inputs.SearchInput placeholder="Buscar..." />
-            <Inputs.SelectInput
+            <SearchInput placeholder="Buscar..." />
+            <SelectInput
               placeholder="Tipo de plan"
               options={["Opción 1", "Opción 2"]}
               IconChevronDown
             />
-            <Inputs.SelectInput
+            <SelectInput
               placeholder="Ordenar"
               options={["Opción 1", "Opción 2"]}
               IconChevronDown
@@ -100,7 +100,7 @@ export default function UserDashboard() {
                 encabezado={EncabezadosData}
                 data={data}
                 columns={5}
-                onCardClick={handleUserClick} // ✅ clickeable
+                onCardClick={handleUserClick}
               />
             </div>
           </div>

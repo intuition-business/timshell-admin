@@ -19,8 +19,7 @@ export default function ExerciseEditForm({ onClose, exercise }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ title, description, file });
-    onClose(); // Simula guardar y cerrar
+    onClose();
   };
 
   return (
@@ -42,7 +41,7 @@ export default function ExerciseEditForm({ onClose, exercise }: Props) {
           <label className="text-sm font-medium text-gray-300">Título</label>
           <input
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {setTitle(e.target.value)}}
             className="bg-[#2B2B2B] border border-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#D4FF00]"
           />
         </div>
@@ -72,7 +71,7 @@ export default function ExerciseEditForm({ onClose, exercise }: Props) {
           <input
             id="file"
             type="file"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            onChange={(e) => {setFile(e.target.files?.[0] || null)}}
             className="hidden"
           />
         </div>
@@ -83,7 +82,7 @@ export default function ExerciseEditForm({ onClose, exercise }: Props) {
           </label>
           <textarea
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {setDescription(e.target.value)}}
             rows={4}
             className="bg-[#2B2B2B] border border-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#D4FF00] resize-none"
           />

@@ -8,13 +8,24 @@ import UserMovementChart from "@/app/Components/ui/UserMovementChart";
 import WeightChart from "@/app/Components/ui/WeightChart";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Inputs from "../../../Components/Inputs/inputs";
+import { InputDate, SearchInput, SelectInput } from "../../../Components/Inputs/inputs";
 
 interface Rutina {
-  grupo: string;
-  estado: "Completado" | "Fallida" | "Pendiente";
+  id: string;
   fecha: string;
-  ejercicios: string[];
+  nombre: string;
+  status: string;
+  ejercicios: {
+    nombre_ejercicio: string;
+    Esquema: {
+      Series: number;
+      Descanso: string;
+      "Detalle series": {
+        Reps: number;
+        carga: number | string;
+      }[];
+    };
+  }[];
 }
 
 interface User {
@@ -27,6 +38,7 @@ interface User {
   trainer_name?: string;
   trainer_image?: string;
   user_image?: string;
+  fecha?: string;
 }
 
 export default function Pages() {
@@ -144,12 +156,6 @@ export default function Pages() {
       setError(null);
 
       const token = localStorage.getItem("token");
-      console.log("Token:", token);
-      console.log("ID:", id);
-      console.log(
-        "URL:",
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users/${id}`
-      );
 
       if (!token) {
         setError("No hay token de autenticación");
@@ -158,7 +164,6 @@ export default function Pages() {
       }
 
       try {
-        console.log("Iniciando fetch...");
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
 
@@ -171,8 +176,6 @@ export default function Pages() {
         );
 
         clearTimeout(timeoutId);
-
-        console.log("Respues", res.status);
 
         if (!res.ok) {
           setError(`Error: ${res.status} - Usuario no encontrado`);
@@ -191,7 +194,8 @@ export default function Pages() {
 
           if (userData) {
             setUser({
-              id: userData.id?.toString() || "",
+              fecha: userData.fecha,
+              id: id?.toString() || "",
               name: userData.name || "",
               email: userData.email || "",
               phone: userData.phone || "",
@@ -262,9 +266,9 @@ export default function Pages() {
       <h2 className="text-[16px] px-3 font-bold mb-8">Rutina diaria</h2>
       <div className="flex flex-col rounded-lg p-4 mb-8 backdrop-blur-sm">
         <div className="flex gap-3 px-3 w-[1011px]">
-          <Inputs.SearchInput placeholder="Buscar..." />
-          <Inputs.InputDate placeholder="Fecha" />
-          <Inputs.SelectInput
+          <SearchInput placeholder="Buscar..." />
+          <InputDate placeholder="Fecha" />
+          <SelectInput
             placeholder="Estatus"
             options={["Opción 1", "Opción 2"]}
             IconChevronDown
@@ -278,6 +282,7 @@ export default function Pages() {
       <div className="grid mt-2 w-12/12 px-8">
         <RutsCards
           rutinas={rutinasVisibles}
+          user_id={id?.toString()}
           onVerDetalles={handleVerDetalles}
         />
       </div>

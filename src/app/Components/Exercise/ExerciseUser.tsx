@@ -5,6 +5,7 @@ import { ExerciseUsersProps } from "../typeScript/exerciseType";
 import Buttons from "../ui/Buttons";
 
 export default function ExerciseUser({
+  key,
   date,
   title,
   exercises,
@@ -28,7 +29,7 @@ export default function ExerciseUser({
     );
 
   return (
-    <div className="flex my-4 items-center  border-3 border-gray-600 h-[98px] justify-between bg-[#282828] text-gray-300 w-full rounded-2xl shadow-md px-4 py-4 hover:shadow-lg transition">
+    <div key={key} className="flex my-4 items-center  border-3 border-gray-600 h-[98px] justify-between bg-[#282828] text-gray-300 w-full rounded-2xl shadow-md px-4 py-4 hover:shadow-lg transition">
       <div className=" flex  gap-2 items-center ">
         <div className="flex flex-col items-center justify-center bg-[#D4FF00] text-black rounded-xl px-4 py-3 font-bold w-[100px]">
           <span className="text-xs uppercase tracking-widest">OCT</span>
@@ -41,14 +42,14 @@ export default function ExerciseUser({
       {/* Información principal */}
       <div className="flex flex-col w-[300px] px-4">
         <ul className="text-base text-gray-300 list-disc list-inside space-y-1">
-          {exercises.map((exs, i) => (
+          {exercises?.map((exs, i) => (
             <li key={i}>{exs}</li>
           ))}
         </ul>
       </div>
       <div className="flex flex-col w-[300px] px-4">
         <ul className="text-base text-gray-300 list-disc list-inside space-y-1">
-          {ruiner.map((rus, i) => (
+          {ruiner?.map((rus, i) => (
             <li key={i}>{rus}</li>
           ))}
         </ul>

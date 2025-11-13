@@ -3,6 +3,7 @@
 import { Edit, Trash } from "lucide-react";
 import Image from "next/image";
 import type { ExerciseCardProps } from "../typeScript/exerciseType";
+import { useRouter } from "next/navigation";
 
 export default function ExerciseCard({
   image,
@@ -10,21 +11,25 @@ export default function ExerciseCard({
   series,
   rest,
 }: ExerciseCardProps) {
+  const router = useRouter();
+
+  const editar = () => {
+    router.push('interna')
+  }
+
   return (
-    <div className="flex items-center  px-4 justify-around bg-[#282828] h-[148px] border-3 border-gray-600  w-[663.5px] rounded-md shadow-md gap-4 ">
-      <div className="flex-shrink-0 w-[200px] h-[120px]  overflow-hidden rounded-xl  ">
-        <Image
-          src={image}
-          alt={title}
-          width={200}
-          height={100}
-          className="object-cover"
-        />
+    <div className="col-span-1 grid grid-cols-4 items-center  p-4 justify-around bg-[#282828] border-3 border-gray-600 rounded-lg shadow-md gap-4" onClick={editar}>
+      <div className="overflow-hidden rounded-xl col-span-1 bg-gray-900 w-full h-full">
+        {image ? (
+          <img src={`${image}`} alt={`${title}`} className="object-cover max-h-[120px] w-full" />
+        ) : (
+          ''
+        )}
       </div>
 
       {/* Texto */}
-      <div className="flex flex-col justify-center text-gray-300">
-        <h2 className="text-2xl my-3 font-semibold text-[#D4FF00]">{title}</h2>
+      <div className="flex flex-col justify-center text-gray-300 col-span-2">
+        <h2 className="text-2xl my-3 font-semibold text-[#D4FF00] line-clamp-1">{title}</h2>
 
         <div className="text-xl   mt-1">
           <p>Cantidad de series: {series}</p>
@@ -33,7 +38,7 @@ export default function ExerciseCard({
       </div>
 
       {/* Iconos */}
-      <div className="flex  space-x-3">
+      <div className="flex gap-3 col-span-1">
         <button className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-900 hover:bg-gray-300 transition">
           <Edit className="w-4 h-4" />
         </button>

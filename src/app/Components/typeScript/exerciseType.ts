@@ -8,6 +8,7 @@ export interface ExerciseCardProps {
 }
 // typado de exerciseUser
 export interface ExerciseUsersProps {
+  key?: any;
   id?: number; // ← obligatorio
   date?: string;
   title?: string;

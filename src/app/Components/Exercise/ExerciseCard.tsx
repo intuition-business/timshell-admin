@@ -1,9 +1,8 @@
 "use client";
 
 import { Edit, Trash } from "lucide-react";
-import Image from "next/image";
-import type { ExerciseCardProps } from "../typeScript/exerciseType";
 import { useRouter } from "next/navigation";
+import type { ExerciseCardProps } from "../typeScript/exerciseType";
 
 export default function ExerciseCard({
   image,
@@ -13,23 +12,37 @@ export default function ExerciseCard({
 }: ExerciseCardProps) {
   const router = useRouter();
 
-  const editar = () => {
-    router.push('interna')
-  }
+  const editar = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    // Navegar a la página de crear ejercicio con el mismo formato que usuarios
+    router.push(
+      `/pages/exercise/1/create?name=${encodeURIComponent(title || "")}`
+    );
+  };
 
   return (
-    <div className="col-span-1 grid grid-cols-4 items-center  p-4 justify-around bg-[#282828] border-3 border-gray-600 rounded-lg shadow-md gap-4" onClick={editar}>
+    <div
+      className="col-span-1 grid grid-cols-4 items-center  p-4 justify-around bg-[#282828] border-3 border-gray-600 rounded-lg shadow-md gap-4"
+      onClick={editar}
+    >
       <div className="overflow-hidden rounded-xl col-span-1 bg-gray-900 w-full h-full">
         {image ? (
-          <img src={`${image}`} alt={`${title}`} className="object-cover max-h-[120px] w-full" />
+          <img
+            src={`${image}`}
+            alt={`${title}`}
+            className="object-cover max-h-[120px] w-full"
+          />
         ) : (
-          ''
+          ""
         )}
       </div>
 
       {/* Texto */}
       <div className="flex flex-col justify-center text-gray-300 col-span-2">
-        <h2 className="text-2xl my-3 font-semibold text-[#D4FF00] line-clamp-1">{title}</h2>
+        <h2 className="text-2xl my-3 font-semibold text-[#D4FF00] line-clamp-1">
+          {title}
+        </h2>
 
         <div className="text-xl   mt-1">
           <p>Cantidad de series: {series}</p>

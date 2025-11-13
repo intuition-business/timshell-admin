@@ -1,4 +1,4 @@
-import Interna from "@/app/Components/Interna/Interna";
+import Interna from "../../Components/Interna/Interna";
 
 export default function page() {
   return (

@@ -11,14 +11,15 @@ export default function RutinaPage() {
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const date = Array.isArray(params.date) ? params.date[0] : params.date;
   const exerciseNameParam = searchParams.get("name");
-  const exerciseName = exerciseNameParam ? decodeURIComponent(exerciseNameParam) : "";
+  const exerciseName = exerciseNameParam
+    ? decodeURIComponent(exerciseNameParam)
+    : "";
 
   const [rutina, setRutina] = useState<unknown>(null);
-  const [rutinaName, setRutinaName] = useState('')
+  const [rutinaName, setRutinaName] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
     const obtenerRutina = async () => {
       try {
         const token = localStorage.getItem("token") || "";
@@ -35,7 +36,7 @@ export default function RutinaPage() {
         if (!response.ok) throw new Error("Error al obtener la rutina");
 
         const data = await response.json();
-        setRutinaName(data.response.routine_name)
+        setRutinaName(data.response.routine_name);
         setRutina(data?.response.ejercicios || data);
       } catch (error) {
         console.error("Error al obtener la rutina:", error);
@@ -49,7 +50,6 @@ export default function RutinaPage() {
   }, [id, date, exerciseName]);
 
   console.log(rutina);
-
 
   if (loading) {
     return (
@@ -73,15 +73,16 @@ export default function RutinaPage() {
         pagina{rutinaName}
       </h2>
       <div className="grid gap-4 grid-cols-2">
-        {Array.isArray(rutina) && rutina.map((ejercicio: unknown, key: number) => (
-          <ExerciseCard
-            key={key}
-            image={ejercicio?.thumbnail_url}
-            title={ejercicio?.nombre_ejercicio}
-            series={ejercicio?.Esquema?.Series}
-            rest={ejercicio?.Esquema?.Descanso}
-          />
-        ))}
+        {Array.isArray(rutina) &&
+          rutina.map((ejercicio: unknown, key: number) => (
+            <ExerciseCard
+              key={key}
+              image={ejercicio?.thumbnail_url}
+              title={ejercicio?.nombre_ejercicio}
+              series={ejercicio?.Esquema?.Series}
+              rest={ejercicio?.Esquema?.Descanso}
+            />
+          ))}
       </div>
     </section>
   );

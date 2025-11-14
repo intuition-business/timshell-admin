@@ -23,7 +23,7 @@ export default function ExerciseCard({
 
   return (
     <div
-      className="col-span-1 grid grid-cols-4 items-center  p-4 justify-around bg-[#282828] border-3 border-gray-600 rounded-lg shadow-md gap-4"
+      className="col-span-1  grid grid-cols-4 items-center  p-4 justify-around bg-[#282828] border-3 border-gray-600 rounded-lg shadow-md gap-4"
       onClick={editar}
     >
       <div className="overflow-hidden rounded-xl col-span-1 bg-gray-900 w-full h-full">

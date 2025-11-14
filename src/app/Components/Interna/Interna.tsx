@@ -4,7 +4,7 @@ import Inputs from "../Inputs/inputs";
 import Dates from "../ui/Dates";
 import Pagination from "../ui/Pagination";
 import ProfileCard from "../ui/ReusableProfile";
-import { RutinasCards } from "../ui/RutsCards";
+import { RutsCards } from "../ui/RutsCards";
 import ProgressCard from "./components/ProgressCard";
 import WeeklyProgressChart from "./components/WeeklyProgressChart";
 
@@ -216,7 +216,7 @@ export default function Interna() {
         </div>
       </div>
       <div className="grid mt-2 w-12/12 px-8">
-        <RutinasCards rutinas={rutinasVisibles} onSelect={getSelection} />
+        {/* <RutsCards rutinas={rutinasVisibles} onSelect={getSelection} /> */}
       </div>
       <div className="flex justify-center mt-8">
         <Pagination

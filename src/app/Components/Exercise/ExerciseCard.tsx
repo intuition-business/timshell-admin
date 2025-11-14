@@ -15,10 +15,16 @@ export default function ExerciseCard({
   const editar = (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    // Navegar a la página de crear ejercicio con el mismo formato que usuarios
-    router.push(
-      `/pages/exercise/1/create?name=${encodeURIComponent(title || "")}`
-    );
+    // Navegar a la página de crear ejercicio con todos los datos necesarios
+    const params = new URLSearchParams({
+      name: encodeURIComponent(title || ""),
+      series: series?.toString() || "",
+      rest: rest || "",
+      image: image || "",
+      reps: "10,12,15" // Ejemplo de repeticiones, puedes ajustar según tus datos
+    });
+
+    router.push(`/pages/exercise/1/create?${params.toString()}`);
   };
 
   return (

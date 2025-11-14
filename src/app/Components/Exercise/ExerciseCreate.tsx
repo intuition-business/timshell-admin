@@ -5,16 +5,37 @@ import Buttons from "../ui/Buttons";
 
 interface ExerciseCreateProps {
   exerciseName?: string | null;
+  seriesCount?: string | null;
+  rest?: string | null;
+  image?: string | null;
+  reps?: string | null;
 }
 
-export default function ExerciseCreate({ exerciseName }: ExerciseCreateProps) {
+export default function ExerciseCreate({
+  exerciseName,
+  seriesCount,
+  rest,
+  image,
+  reps,
+}: ExerciseCreateProps) {
   const [title, setTitle] = useState(exerciseName);
   const [description, setDescription] = useState(
     "Inclínate hacia adelante y flexiona la cadera, rodilla semiflexionada. Busca llevar el talón hacia atrás y no hacia arriba."
   );
 
-  const [restTime, setRestTime] = useState("");
-  const [series, setSeries] = useState<string[]>([""]);
+  const [restTime, setRestTime] = useState(rest || "");
+  const [series, setSeries] = useState<string[]>(() => {
+    if (reps) {
+      const repArray = reps.split(",");
+      return repArray.map((rep) => rep.trim());
+    } else if (seriesCount) {
+      // Si solo hay cantidad de series, crear array vacío
+      const count = parseInt(seriesCount);
+      return count > 0 ? Array(count).fill("") : [""];
+    }
+    return [""];
+  });
+  const [exerciseImage, setExerciseImage] = useState(image || "/imgvide.png");
 
   const handleAddSeries = () => {
     setSeries([...series, ""]);
@@ -53,7 +74,7 @@ export default function ExerciseCreate({ exerciseName }: ExerciseCreateProps) {
           </h2>
 
           <img
-            src="/imgvide.png"
+            src={exerciseImage}
             alt="Ejercicio"
             className="rounded-xl border border-gray-700 w-full h-full max-h-[80vh] object-cover"
           />

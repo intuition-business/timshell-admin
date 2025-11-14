@@ -8,16 +8,16 @@ interface ExerciseCreateProps {
 }
 
 export default function ExerciseCreate({ exerciseName }: ExerciseCreateProps) {
-  const [title, setTitle] = useState(exerciseName || "Extensión de cadera (polea)");
+  const [title, setTitle] = useState(exerciseName);
   const [description, setDescription] = useState(
     "Inclínate hacia adelante y flexiona la cadera, rodilla semiflexionada. Busca llevar el talón hacia atrás y no hacia arriba."
   );
 
   const [restTime, setRestTime] = useState("");
-  const [series, setSeries] = useState<string[]>([""]); // inicia con 1 serie
+  const [series, setSeries] = useState<string[]>([""]);
 
   const handleAddSeries = () => {
-    setSeries([...series, ""]); // agrega una serie vacía
+    setSeries([...series, ""]);
   };
 
   const handleSeriesChange = (index: number, value: string) => {
@@ -46,10 +46,10 @@ export default function ExerciseCreate({ exerciseName }: ExerciseCreateProps) {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen lg:flex-row gap-8">
+      <div className="flex flex-col p-5 min-h-screen lg:flex-row gap-8">
         <div className="lg:w-1/2">
           <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00]                                       ">
-            {exerciseName ? ` ${exerciseName}` : "Crear nuevo ejercicio"}
+            {exerciseName}
           </h2>
 
           <img
@@ -58,12 +58,9 @@ export default function ExerciseCreate({ exerciseName }: ExerciseCreateProps) {
             className="rounded-xl border border-gray-700 w-full h-full max-h-[80vh] object-cover"
           />
         </div>
-        {/* Formulario a la izquierda */}
+
         <div className="lg:w-1/2">
-          <div className="flex justify-between">
-            <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00]                                       ">
-              {exerciseName ? ` ${exerciseName}` : "Crear nuevo ejercicio"}
-            </h2>
+          <div className="flex justify-end">
             <button
               className="px-4 py-2 border border-white text-white bg-transparent 
              rounded-lg transition hover:bg-white/10"
@@ -91,10 +88,6 @@ export default function ExerciseCreate({ exerciseName }: ExerciseCreateProps) {
                 placeholder="Agregar el tiempo en minutos"
                 className="bg-[#2B2B2B] border border-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#D4FF00]"
               />
-
-              {restTime && (
-                <p className="text-gray-400 text-sm">{restTime} minutos</p>
-              )}
             </div>
 
             <h2 className="text-2xl font-semibold mb-1">Series</h2>
@@ -130,7 +123,7 @@ export default function ExerciseCreate({ exerciseName }: ExerciseCreateProps) {
                         handleSeriesChange(index, e.target.value)
                       }
                       placeholder="Número de repeticiones"
-                      className="bg-[#1A1A1A] border border-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#D4FF00]"
+                      className="border border-gray-500 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#D4FF00]"
                     />
                   </div>
                 ))}
@@ -140,9 +133,9 @@ export default function ExerciseCreate({ exerciseName }: ExerciseCreateProps) {
                 <button
                   type="button"
                   onClick={handleAddSeries}
-                  className="flex flex-col space-y-2 bg-[#2B2B2B] p-4 rounded-xl text-gray-300 hover:bg-[#3A3A3A] transition items-center justify-center h-full"
+                  className="flex flex-col space-y-2 bg-[#2B2B2B] p-4 rounded-xl text-gray-300 hover:bg-[#3A3A3A] transition items-center justify-center w-full"
                 >
-                  <span className="text-xl font-semibold text-[#D4FF00]">
+                  <span className="text-xl font-semibold text-gray-300">
                     + Agregar serie nueva
                   </span>
                 </button>

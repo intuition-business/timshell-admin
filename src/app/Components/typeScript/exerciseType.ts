@@ -2,6 +2,7 @@
 export interface ExerciseCardProps {
   image?: string;
   title?: string;
+  date?:string;
   subtitle?: string;
   series?: number;
   rest?: string;

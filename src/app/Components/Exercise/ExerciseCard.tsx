@@ -1,15 +1,19 @@
 "use client";
 
 import { Edit, Trash } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import type { ExerciseCardProps } from "../typeScript/exerciseType";
 
 export default function ExerciseCard({
   image,
   title,
+  date,
   series,
   rest,
 }: ExerciseCardProps) {
+  const params = useParams();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+
   const router = useRouter();
 
   const editar = (e: React.MouseEvent) => {
@@ -17,14 +21,10 @@ export default function ExerciseCard({
 
     // Navegar a la página de crear ejercicio con todos los datos necesarios
     const params = new URLSearchParams({
-      name: encodeURIComponent(title || ""),
-      series: series?.toString() || "",
-      rest: rest || "",
-      image: image || "",
-      reps: "10,12,15" // Ejemplo de repeticiones, puedes ajustar según tus datos
+      name: encodeURIComponent(title || "")
     });
 
-    router.push(`/pages/exercise/1/create?${params.toString()}`);
+    router.push(`/pages/exercise/${id}/create?name=${title?.toString()}&date=${date}`);
   };
 
   return (

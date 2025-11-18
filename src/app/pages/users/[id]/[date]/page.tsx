@@ -17,6 +17,7 @@ export default function RutinaPage() {
 
   const [rutina, setRutina] = useState<unknown>(null);
   const [rutinaName, setRutinaName] = useState("");
+ 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -49,8 +50,6 @@ export default function RutinaPage() {
     }
   }, [id, date, exerciseName]);
 
-  console.log(rutina);
-
   if (loading) {
     return (
       <section className="min-h-screen flex items-center justify-center text-white">
@@ -74,11 +73,12 @@ export default function RutinaPage() {
       </h2>
       <div className="grid gap-4 grid-cols-2">
         {Array.isArray(rutina) &&
-          rutina.map((ejercicio: unknown, key: number) => (
+          rutina.map((ejercicio: any, key: number) => (
             <ExerciseCard
               key={key}
               image={ejercicio?.thumbnail_url}
               title={ejercicio?.nombre_ejercicio}
+              date={date}
               series={ejercicio?.Esquema?.Series}
               rest={ejercicio?.Esquema?.Descanso}
             />

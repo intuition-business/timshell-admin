@@ -9,3 +9,29 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
 }
+
+/* Scrollbar global — Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+
+/* Scrollbar global — Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #fff #1a1a1a;
+}

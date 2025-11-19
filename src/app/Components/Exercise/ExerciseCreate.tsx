@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import Buttons from "../ui/Buttons";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import Loading from "../Loading/loading";
+import AccionBar from "../navBar/ActionBar";
+import ExerciseEditForm from "./ExerciseEditarForm";
+import ExerciseModal from "../ExerciseModal/ExerciseModal";
 
 
 interface ExerciseCreateProps {
@@ -37,7 +41,8 @@ export default function ExerciseCreate({
   const [series, setSeries] = useState<string[]>([]);
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-
+  const [accionState, setAccionState] = useState<boolean>(false);
+  const [showModalExercise, setShowModalExercise] = useState(false);
 
 
   const [exerciseImage, setExerciseImage] = useState(image || "");
@@ -99,8 +104,6 @@ export default function ExerciseCreate({
     }
   };
 
-
-
   useEffect(() => {
     async function loadExercise() {
       try {
@@ -152,30 +155,36 @@ export default function ExerciseCreate({
     }
   }, [date, title]);
 
+  useEffect(() => {
+    if (accionState) {
+      handleEditExercise();
+    }
+  }, [accionState])
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-black/80">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-[#D4FF00] border-opacity-70"></div>
-      </div>
+      <Loading></Loading>
     );
   }
 
   return (
     <>
       <div className="flex flex-col p-5 min-h-screen lg:flex-row gap-8">
-        <div className="lg:w-1/2">
-          <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00] ">
-            {title}
-          </h2>
+        <div className="w-full max-w-[380px] ">
+          <div className="max-h-[70vh] h-full sticky top-11 ">
+            <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00] ">
+              {title}
+            </h2>
 
-          <img
-            src={exerciseImage}
-            alt="Ejercicio"
-            className="rounded-xl border border-gray-700 w-full h-full max-h-[80vh] object-cover"
-          />
+            <img
+              src={exerciseImage}
+              alt="Ejercicio"
+              className="rounded-xl border aspect-square block overflow-hidden  border-gray-700 w-full max-w-[380px] h-full object-cover"
+            />
+          </div>
         </div>
 
-        <div className="lg:w-1/2">
+        <div className="w-full">
           <div className="flex justify-end">
             <button
               className="px-4 py-2 border border-white text-white bg-transparent 
@@ -193,7 +202,6 @@ export default function ExerciseCreate({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              handleEditExercise();
             }}
             className=" text-white p-6 rounded-2xl shadow-md w-full space-y-6"
           >
@@ -211,7 +219,7 @@ export default function ExerciseCreate({
             </div>
 
             <h2 className="text-2xl font-semibold mb-1">Series</h2>
-            <div className="bg-[#1F1F1F] text-white rounded-2xl shadow-md mx-auto p-6">
+            <div className="text-white rounded-2xl shadow-md mx-auto mt-2">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {series.map((rep, index) => (
                   <div
@@ -245,32 +253,28 @@ export default function ExerciseCreate({
                     />
                   </div>
                 ))}
-              </div>
-
-              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <button
-                  type="button"
-                  onClick={handleAddSeries}
-                  className="flex flex-col space-y-2 bg-[#2B2B2B] p-4 rounded-xl text-gray-300 hover:bg-[#3A3A3A] transition items-center justify-center w-full"
-                >
-                  <span className="text-xl font-semibold text-gray-300">
-                    + Agregar serie nueva
-                  </span>
-                </button>
+                <div className="w-full h-full flex flex-col">
+                  <button
+                    type="button"
+                    onClick={handleAddSeries}
+                    className="flex flex-col space-y-2 bg-[#2B2B2B] p-4 rounded-xl text-gray-300 hover:bg-[#3A3A3A] transition items-center justify-center w-full h-full min-h-[145px]"
+                  >
+                    <span className="text-xl font-semibold text-gray-300">
+                      + Agregar serie nueva
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
 
             <div className="flex justify-end gap-4">
               <Buttons
+                onClick={() => {
+                  setShowModalExercise(true);
+                }}
                 data="Editar ejercicio"
                 type="submit"
-                className="bg-white text-black font-bold hover:bg-[#cbe000]"
-              />
-
-              <Buttons
-                data="Guardar ejercicios"
-                type="submit"
-                className="bg-[#D4FF00] text-black font-bold hover:bg-[#cbe000]"
+                className="bg-white text-black font-bold hover:bg-[#cbe000] cursor-pointer"
               />
             </div>
           </form>
@@ -300,14 +304,17 @@ export default function ExerciseCreate({
 
             <button
               onClick={() => router.push(`/pages/users/${id}/${date}?name=${encodeURIComponent(routineName)}`)}
-              className="mt-2 bg-[#D4FF00] text-black px-6 py-2 rounded-xl font-semibold hover:bg-[#cbe000] transition"
+              className="mt-2 bg-[#D4FF00] text-black px-6 py-2 rounded-xl font-semibold hover:bg-[#cbe000] transition cursor-pointer"
             >
               Continuar
             </button>
           </div>
         </div>
       )}
-
+      {showModalExercise && (
+        <ExerciseModal isOpen={showModalExercise} onClose={()=>{setShowModalExercise(false)}} ></ExerciseModal>
+      )}
+      <AccionBar textButton={"Guardar Ejercicios"} accionState={accionState} useAccionState={setAccionState}></AccionBar>
     </>
   );
 }

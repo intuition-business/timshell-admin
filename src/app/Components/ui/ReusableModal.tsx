@@ -17,7 +17,7 @@ export default function ReusableModal({
 
   return (
     <div className="fixed inset-0 max-h-screen  bg-black/70 backdrop-blur-sm flex justify-center  z-50">
-      <div className="bg-[#282828]   prounded-2xl py-3 w-[90%] max-w-2xl relative border border-[#2A2A2A] shadow-xl">
+      <div className="bg-[#282828] prounded-2xl py-3 w-[90%] max-w-2xl relative border border-[#2A2A2A] shadow-xl">
         <button
           onClick={onClose}
           className="absolute flex gap-3 right-4 text-gray-200 hover:text-[#D4FF00] transition"

@@ -22,33 +22,23 @@ export default function ReusableExercise({
   return (
     <div
       onClick={onClick}
-      className="flex items-center p-4  bg-[#282828] border-2 border-[#777777] rounded-2xl  w-full "
+      className="flex items-center p-4 gap-4  bg-[#282828] border-2 border-[#777777] rounded-2xl w-full "
     >
-      <div className="">
+      <div className="max-w-[130px] w-full bg-gray-900 rounded-lg h-[70px] overflow-hidden">
         {image && (
-          <div className="h-20 rounded-xl overflow-hidden">
-            <Image
+          <div className="rounded-xl">
+            <img
               src={image}
               alt={title || "Imagen"}
-              width={400}
-              height={200}
-              className="object-cover w-full"
+              width={130}
+              height={70}
+              className="object-cover w-full max-w-[130px] max-h-[70px] h-full"
             />
           </div>
         )}
       </div>
 
-      <div className="mx-9">
-        {video && !image && (
-          <div className="w-full h-48 mb-4 rounded-xl overflow-hidden">
-            <video
-              src={video}
-              controls
-              className="object-cover w-full h-full rounded-lg"
-            />
-          </div>
-        )}
-
+      <div className="w-full">
         {title && (
           <h2 className="text-[#D4FF00] text-xl font-semibold mb-2">{title}</h2>
         )}

@@ -1,6 +1,7 @@
 "use client";
 
 import ExerciseCard from "@/app/Components/Exercise/ExerciseCard";
+import Loading from "@/app/Components/Loading/loading";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -53,7 +54,7 @@ export default function RutinaPage() {
   if (loading) {
     return (
       <section className="min-h-screen flex items-center justify-center text-white">
-        <p>Cargando rutina...</p>
+       |<Loading></Loading>
       </section>
     );
   }

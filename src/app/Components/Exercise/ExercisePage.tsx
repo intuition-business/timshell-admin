@@ -51,10 +51,10 @@ export default function ExercisePage() {
   return (
     <div className="grid grid-cols-2 gap-4 ">
 
-<div className="">
-<ExerciseEditForm onClose={handleCloseForm} exercise={selectedExercise} />
-</div>
-<div className=""></div>
+      <div className="">
+        <ExerciseEditForm onClose={handleCloseForm} exercise={selectedExercise} />
+      </div>
+      <div className=""></div>
 
       {/* <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
@@ -111,7 +111,7 @@ export default function ExercisePage() {
         ))}
       </section> */}
 
-      
+
     </div>
   );
 }

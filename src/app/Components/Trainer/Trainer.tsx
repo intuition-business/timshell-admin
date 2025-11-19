@@ -2,6 +2,7 @@
 
 // import { useState } from "react";
 import Inputs from "../Inputs/inputs";
+import AccionBar from "../navBar/ActionBar";
 import { CardList, TableList } from "../Table/TableList";
 import type { Entrenador } from "../typeScript/trainerType";
 import Buttons from "../ui/Buttons";
@@ -114,9 +115,7 @@ export default function Trainer() {
           </div>
         </div>
       </div>
-      <div className="flex justify-end items-center sticky bottom-0 bg-black w-[calc(100%+96px)] -translate-x-[48px] pr-12 py-4 text-lg">
-        <Buttons data="Crear entrenador" className="max-w-[370px] w-full py-4" />
-      </div>
+      <AccionBar textButton={"Crear entrenador"}></AccionBar>
     </section>
   );
 }

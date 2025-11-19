@@ -1,6 +1,7 @@
 "use client";
 
 import ExerciseCreate from "@/app/Components/Exercise/ExerciseCreate";
+import AccionBar from "@/app/Components/navBar/ActionBar";
 import { useSearchParams } from "next/navigation";
 
 export default function ExerciseCreatePage() {
@@ -25,6 +26,7 @@ export default function ExerciseCreatePage() {
         image={image}
         reps={reps}
       />
+    
     </div>
   );
 }

@@ -13,6 +13,7 @@ export default function UnifiedModal({
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+  onSelectExercise?: boolean;
 }) {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<any[]>([]);
@@ -63,6 +64,10 @@ export default function UnifiedModal({
     item.exercise.toLowerCase().includes(search.toLowerCase())
   );
 
+  function onSelectExercise(item: any): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div
       className="fixed inset-0 bg-black/60 backdrop-blur-xs flex justify-end items-start z-50"
@@ -101,7 +106,6 @@ export default function UnifiedModal({
               Cargando ejercicios...
             </p>
           )}
-
           {!loading &&
             filtered.map((item) => (
               <ReusableExercise
@@ -109,9 +113,9 @@ export default function UnifiedModal({
                 image={item.thumbnail_url}
                 title={item.exercise}
                 description={item.category}
+                onClick={() => onSelectExercise(item)}
               />
             ))}
-
           {!loading && filtered.length === 0 && (
             <p className="text-gray-400 text-center py-6">
               No se encontraron resultados.

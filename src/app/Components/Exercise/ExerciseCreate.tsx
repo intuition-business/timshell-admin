@@ -41,9 +41,10 @@ export default function ExerciseCreate({
   const [showModal, setShowModal] = useState(false);
   const [accionState, setAccionState] = useState<boolean>(false);
   const [showModalExercise, setShowModalExercise] = useState(false);
-
+  const [data, setData] = useState({});
   const [exerciseImage, setExerciseImage] = useState(image || "");
 
+  const [showExercise, setShowExercise] = useState(false);
   const handleAddSeries = () => {
     setSeries([...series, ""]);
   };
@@ -299,11 +300,24 @@ export default function ExerciseCreate({
           }}
         ></ExerciseModal>
       )}
+      {showExercise && (
+        <SaveExercise
+          isOpen={showExercise}
+          onSelectExercise={() => setShowExercise(true)}
+          onContinue={() =>
+            router.push(
+              `/pages/users/${id}/${date}?name=${encodeURIComponent(
+                routineName
+              )}`
+            )
+          }
+        />
+      )}
+
       <AccionBar
         textButton={"Guardar Ejercicios"}
         accionState={accionState}
         useAccionState={setAccionState}
-        dddd
       ></AccionBar>
     </>
   );

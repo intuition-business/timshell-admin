@@ -28,9 +28,8 @@ const ProgressCard: React.FC<ProgressCardProps> = ({
       : "Obesidad";
 
   return (
-    <div className="flex  rounded-2xl shadow-md  border-gray-200  w-full ">
-      {/* Body */}
-      <div className="flex  text-white justify-between  w-full gap-5 ">
+    <div className="flex  rounded-2xl shadow-md  border-gray-200 h-auto w-[1394px] ">
+      <div className="flex  text-white justify-between  w-full gap-10 ">
         <div className="bg-[#2B2B2B] text-white rounded-xl p-3 flex flex-col items-center w-full">
           <p className="text-xl ">Peso actual</p>
           <p className="text-2xl font-bold ">{weight} kg</p>
@@ -54,13 +53,11 @@ const ProgressCard: React.FC<ProgressCardProps> = ({
           </div>
         </div>
 
-        {/* Altura */}
         <div className="bg-[#2B2B2B] rounded-xl p-4 text-center w-full ">
           <p className="text-xl">Altura</p>
           <p className="text-2xl font-bold ">{height.toFixed(2)} cm</p>
         </div>
 
-        {/* IMC */}
         <div className="bg-[#2B2B2B] rounded-xl p-4 text-center w-full">
           <p className="text-xl">IMC estimado</p>
           <p className="text-2xl font-bold ">{bmi}</p>

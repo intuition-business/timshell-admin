@@ -1,14 +1,11 @@
 "use client";
 
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Buttons from "../ui/Buttons";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import ExerciseModal from "../ExerciseModal/ExerciseModal";
 import Loading from "../Loading/loading";
 import AccionBar from "../navBar/ActionBar";
-import ExerciseEditForm from "./ExerciseEditarForm";
-import ExerciseModal from "../ExerciseModal/ExerciseModal";
-
+import Buttons from "../ui/Buttons";
 
 interface ExerciseCreateProps {
   exerciseName?: string | null;
@@ -34,16 +31,15 @@ export default function ExerciseCreate({
 
   const [title, setTitle] = useState(exerciseName);
   const [description, setDescription] = useState("");
-  const [routineName, setRutinaName] = useState('')
+  const [routineName, setRutinaName] = useState("");
   const [rutinaIdReal, setRutinaIdReal] = useState<string | null>(null);
-  const [rutinaId, setRutinaId] = useState('')
+  const [rutinaId, setRutinaId] = useState("");
   const [restTime, setRestTime] = useState(rest || "");
   const [series, setSeries] = useState<string[]>([]);
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [accionState, setAccionState] = useState<boolean>(false);
   const [showModalExercise, setShowModalExercise] = useState(false);
-
 
   const [exerciseImage, setExerciseImage] = useState(image || "");
 
@@ -85,19 +81,21 @@ export default function ExerciseCreate({
         },
       };
 
-      const res = await fetch(`https://api.timshell.co/api/routines/edit-exercise?user_id=${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": token,
-        },
-        body: JSON.stringify(body),
-      });
+      const res = await fetch(
+        `https://api.timshell.co/api/routines/edit-exercise?user_id=${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token,
+          },
+          body: JSON.stringify(body),
+        }
+      );
 
       if (!res.ok) throw new Error("Error al editar ejercicio");
 
       setShowModal(true);
-
     } catch (error) {
       console.error(error);
       alert("Error");
@@ -127,14 +125,13 @@ export default function ExerciseCreate({
 
         if (data?.response?.exercise) {
           const ex = data.response.exercise;
-          setRutinaName(data.routine_name)
-          setRutinaId(data.rutina_id)
+          setRutinaName(data.routine_name);
+          setRutinaId(data.rutina_id);
           setTitle(ex.nombre_ejercicio);
           setDescription(ex.description || "");
           setExerciseImage(ex.thumbnail_url);
           setRestTime(ex.Esquema?.Descanso?.toString() || "");
           setRutinaIdReal(ex.rutina_id);
-
 
           if (ex.Esquema?.["Detalle series"]) {
             const repsArray = ex.Esquema["Detalle series"].map((s: any) =>
@@ -159,12 +156,10 @@ export default function ExerciseCreate({
     if (accionState) {
       handleEditExercise();
     }
-  }, [accionState])
+  }, [accionState]);
 
   if (loading) {
-    return (
-      <Loading></Loading>
-    );
+    return <Loading></Loading>;
   }
 
   return (
@@ -240,7 +235,9 @@ export default function ExerciseCreate({
                       Serie {index + 1}
                     </h2>
 
-                    <label className="text-lg text-gray-300">Repeticiones</label>
+                    <label className="text-lg text-gray-300">
+                      Repeticiones
+                    </label>
 
                     <input
                       type="text"
@@ -274,7 +271,7 @@ export default function ExerciseCreate({
                 }}
                 data="Editar ejercicio"
                 type="submit"
-                className="bg-white text-black font-bold hover:bg-[#cbe000] cursor-pointer"
+                className="bg-white text-black p-4 font-bold hover:bg-[#cbe000] cursor-pointer"
               />
             </div>
           </form>
@@ -300,10 +297,18 @@ export default function ExerciseCreate({
               </svg>
             </div>
 
-            <h2 className="text-2xl font-semibold">Actualizado correctamente</h2>
+            <h2 className="text-2xl font-semibold">
+              Actualizado correctamente
+            </h2>
 
             <button
-              onClick={() => router.push(`/pages/users/${id}/${date}?name=${encodeURIComponent(routineName)}`)}
+              onClick={() =>
+                router.push(
+                  `/pages/users/${id}/${date}?name=${encodeURIComponent(
+                    routineName
+                  )}`
+                )
+              }
               className="mt-2 bg-[#D4FF00] text-black px-6 py-2 rounded-xl font-semibold hover:bg-[#cbe000] transition cursor-pointer"
             >
               Continuar
@@ -312,9 +317,18 @@ export default function ExerciseCreate({
         </div>
       )}
       {showModalExercise && (
-        <ExerciseModal isOpen={showModalExercise} onClose={()=>{setShowModalExercise(false)}} ></ExerciseModal>
+        <ExerciseModal
+          isOpen={showModalExercise}
+          onClose={() => {
+            setShowModalExercise(false);
+          }}
+        ></ExerciseModal>
       )}
-      <AccionBar textButton={"Guardar Ejercicios"} accionState={accionState} useAccionState={setAccionState}></AccionBar>
+      <AccionBar
+        textButton={"Guardar Ejercicios"}
+        accionState={accionState}
+        useAccionState={setAccionState}
+      ></AccionBar>
     </>
   );
 }

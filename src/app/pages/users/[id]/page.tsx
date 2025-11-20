@@ -1,14 +1,20 @@
 "use client";
 import ProgressCard from "@/app/Components/Interna/components/ProgressCard";
 import Loading from "@/app/Components/Loading/loading";
+import Buttons from "@/app/Components/ui/Buttons";
 import Dates from "@/app/Components/ui/Dates";
-import ProfileCard from "@/app/Components/ui/ReusableProfile";
+import { ProfileCard } from "@/app/Components/ui/ReusableProfile";
 import { RutsCards } from "@/app/Components/ui/RutsCards";
 import UserMovementChart from "@/app/Components/ui/UserMovementChart";
 import WeightChart from "@/app/Components/ui/WeightChart";
+import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { InputDate, SearchInput, SelectInput } from "../../../Components/Inputs/inputs";
+import {
+  InputDate,
+  SearchInput,
+  SelectInput,
+} from "../../../Components/Inputs/inputs";
 
 interface Rutina {
   id: string;
@@ -142,9 +148,6 @@ export default function Pages() {
       y: { ticks: { color: "#ccc" }, grid: { color: "#222" } },
     },
   };
-  // const getSelection = (rutina: Rutina) => {
-  //   console.log("Rutina seleccionada:", rutina);
-  // };
 
   const handleVerDetalles = (rutinaId: string | number, userId: string) => {
     router.push(`/pages/users/${userId}/page/${rutinaId}`);
@@ -230,7 +233,7 @@ export default function Pages() {
 
   if (error || !user) {
     return (
-      <div className="min-h-screen w-12/12 text-white p-6 flex items-center justify-center">
+      <div className="min-h-screen w-12/12 text-white  flex items-center justify-center">
         <p className="text-red-500 text-xl">
           {error || "No se pudo cargar la información del usuario"}
         </p>
@@ -238,48 +241,68 @@ export default function Pages() {
     );
   }
   return (
-    <section className="min-h-screen w-12/12 text-white p-6">
-      <h1 className=" px-3 text-3xl text-[#dff400] font-bold ">Usuario</h1>
-      <div className=" flex py-3">
+    <section className=" w-12/12  mx-10 text-white ">
+      <div className="mb-4">
+        <Buttons
+          data="Atrás"
+          onClick={() => router.back()}
+          className="flex bg-transparent hover:bg-transparent text-white"
+        >
+          <ChevronLeft className=" text-white" />
+        </Buttons>
+      </div>
+
+      <div className="mb-8">
+        <h1 className=" text-[32px] text-[#dff400] font-bold ">Usuarios</h1>
+      </div>
+      <div className=" flex mb-9">
         <ProfileCard
           name={user.name || "sin nombre"}
           role={user.plan_name || "Sin plan"}
           imageUrl={user.user_image || "/default-avatar.png"}
         />
       </div>
-      <div className="w-full py-5  items-center">
+      <div className=" py-4 gap-2  items-center">
         <ProgressCard weight={80} variation={1.2} height={1.78} />
       </div>
 
-      <div className="flex  justify-between gap-6 p-6">
-        <div className="w-6/12">
+      <div className="flex gap-6 w-[1394px] h-[427px]">
+        <div className="w-1/2">
           <WeightChart
             dataPoints={weightData}
             labels={weightLabels}
             title="Evolución de tu peso"
           />
         </div>
-        <div className="w-6/12">
+
+        <div className="w-1/2">
           <UserMovementChart />
         </div>
       </div>
-      <h2 className="text-[16px] px-3 font-bold mb-8">Rutina diaria</h2>
-      <div className="flex flex-col rounded-lg p-4 mb-8 backdrop-blur-sm">
-        <div className="flex gap-3 px-3 w-[1011px]">
+
+      <div className="flex gap-[26px]   w-[1394px] ">
+        <h2 className="text-[16px] px-3 font-bold mb-8">Rutina diaria</h2>
+      </div>
+      <div className="flex items-center gap-[26px]   w-[1011px] ">
+        <div>
           <SearchInput placeholder="Buscar..." />
+        </div>
+
+        <div>
           <InputDate placeholder="Fecha" />
+        </div>
+        <div>
           <SelectInput
             placeholder="Estatus"
             options={["Opción 1", "Opción 2"]}
             IconChevronDown
           />
         </div>
-
-        <div className="p-4 text-white flex w-full">
-          <Dates />
-        </div>
       </div>
-      <div className="grid mt-2 w-12/12 px-8">
+      <div className="p-4 text-white flex w-[1394px]  ">
+        <Dates />
+      </div>
+      <div className="grid mt-2  px-8 w-[1394px]  ">
         <RutsCards
           rutinas={rutinasVisibles}
           user_id={id?.toString()}

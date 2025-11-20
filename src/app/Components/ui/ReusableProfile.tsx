@@ -4,12 +4,12 @@ import React from "react";
 
 interface ProfileCardProps {
   name: string;
-  role?: string; // Ej: "Entrenador", "Usuario", etc.
+  role?: string;
   imageUrl?: string;
-  onClick?: () => void; // opcional (por ejemplo, para abrir detalles)
+  onClick?: () => void;
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({
+export const ProfileCard: React.FC<ProfileCardProps> = ({
   name,
   role = "Usuario",
   imageUrl = "/default-avatar.png",
@@ -18,15 +18,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     <div
       onClick={onClick}
-      className="flex  gap-4 p-4  backdrop-blur-sm rounded-2xl shadow-lg "
+      className="flex  gap-4   backdrop-blur-sm rounded-2xl shadow-lg "
     >
-      {/* Imagen del perfil */}
-      <div className="relative w-20 h-20">
+      <div className="relative">
         {imageUrl && imageUrl !== "/default-avatar.png" ? (
           <img
             src={imageUrl}
             alt={name}
-            className="w-full h-full object-cover rounded-full border-4 border-[#2a2a2b] shadow-lg"
+            className=" w-[67px] h-[67px] object-cover rounded-full border-4 border-[#2a2a2b] shadow-lg"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src = "/default-avatar.png";
@@ -54,4 +53,4 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   );
 };
 
-export default ProfileCard;
+

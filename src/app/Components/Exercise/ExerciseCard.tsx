@@ -1,6 +1,6 @@
 "use client";
 
-import { Edit, Trash } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import type { ExerciseCardProps } from "../typeScript/exerciseType";
 
@@ -21,10 +21,12 @@ export default function ExerciseCard({
 
     // Navegar a la página de crear ejercicio con todos los datos necesarios
     const params = new URLSearchParams({
-      name: encodeURIComponent(title || "")
+      name: encodeURIComponent(title || ""),
     });
 
-    router.push(`/pages/exercise/${id}/create?name=${title?.toString()}&date=${date}`);
+    router.push(
+      `/pages/exercise/${id}/create?name=${title?.toString()}&date=${date}`
+    );
   };
 
   return (
@@ -57,12 +59,12 @@ export default function ExerciseCard({
       </div>
 
       {/* Iconos */}
-      <div className="flex gap-3 col-span-1">
-        <button className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-900 hover:bg-gray-300 transition">
-          <Edit className="w-4 h-4" />
+      <div className="flex gap-3 justify-end col-span-1">
+        <button className="flex items-center justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:bg-transparent hover:text-white transition">
+          <Pencil className="w-5 h-5" />
         </button>
-        <button className="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-gray-900 hover:bg-red-200 transition">
-          <Trash className="w-4 h-4" />
+        <button className="flex items-center justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:text-red-600 transition">
+          <Trash2 className="w-5 h-5" />
         </button>
       </div>
     </div>

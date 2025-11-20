@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 
 interface ReusableCardProps {
   title?: string;
@@ -28,7 +27,7 @@ export default function ReusableExercise({
         {image && (
           <div className="rounded-xl">
             <img
-              src={image}
+              src={`${image}`}
               alt={title || "Imagen"}
               width={130}
               height={70}

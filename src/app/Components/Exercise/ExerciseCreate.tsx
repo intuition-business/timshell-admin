@@ -174,7 +174,7 @@ export default function ExerciseCreate({
             </h2>
 
             <img
-              src={exerciseImage}
+              src={`${exerciseImage}`}
               alt="Ejercicio"
               className="rounded-xl border aspect-square block overflow-hidden  border-gray-700 w-full max-w-[380px] h-full object-cover"
             />
@@ -303,7 +303,7 @@ export default function ExerciseCreate({
       {showExercise && (
         <SaveExercise
           isOpen={showExercise}
-          onSelectExercise={() => setShowExercise(true)}
+          onSelectExercise={setShowExercise(true)}
           onContinue={() =>
             router.push(
               `/pages/users/${id}/${date}?name=${encodeURIComponent(

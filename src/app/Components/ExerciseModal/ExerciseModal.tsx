@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { SearchInput } from "../Inputs/inputs";
 import ReusableExercise from "../ui/ReusableExercise";
 
-export default function UnifiedModal({
+export default function ExerciseModal({
   isOpen,
   onClose,
   title = "Reemplaza ejercicio",
@@ -63,10 +63,6 @@ export default function UnifiedModal({
   const filtered = data.filter((item) =>
     item.exercise.toLowerCase().includes(search.toLowerCase())
   );
-
-  function onSelectExercise(item: any): void {
-    throw new Error("Function not implemented.");
-  }
 
   return (
     <div

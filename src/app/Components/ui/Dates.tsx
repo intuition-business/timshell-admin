@@ -12,7 +12,7 @@ export default function Dates() {
   const [añoSeleccionado, setAñoSeleccionado] = useState(fecha.getFullYear());
 
   return (
-    <div className="flex border-b border-[#ffff]  justify-between w-full items-center gap- ">
+    <div className="flex border-b border-[#ffff]  justify-between  items-center gap- ">
       <p className="relative flex text[20px]">{mes}</p>
 
       <div className="relative  w-full">

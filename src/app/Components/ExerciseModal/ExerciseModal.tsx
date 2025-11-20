@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { SearchInput } from "../Inputs/inputs";
 import ReusableExercise from "../ui/ReusableExercise";
 
 export default function UnifiedModal({
   isOpen,
   onClose,
-  title = "Editar ejercicio",
+  title = "Reemplaza ejercicio",
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -18,7 +18,6 @@ export default function UnifiedModal({
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  /** 🚫 Bloquear scroll cuando el modal esté abierto */
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";

@@ -3,7 +3,6 @@ import ProgressCard from "@/app/Components/Interna/components/ProgressCard";
 import Loading from "@/app/Components/Loading/loading";
 import Buttons from "@/app/Components/ui/Buttons";
 import Dates from "@/app/Components/ui/Dates";
-import Pagination from "@/app/Components/ui/Pagination";
 import { ProfileCard } from "@/app/Components/ui/ReusableProfile";
 import { RutsCards } from "@/app/Components/ui/RutsCards";
 import UserMovementChart from "@/app/Components/ui/UserMovementChart";
@@ -267,43 +266,38 @@ export default function Pages() {
         <ProgressCard weight={80} variation={1.2} height={1.78} />
       </div>
 
-      <div className="flex gap-6  h-[427px]">
-        <div className="w-1/2">
+      <div className="flex gap-9  w-full">
+        <div className="w-5/12">
           <WeightChart
             dataPoints={weightData}
             labels={weightLabels}
             title="Evolución de tu peso"
           />
         </div>
-
-        <div className="w-1/2">
+        <div className="w-6/12">
           <UserMovementChart />
         </div>
       </div>
-
-      <div className="flex gap-[26px]   ">
-        <h2 className="text-[16px] px-3 font-bold mb-8">Rutina diaria</h2>
-      </div>
-      <div className="flex items-center gap-[26px]   w-[1011px] ">
-        <div>
+      <h2 className="text-[16px] px- my-9 font-bold ">
+        Rutina diaria{" "}
+        <span className="text-[#dff400] text-sm">plan intermedio</span>
+      </h2>
+      <div className="flex flex-col rounded-lg w-full backdrop-blur-sm">
+        <div className="flex gap-3  ">
           <SearchInput placeholder="Buscar..." />
-        </div>
-
-        <div>
           <InputDate placeholder="Fecha" />
-        </div>
-        <div>
           <SelectInput
             placeholder="Estatus"
             options={["Opción 1", "Opción 2"]}
             IconChevronDown
           />
         </div>
+
+        <div className="p-4 text-white flex l">
+          <Dates />
+        </div>
       </div>
-      <div className=" text-white flex my-3">
-        <Dates />
-      </div>
-      <div className="grid mt-4   ">
+      <div className="grid mt-2 w-12/12 px-8">
         <RutsCards
           rutinas={rutinasVisibles}
           user_id={id?.toString()}
@@ -311,11 +305,11 @@ export default function Pages() {
         />
       </div>
       <div className="flex justify-center mt-8">
-        <Pagination
+        {/* <Pagination
           paginaActual={paginaActual}
           totalPaginas={totalPaginas}
           onChange={setPaginaActual}
-        />
+        /> */}
       </div>
     </section>
   );

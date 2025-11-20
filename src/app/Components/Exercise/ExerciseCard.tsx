@@ -60,10 +60,10 @@ export default function ExerciseCard({
 
       {/* Iconos */}
       <div className="flex gap-3 justify-end col-span-1">
-        <button className="flex items-center justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:bg-transparent hover:text-white transition">
+        <button className="flex items-center p-2 justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:bg-transparent hover:text-white transition">
           <Pencil className="w-5 h-5" />
         </button>
-        <button className="flex items-center justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:text-red-600 transition">
+        <button className="flex items-center p-2 justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:text-red-600 transition">
           <Trash2 className="w-5 h-5" />
         </button>
       </div>

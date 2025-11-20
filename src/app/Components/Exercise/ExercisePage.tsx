@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ExerciseEditForm from "./ExerciseEditarForm";
+import ExerciseEditForm from "./ExerciseCreateForm";
 // import ExerciseCreate from "./ExerciseCreate";
 
 export default function ExercisePage() {

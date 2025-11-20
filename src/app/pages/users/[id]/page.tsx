@@ -266,15 +266,15 @@ export default function Pages() {
         <ProgressCard weight={80} variation={1.2} height={1.78} />
       </div>
 
-      <div className="flex  justify-between  mr-10">
-        <div className="w-[600px]">
+      <div className="flex  gap- justify-between mr-9">
+        <div className="w-[700px]">
           <WeightChart
             dataPoints={weightData}
             labels={weightLabels}
             title="Evolución de tu peso"
           />
         </div>
-        <div className="w-[600px]">
+        <div className="w-[700px]">
           <UserMovementChart />
         </div>
       </div>

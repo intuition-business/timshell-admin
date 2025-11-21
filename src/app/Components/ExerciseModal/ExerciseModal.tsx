@@ -1,24 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { SearchInput } from "../Inputs/inputs";
 import ReusableExercise from "../ui/ReusableExercise";
 
-export default function UnifiedModal({
+export default function ExerciseModal({
   isOpen,
   onClose,
-  title = "Editar ejercicio",
+  title = "Reemplaza ejercicio",
 }: {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+  onSelectExercise?: boolean;
 }) {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  /** 🚫 Bloquear scroll cuando el modal esté abierto */
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "auto";
@@ -102,7 +102,6 @@ export default function UnifiedModal({
               Cargando ejercicios...
             </p>
           )}
-
           {!loading &&
             filtered.map((item) => (
               <ReusableExercise
@@ -110,9 +109,9 @@ export default function UnifiedModal({
                 image={item.thumbnail_url}
                 title={item.exercise}
                 description={item.category}
+                onClick={() => onSelectExercise(item)}
               />
             ))}
-
           {!loading && filtered.length === 0 && (
             <p className="text-gray-400 text-center py-6">
               No se encontraron resultados.

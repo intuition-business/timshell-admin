@@ -2,6 +2,8 @@
 
 import ExerciseCard from "@/app/Components/Exercise/ExerciseCard";
 import Loading from "@/app/Components/Loading/loading";
+import Buttons from "@/app/Components/ui/Buttons";
+import { ChevronLeft } from "lucide-react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -18,7 +20,7 @@ export default function RutinaPage() {
 
   const [rutina, setRutina] = useState<unknown>(null);
   const [rutinaName, setRutinaName] = useState("");
- 
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -38,7 +40,9 @@ export default function RutinaPage() {
         if (!response.ok) throw new Error("Error al obtener la rutina");
 
         const data = await response.json();
-        setRutinaName(data.response.routine_name);
+        // setRutinaName(data.response.routine_name);
+        setRutinaName(data.routine_name);
+        console.log("Nombre de la rutina:", data.response.routine_name);
         setRutina(data?.response.ejercicios || data);
       } catch (error) {
         console.error("Error al obtener la rutina:", error);
@@ -54,7 +58,7 @@ export default function RutinaPage() {
   if (loading) {
     return (
       <section className="min-h-screen flex items-center justify-center text-white">
-       |<Loading></Loading>
+        |<Loading></Loading>
       </section>
     );
   }
@@ -69,9 +73,19 @@ export default function RutinaPage() {
 
   return (
     <section className="min-h-screen text-white">
+      <div className="mb-5">
+        <Buttons
+          data="Atrás"
+          // onClick={() => router.back()}
+          className="flex bg-transparent hover:bg-transparent text-white"
+        >
+          <ChevronLeft className=" text-white" />
+        </Buttons>
+      </div>
       <h2 className="text-[32px] mb-12 font-semibold text-[#D4FF00]">
-        pagina{rutinaName}
+        {rutinaName}
       </h2>
+
       <div className="grid gap-4 grid-cols-2">
         {Array.isArray(rutina) &&
           rutina.map((ejercicio: any, key: number) => (

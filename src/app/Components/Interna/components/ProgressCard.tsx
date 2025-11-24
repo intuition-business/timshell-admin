@@ -28,7 +28,7 @@ const ProgressCard: React.FC<ProgressCardProps> = ({
       : "Obesidad";
 
   return (
-    <div className="flex  rounded-2xl shadow-md  border-gray-200 h-auto w-full  mr-9">
+    <div className="flex rounded-2xl shadow-md  border-gray-200 h-auto w-full  mr-9">
       <div className="flex  text-white justify-between  w-full gap-10 ">
         <div className="bg-[#2B2B2B] text-white rounded-xl p-3 flex flex-col items-center w-full">
           <p className="text-xl ">Peso actual</p>

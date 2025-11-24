@@ -6,6 +6,10 @@ export interface ExerciseCardProps {
   subtitle?: string;
   series?: number;
   rest?: string;
+  idExerciseProps?: string;
+  rutina_id?: string;
+  fecha_rutina?:string
+  update?: any;
 }
 // typado de exerciseUser
 export interface ExerciseUsersProps {

@@ -70,11 +70,12 @@ export default function Page() {
   ];
   return (
     <main className="">
-      {exercises.map((ex, i) => (
+      {exercises.map((ex:any, i) => (
         <ExerciseCard
           key={i}
           image={ex.image}
           title={ex.title}
+          idExerciseProps={ex.exercise_id}
           subtitle={ex.subtitle}
           series={ex.series}
           rest={ex.rest}

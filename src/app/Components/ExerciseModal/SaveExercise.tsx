@@ -1,9 +1,10 @@
 interface SaveExercisePro {
-  isOpen: boolean;
-  onContinue: () => void;
+  isOpen?: boolean;
+  onContinue?: () => void;
+  setSelectExercise?: any;
 }
 
-export const SaveExercise = ({ isOpen, onContinue }: SaveExercisePro) => {
+export const SaveExercise = ({ isOpen, onContinue, setSelectExercise }: SaveExercisePro) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999]">
@@ -27,13 +28,6 @@ export const SaveExercise = ({ isOpen, onContinue }: SaveExercisePro) => {
         <h2 className="text-2xl font-semibold">Actualizado correctamente</h2>
 
         <button
-          //   onClick={() =>
-          //     router.push(
-          //       `/pages/users/${id}/${date}?name=${encodeURIComponent(
-          //         routineName
-          //       )}`
-          //     )
-          //   }
           onClick={onContinue}
           className="mt-2 bg-[#D4FF00] text-black px-6 py-2 rounded-xl font-semibold hover:bg-[#cbe000] transition cursor-pointer"
         >

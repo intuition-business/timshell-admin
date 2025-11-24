@@ -127,7 +127,7 @@ const UserMovementChart: React.FC<UserMovementChartProps> = ({
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
+    <div className="bg-white/10 backdrop-blur-sm rounded-2xl w-full shadow-lg border border-white/20 p-6">
       <div className="mb-4"></div>
       <div className="h-80">
         <Line data={data} options={options} />

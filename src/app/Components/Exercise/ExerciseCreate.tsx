@@ -7,6 +7,8 @@ import { SaveExercise } from "../ExerciseModal/SaveExercise";
 import Loading from "../Loading/loading";
 import AccionBar from "../navBar/ActionBar";
 import Buttons from "../ui/Buttons";
+import { ConfirmReplaceExercise } from "../ExerciseModal/ConfirmReplaceExercise";
+import { ConfirmDeleteExercise } from "../ModalConfirm/modalConfirm";
 
 interface ExerciseCreateProps {
   exerciseName?: string | null;
@@ -15,6 +17,7 @@ interface ExerciseCreateProps {
   date?: string | null;
   image?: string | null;
   reps?: string | null;
+  idExersiceProps?: string | null;
 }
 
 export default function ExerciseCreate({
@@ -24,6 +27,7 @@ export default function ExerciseCreate({
   image,
   date,
   reps,
+  idExersiceProps,
 }: ExerciseCreateProps) {
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
@@ -33,7 +37,6 @@ export default function ExerciseCreate({
   const [title, setTitle] = useState(exerciseName);
   const [description, setDescription] = useState("");
   const [routineName, setRutinaName] = useState("");
-  const [rutinaIdReal, setRutinaIdReal] = useState<string | null>(null);
   const [rutinaId, setRutinaId] = useState("");
   const [restTime, setRestTime] = useState(rest || "");
   const [series, setSeries] = useState<string[]>([]);
@@ -41,10 +44,11 @@ export default function ExerciseCreate({
   const [showModal, setShowModal] = useState(false);
   const [accionState, setAccionState] = useState<boolean>(false);
   const [showModalExercise, setShowModalExercise] = useState(false);
-  const [data, setData] = useState({});
   const [exerciseImage, setExerciseImage] = useState(image || "");
+  const [idExersice, setidExersice] = useState('');
 
-  const [showExercise, setShowExercise] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+
   const handleAddSeries = () => {
     setSeries([...series, ""]);
   };
@@ -72,8 +76,10 @@ export default function ExerciseCreate({
 
       const body = {
         rutina_id: rutinaId,
-        exercise_name: title,
+        "fecha_rutina": date,
+        "exercise_id": idExersice,
         updates: {
+          exercise_name: title,
           Series: series.length,
           Descanso: restTime,
           "Detalle series": detalleSeries,
@@ -110,7 +116,7 @@ export default function ExerciseCreate({
         const token = localStorage.getItem("token") ?? "";
 
         const res = await fetch(
-          `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${date}&exercise_name=${title}&user_id=${id}`,
+          `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${date}&exercise_name=${title}&user_id=${id}&exercise_id=${idExersiceProps}`,
           {
             method: "GET",
             headers: {
@@ -129,12 +135,11 @@ export default function ExerciseCreate({
           const ex = data.response.exercise;
           setRutinaName(data.routine_name);
           setRutinaId(data.rutina_id);
+          setidExersice(ex.exercise_id)
           setTitle(ex.nombre_ejercicio);
           setDescription(ex.description || "");
           setExerciseImage(ex.thumbnail_url);
           setRestTime(ex.Esquema?.Descanso?.toString() || "");
-          setRutinaIdReal(ex.rutina_id);
-
           if (ex.Esquema?.["Detalle series"]) {
             const repsArray = ex.Esquema["Detalle series"].map((s: any) =>
               s.Reps.toString()
@@ -152,7 +157,7 @@ export default function ExerciseCreate({
     if (date && title) {
       loadExercise();
     }
-  }, [date, title]);
+  }, [date]);
 
   useEffect(() => {
     if (accionState) {
@@ -160,12 +165,90 @@ export default function ExerciseCreate({
     }
   }, [accionState]);
 
+  /* codigo para reasignar ejercicio */
+  const [selectExercise, setSelectExercise] = useState<any>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  function NewInfoExercise() {
+    if (selectExercise) {
+      // Reemplazamos la información del ejercicio actual
+      setTitle(selectExercise.exercise);
+      setDescription(selectExercise.description || "");
+      setExerciseImage(selectExercise.thumbnail_url || "");
+      setRestTime("");
+      setSeries([""]);
+    }
+  }
+
+  function canSaveExercise() {
+    if (!restTime || restTime.trim() === "") {
+      alert("Por favor ingresa el tiempo de descanso");
+      return false;
+    }
+
+    // Validar que haya al menos una serie con repeticiones
+    const hasValidSeries = series.some((s) => s && s.trim() !== "");
+    if (!hasValidSeries) {
+      alert("Por favor agrega al menos una serie con repeticiones");
+      return false;
+    }
+
+    return true;
+  }
+
   if (loading) {
     return <Loading></Loading>;
   }
 
+  // --- FUNCIÓN DE ELIMINAR ---
+  const deleteExercise = async () => {
+    try {
+      const token = localStorage.getItem("token") || "";
+
+      const res = await fetch(
+        `https://api.timshell.co/api/routines/delete-exercise?user_id=${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token,
+          },
+          body: JSON.stringify({
+            rutina_id: rutinaId,
+            fecha_rutina: date,
+            exercise_id: idExersice,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error(data);
+        return;
+      }
+
+      router.back();
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDelete = () => {
+    deleteExercise();
+    setOpenDelete(false);
+  };
+
+
+
   return (
     <>
+      <ConfirmDeleteExercise
+        isOpen={openDelete}
+        onConfirm={handleDelete}
+        onCancel={() => setOpenDelete(false)}
+      />
       <div className="flex flex-col p-5 min-h-screen lg:flex-row gap-8">
         <div className="w-full max-w-[380px] ">
           <div className="max-h-[70vh] h-full sticky top-11 ">
@@ -184,11 +267,13 @@ export default function ExerciseCreate({
         <div className="w-full">
           <div className="flex justify-end">
             <button
+              onClick={() => setOpenDelete(true)}
               className="px-4 py-2 border border-white text-white bg-transparent 
-             rounded-lg transition hover:bg-white/10"
+  rounded-lg transition hover:bg-white/10"
             >
-              eliminar ejercicio
+              Eliminar ejercicio
             </button>
+
           </div>
 
           <div className="p-6">
@@ -298,27 +383,40 @@ export default function ExerciseCreate({
           onClose={() => {
             setShowModalExercise(false);
           }}
+          title="Asignar ejercicio"
+          setSelectExercise={setSelectExercise}
+          setShowConfirm={setShowConfirm}
         ></ExerciseModal>
       )}
-      {showExercise && (
-        <SaveExercise
-          isOpen={showExercise}
-          onSelectExercise={setShowExercise(true)}
-          onContinue={() =>
-            router.push(
-              `/pages/users/${id}/${date}?name=${encodeURIComponent(
-                routineName
-              )}`
-            )
-          }
+      {/* modal para ejercicio seleccionado. */}
+      {showConfirm && (
+        <ConfirmReplaceExercise
+          isOpen={showConfirm}
+          onConfirm={() => {
+            NewInfoExercise()
+            setShowConfirm(false);
+          }}
+          onCancel={() => setShowConfirm(false)}
         />
+
       )}
 
       <AccionBar
         textButton={"Guardar Ejercicios"}
         accionState={accionState}
-        useAccionState={setAccionState}
-      ></AccionBar>
+        useAccionState={(val: any) => {
+          if (val) {
+            if (canSaveExercise()) {
+              setAccionState(true);
+            } else {
+              setAccionState(false);
+            }
+          } else {
+            setAccionState(false);
+          }
+        }}
+      />
+
     </>
   );
 }

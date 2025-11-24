@@ -9,11 +9,14 @@ export default function ExerciseModal({
   isOpen,
   onClose,
   title = "Reemplaza ejercicio",
+  setSelectExercise,
+  setShowConfirm
 }: {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
-  onSelectExercise?: boolean;
+  setSelectExercise?: any;
+  setShowConfirm?: any;
 }) {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<any[]>([]);
@@ -63,7 +66,6 @@ export default function ExerciseModal({
   const filtered = data.filter((item) =>
     item.exercise.toLowerCase().includes(search.toLowerCase())
   );
-
   return (
     <div
       className="fixed inset-0 bg-black/60 backdrop-blur-xs flex justify-end items-start z-50"
@@ -102,16 +104,26 @@ export default function ExerciseModal({
               Cargando ejercicios...
             </p>
           )}
-          {!loading &&
-            filtered.map((item) => (
-              <ReusableExercise
-                key={item.id}
-                image={item.thumbnail_url}
-                title={item.exercise}
-                description={item.category}
-                onClick={() => onSelectExercise(item)}
-              />
-            ))}
+          {!loading && filtered.map((item, key) => {
+            return (
+              <div
+                key={key}
+                onClick={() => {
+                  setSelectExercise(item);
+                  setShowConfirm(true)
+                  onClose();
+                }}
+              >
+                <ReusableExercise
+                  key={item.id}
+                  image={item.thumbnail_url}
+                  title={item.exercise}
+                  description={item.category}
+                />
+              </div>
+            )
+          })}
+
           {!loading && filtered.length === 0 && (
             <p className="text-gray-400 text-center py-6">
               No se encontraron resultados.
@@ -119,6 +131,6 @@ export default function ExerciseModal({
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 }

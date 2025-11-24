@@ -52,7 +52,7 @@ export default function Pages() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [paginaActual, setPaginaActual] = useState<string>(1);
+  const [paginaActual, setPaginaActual] = useState<number>(1);
   const params = useParams();
   const { id } = params;
   const router = useRouter();
@@ -241,7 +241,7 @@ export default function Pages() {
     );
   }
   return (
-    <section className=" min-h-screen w-full  mx-10 text-white ">
+    <section className=" min-h-screen w-full text-white ">
       <div className="mb-4">
         <Buttons
           data="Atrás"
@@ -266,19 +266,19 @@ export default function Pages() {
         <ProgressCard weight={80} variation={1.2} height={1.78} />
       </div>
 
-      <div className="flex  gap- justify-between mr-9">
-        <div className="w-[700px]">
+      <div className="grid grid-cols-2 gap-8">
+        <div className="col-span-1">
           <WeightChart
             dataPoints={weightData}
             labels={weightLabels}
             title="Evolución de tu peso"
           />
         </div>
-        <div className="w-[700px]">
+        <div className="col-span-1">
           <UserMovementChart />
         </div>
       </div>
-      <h2 className="text-[16px] px- my-9 font-bold ">
+      <h2 className="text-[16px] my-9 font-bold ">
         Rutina diaria{" "}
         <span className="text-[#dff400] text-sm">plan intermedio</span>
       </h2>
@@ -299,11 +299,11 @@ export default function Pages() {
           </div>
         </div>
 
-        <div className="py-5 text-white mr-9 ">
+        <div className="py-5 text-white">
           <Dates />
         </div>
       </div>
-      <div className="grid mt-2  pr-9">
+      <div className="grid mt-2">
         <RutsCards
           rutinas={rutinasVisibles}
           user_id={id?.toString()}

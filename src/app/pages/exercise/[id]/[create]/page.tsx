@@ -12,6 +12,7 @@ export default function ExerciseCreatePage() {
   const reps = searchParams.get("reps");
 
   const date = searchParams.get("date");
+   const idExersiceProps = searchParams.get("exercise");
 
 
 
@@ -22,6 +23,7 @@ export default function ExerciseCreatePage() {
         seriesCount={series}
         date={date}
         rest={rest}
+        idExersiceProps={idExersiceProps}
         image={image}
         reps={reps}
       />

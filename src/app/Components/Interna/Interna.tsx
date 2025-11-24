@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Inputs from "../Inputs/inputs";
 import Dates from "../ui/Dates";
 import Pagination from "../ui/Pagination";
-import ProfileCard from "../ui/ReusableProfile";
+import { ProfileCard } from "../ui/ReusableProfile";
 import { RutsCards } from "../ui/RutsCards";
 import ProgressCard from "./components/ProgressCard";
 import WeeklyProgressChart from "./components/WeeklyProgressChart";

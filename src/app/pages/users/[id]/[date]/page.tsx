@@ -2,14 +2,16 @@
 
 import ExerciseCard from "@/app/Components/Exercise/ExerciseCard";
 import Loading from "@/app/Components/Loading/loading";
+import AccionBar from "@/app/Components/navBar/ActionBar";
 import Buttons from "@/app/Components/ui/Buttons";
 import { ChevronLeft } from "lucide-react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function RutinaPage() {
   const params = useParams();
   const searchParams = useSearchParams();
+  const [createExercise, setCreateExercise] = useState()
 
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const date = Array.isArray(params.date) ? params.date[0] : params.date;
@@ -20,40 +22,49 @@ export default function RutinaPage() {
 
   const [rutina, setRutina] = useState<unknown>(null);
   const [rutinaName, setRutinaName] = useState("");
+  const router = useRouter()
+
+  const [rutinaId, setRutinaId] = useState("");
 
   const [loading, setLoading] = useState(true);
+  const obtenerRutina = async () => {
+    try {
+      const token = localStorage.getItem("token") || "";
 
+      const url = `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${date}&routine_name=${exerciseName}&user_id=${id}`;
+
+      const response = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      });
+
+      if (!response.ok) throw new Error("Error al obtener la rutina");
+
+      const data = await response.json();
+      // setRutinaName(data.response.routine_name);
+      setRutinaName(data.routine_name);
+      setRutinaId(data.rutina_id)
+      setRutina(data?.response.ejercicios || data);
+    } catch (error) {
+      console.error("Error al obtener la rutina:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const obtenerRutina = async () => {
-      try {
-        const token = localStorage.getItem("token") || "";
-
-        const url = `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${date}&routine_name=${exerciseName}&user_id=${id}`;
-
-        const response = await fetch(url, {
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": token,
-          },
-        });
-
-        if (!response.ok) throw new Error("Error al obtener la rutina");
-
-        const data = await response.json();
-        // setRutinaName(data.response.routine_name);
-        setRutinaName(data.routine_name);
-        console.log("Nombre de la rutina:", data.response.routine_name);
-        setRutina(data?.response.ejercicios || data);
-      } catch (error) {
-        console.error("Error al obtener la rutina:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
     if (id && date && exerciseName) {
       obtenerRutina();
     }
   }, [id, date, exerciseName]);
+
+  useEffect(() => {
+    createExercise && router.push(
+      `/pages/exercise/${id}/new?date=${date}&name=${encodeURIComponent(exerciseName)}&rutina=${rutinaId}`
+    );
+
+  }, [createExercise])
 
   if (loading) {
     return (
@@ -71,34 +82,43 @@ export default function RutinaPage() {
     );
   }
 
-  return (
-    <section className="min-h-screen text-white">
-      <div className="mb-5">
-        <Buttons
-          data="Atrás"
-          // onClick={() => router.back()}
-          className="flex bg-transparent hover:bg-transparent text-white"
-        >
-          <ChevronLeft className=" text-white" />
-        </Buttons>
-      </div>
-      <h2 className="text-[32px] mb-12 font-semibold text-[#D4FF00]">
-        {rutinaName}
-      </h2>
 
-      <div className="grid gap-4 grid-cols-2">
-        {Array.isArray(rutina) &&
-          rutina.map((ejercicio: any, key: number) => (
-            <ExerciseCard
-              key={key}
-              image={ejercicio?.thumbnail_url}
-              title={ejercicio?.nombre_ejercicio}
-              date={date}
-              series={ejercicio?.Esquema?.Series}
-              rest={ejercicio?.Esquema?.Descanso}
-            />
-          ))}
-      </div>
-    </section>
+
+  return (
+    <>
+      <section className="min-h-screen text-white">
+        <div className="mb-5">
+          <Buttons
+            data="Atrás"
+            // onClick={() => router.back()}
+            className="flex bg-transparent hover:bg-transparent text-white"
+          >
+            <ChevronLeft className=" text-white" />
+          </Buttons>
+        </div>
+        <h2 className="text-[32px] mb-12 font-semibold text-[#D4FF00]">
+          {rutinaName}
+        </h2>
+
+        <div className="grid gap-4 grid-cols-2">
+          {Array.isArray(rutina) &&
+            rutina.map((ejercicio: any, key: number) => (
+              <ExerciseCard
+                key={key}
+                image={ejercicio?.thumbnail_url}
+                idExerciseProps={ejercicio.exercise_id}
+                title={ejercicio?.nombre_ejercicio}
+                date={date}
+                series={ejercicio?.Esquema?.Series}
+                rest={ejercicio?.Esquema?.Descanso}
+                rutina_id={rutinaId}
+                update={() => obtenerRutina()}
+              />
+            ))}
+        </div>
+
+      </section>
+      <AccionBar textButton="Agregar Ejercicio" useAccionState={setCreateExercise} accionState={createExercise}></AccionBar>
+    </>
   );
 }

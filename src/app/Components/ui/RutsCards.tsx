@@ -90,7 +90,7 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
                    router.push(`/pages/users/${user_id}/${fechaFormateada}?name=${cleanName}`);
                  }}
 
-                className="w-full border border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg hover:bg-[#DFF400] hover:text-black transition"
+                className="w-full border cursor-pointer border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg hover:bg-[#DFF400] hover:text-black transition"
               >
                 Ver detalles
               </button>

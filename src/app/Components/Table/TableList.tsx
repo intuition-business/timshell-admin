@@ -85,7 +85,7 @@ export function CardList({
         <div
           key={i}
           onClick={() => onCardClick && onCardClick(t.id)}
-          className="grid text-[20px] rounded-md  bg-[#333] p-[20px] text-white"
+          className="grid text-[20px] rounded-md  bg-[#333] p-5 cursor-pointer hover:bg-[#484848] text-white"
           style={{
             gridTemplateColumns: encabezado
               ?.map((item) => item.width)

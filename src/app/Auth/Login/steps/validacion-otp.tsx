@@ -43,7 +43,7 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
             return;
         }
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/validate-otp`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}validate-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

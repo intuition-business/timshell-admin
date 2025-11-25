@@ -46,6 +46,10 @@ export default function ExerciseCreate({
   const [showModalExercise, setShowModalExercise] = useState(false);
   const [exerciseImage, setExerciseImage] = useState(image || "");
   const [idExersice, setidExersice] = useState('');
+  const [error, setError] = useState('')
+  const [restError, setRestError] = useState("");
+  const [seriesErrors, setSeriesErrors] = useState<string[]>([]);
+
 
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -181,20 +185,32 @@ export default function ExerciseCreate({
   }
 
   function canSaveExercise() {
+    let isValid = true;
+
+    // Reset de errores
+    setRestError("");
+    setSeriesErrors([]);
+
+    // Validación del descanso
     if (!restTime || restTime.trim() === "") {
-      alert("Por favor ingresa el tiempo de descanso");
-      return false;
+      setRestError("Ingresa el tiempo de descanso");
+      isValid = false;
     }
 
-    // Validar que haya al menos una serie con repeticiones
-    const hasValidSeries = series.some((s) => s && s.trim() !== "");
-    if (!hasValidSeries) {
-      alert("Por favor agrega al menos una serie con repeticiones");
-      return false;
+    // Validar todas las series una por una
+    const newSeriesErrors = series.map((s) =>
+      !s || s.trim() === "" ? "Ingresa las repeticiones" : ""
+    );
+
+    setSeriesErrors(newSeriesErrors);
+
+    if (newSeriesErrors.some((err) => err !== "")) {
+      isValid = false;
     }
 
-    return true;
+    return isValid;
   }
+
 
   if (loading) {
     return <Loading></Loading>;
@@ -269,7 +285,7 @@ export default function ExerciseCreate({
             <button
               onClick={() => setOpenDelete(true)}
               className="px-4 py-2 border border-white text-white bg-transparent 
-  rounded-lg transition hover:bg-white/10"
+  rounded-lg transition hover:bg-white/10 cursor-pointer"
             >
               Eliminar ejercicio
             </button>
@@ -294,10 +310,22 @@ export default function ExerciseCreate({
               <input
                 type="text"
                 value={restTime}
-                onChange={(e) => setRestTime(e.target.value)}
+                onChange={(e) => {
+                  setRestTime(e.target.value);
+                  if (restError) setRestError(""); // limpiar error al escribir
+                }}
                 placeholder="Agregar el tiempo en minutos"
-                className="bg-[#2B2B2B] border border-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#D4FF00]"
+                className={`bg-[#2B2B2B] border text-white rounded-lg px-4 py-2 focus:outline-none 
+    ${restError
+                    ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                    : "border-gray-700 focus:ring-2 focus:ring-[#D4FF00]"
+                  }`}
               />
+
+              {restError && (
+                <p className="text-red-500 text-sm mt-1">{restError}</p>
+              )}
+
             </div>
 
             <h2 className="text-2xl font-semibold mb-1">Series</h2>
@@ -312,7 +340,7 @@ export default function ExerciseCreate({
                       <button
                         type="button"
                         onClick={() => handleRemoveSeries(index)}
-                        className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition"
+                        className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition cursor-pointer"
                       >
                         ✕
                       </button>
@@ -329,12 +357,28 @@ export default function ExerciseCreate({
                     <input
                       type="text"
                       value={rep}
-                      onChange={(e) =>
-                        handleSeriesChange(index, e.target.value)
-                      }
+                      onChange={(e) => {
+                        handleSeriesChange(index, e.target.value);
+
+                        // limpiar error solo de esta serie
+                        if (seriesErrors[index]) {
+                          const updated = [...seriesErrors];
+                          updated[index] = "";
+                          setSeriesErrors(updated);
+                        }
+                      }}
                       placeholder="Número de repeticiones"
-                      className="border border-gray-500 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#D4FF00]"
+                      className={`border text-white rounded-lg px-4 py-2 focus:outline-none 
+    ${seriesErrors[index]
+                          ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                          : "border-gray-500 focus:ring-2 focus:ring-[#D4FF00]"
+                        }`}
                     />
+
+                    {seriesErrors[index] && (
+                      <p className="text-red-500 text-sm mt-1">{seriesErrors[index]}</p>
+                    )}
+
                   </div>
                 ))}
                 <div className="w-full h-full flex flex-col">
@@ -367,6 +411,7 @@ export default function ExerciseCreate({
 
       {showModal && (
         <SaveExercise
+          title="Actualizado correctamente"
           isOpen={showModal}
           onContinue={() =>
             router.push(

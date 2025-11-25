@@ -104,14 +104,14 @@ export default function ExerciseCard({
         <div className="flex gap-3 justify-end col-span-1">
           <button
             onClick={editar}
-            className="flex items-center p-2 justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:bg-transparent hover:text-white transition"
+            className="flex items-center p-2 justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:bg-transparent hover:text-white transition cursor-pointer"
           >
             <Pencil className="w-5 h-5" />
           </button>
 
           <button
             onClick={() => setOpen(true)}
-            className="flex items-center p-2 justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:bg-red-600 hover:text-white transition"
+            className="flex items-center p-2 justify-center w-8 h-8 rounded-full bg-white text-gray-900 hover:bg-red-600 hover:text-white transition cursor-pointer"
           >
             <Trash2 className="w-5 h-5" />
           </button>

@@ -31,7 +31,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body style={{ fontFamily: "'Exo 2', sans-serif" }}>
+      <body suppressHydrationWarning  style={{ fontFamily: "'Exo 2', sans-serif" }}>
         <AuthProvider>
           <div className={`h-screen w-full bg-[#0f0f0f] overflow-hidden 
               before:content-[''] before:absolute before:top-0 before:left-0 before:w-[200px] before:h-[200px] before:bg-[url('/iconos-layout.png')] before:bg-no-repeat before:bg-cover before:opacity-20 before:blur-[2px]

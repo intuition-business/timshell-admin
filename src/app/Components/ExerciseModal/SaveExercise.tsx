@@ -2,9 +2,10 @@ interface SaveExercisePro {
   isOpen?: boolean;
   onContinue?: () => void;
   setSelectExercise?: any;
+  title?: string;
 }
 
-export const SaveExercise = ({ isOpen, onContinue, setSelectExercise }: SaveExercisePro) => {
+export const SaveExercise = ({ title, isOpen, onContinue, setSelectExercise }: SaveExercisePro) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999]">
@@ -25,7 +26,7 @@ export const SaveExercise = ({ isOpen, onContinue, setSelectExercise }: SaveExer
           </svg>
         </div>
 
-        <h2 className="text-2xl font-semibold">Actualizado correctamente</h2>
+        <h2 className="text-2xl font-semibold">{title}</h2>
 
         <button
           onClick={onContinue}

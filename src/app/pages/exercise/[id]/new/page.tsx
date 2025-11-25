@@ -27,13 +27,18 @@ export default function ExerciseCreateNew() {
     const [rutinaId, setRutinaId] = useState(initialRutina);
 
     const [accionState, setAccionState] = useState(false);
-    const [showModalExercise, setShowModalExercise] = useState(false);
+    const [showModalExercise, setShowModalExercise] = useState(true);
     const [showModalSaved, setShowModalSaved] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
+    const [restError, setRestError] = useState("");
+    const [seriesErrors, setSeriesErrors] = useState<string[]>([]);
+    const [generalError, setGeneralError] = useState("");
 
+
+    const isExerciseSelected = title.trim().length > 0;
 
     const [selectExercise, setSelectExercise] = useState<any>(null);
-     const name = search.get("name") || "";
+    const name = search.get("name") || "";
     const date = search.get("date") || "";
 
     // ============================
@@ -58,16 +63,53 @@ export default function ExerciseCreateNew() {
     // VALIDACIÓN
     // ============================
 
+    // ============================
+    // VALIDACIÓN
+    // ============================
     const canSave = () => {
-        if (!title.trim()) return alert("Primero selecciona un ejercicio.");
-        if (!rutinaId.trim()) return alert("Ingresa rutina_id.");
-        if (!restTime.trim()) return alert("Ingresa tiempo de descanso.");
+        let valid = true;
 
-        const hasSeries = series.some((s) => s.trim() !== "");
-        if (!hasSeries) return alert("Debes agregar repeticiones.");
+        // Reset errores
+        setRestError("");
+        setSeriesErrors([]);
+        setGeneralError("");
 
-        return true;
+        if (!isExerciseSelected) {
+            setGeneralError("Primero selecciona un ejercicio.");
+            setTimeout(() => {
+                setGeneralError("");
+            }, 3000);
+            return false;
+        }
+
+        if (!rutinaId.trim()) {
+            setGeneralError("No se puede crear el ejercicio: falta el ID de la rutina.");
+            setTimeout(() => {
+                setGeneralError("");
+            }, 3000);
+            return false;
+        }
+
+        // Validar descanso
+        if (!restTime.trim()) {
+            setRestError("Ingresa el tiempo de descanso.");
+            valid = false;
+        }
+
+        // Validar series
+        const newSeriesErrors = series.map((rep) =>
+            !rep.trim() ? "Ingresa las repeticiones." : ""
+        );
+
+        setSeriesErrors(newSeriesErrors);
+
+        if (newSeriesErrors.some((e) => e !== "")) {
+            valid = false;
+        }
+
+        return valid;
     };
+
 
     // ============================
     // CREAR EJERCICIO
@@ -110,11 +152,13 @@ export default function ExerciseCreateNew() {
             if (!res.ok) throw new Error("Error al crear ejercicio");
 
             setShowModalSaved(true);
+
         } catch (error) {
             console.error(error);
-            alert("Error al crear ejercicio");
+            setGeneralError("Ocurrió un error al crear el ejercicio. Intenta nuevamente.");
         }
     };
+
 
     // ============================
     // CUANDO SELECCIONAN UN EJERCICIO
@@ -146,7 +190,7 @@ export default function ExerciseCreateNew() {
                             <img
                                 src={exerciseImage}
                                 alt="Ejercicio"
-                                className="rounded-xl border aspect-square block overflow-hidden  border-gray-700 w-full max-w-[380px] h-full object-cover"                            />
+                                className="rounded-xl border aspect-square block overflow-hidden  border-gray-700 w-full max-w-[380px] h-full object-cover" />
                         ) : (
                             <div className="aspect-square w-full h-full rounded-xl border border-gray-700 flex items-center justify-center text-gray-500">
                                 Sin imagen
@@ -161,10 +205,16 @@ export default function ExerciseCreateNew() {
                     <div className="w-full flex flex-row justify-end">
                         <Buttons
                             onClick={() => setShowModalExercise(true)}
-                            data="Buscar ejercicio"
+                            data="Asignar Ejercicio"
                             className="bg-white text-black p-3 font-bold hover:bg-[#cbe000] cursor-pointer"
                         />
                     </div>
+                    {generalError && (
+                        <div className="bg-red-500/20 border my-2 border-red-500 text-red-300 p-3 rounded-lg">
+                            {generalError}
+                        </div>
+                    )}
+
                     {description ? (
                         <div className="py-6">
                             <h2 className="text-white">Descripción</h2>
@@ -184,10 +234,24 @@ export default function ExerciseCreateNew() {
                             <input
                                 type="text"
                                 value={restTime}
-                                onChange={(e) => setRestTime(e.target.value)}
+                                onChange={(e) => {
+                                    if (isExerciseSelected) {
+                                        setRestTime(e.target.value);
+                                        if (restError) setRestError("");
+                                    }
+                                }}
                                 placeholder="Minutos"
-                                className="bg-[#2B2B2B] border border-gray-700 text-white rounded-lg px-4 py-2"
+                                disabled={!isExerciseSelected}
+                                className={`bg-[#2B2B2B] border text-white rounded-lg px-4 py-2
+        ${!isExerciseSelected ? "opacity-40 cursor-not-allowed" : ""}
+        ${restError ? "border-red-500 focus:ring-2 focus:ring-red-500" : "border-gray-700 focus:ring-2 focus:ring-[#D4FF00]"}
+    `}
                             />
+
+                            {restError && (
+                                <p className="text-red-500 text-sm mt-1">{restError}</p>
+                            )}
+
                         </div>
 
                         {/* SERIES */}
@@ -212,20 +276,48 @@ export default function ExerciseCreateNew() {
                                     <input
                                         type="text"
                                         value={rep}
-                                        onChange={(e) => handleSeriesChange(i, e.target.value)}
+                                        onChange={(e) => {
+                                            if (isExerciseSelected) {
+                                                handleSeriesChange(i, e.target.value);
+
+                                                // limpiar error solo de esta serie
+                                                if (seriesErrors[i]) {
+                                                    const updated = [...seriesErrors];
+                                                    updated[i] = "";
+                                                    setSeriesErrors(updated);
+                                                }
+                                            }
+                                        }}
                                         placeholder="Número de reps"
-                                        className="border border-gray-500 text-white rounded-lg px-4 py-2"
+                                        disabled={!isExerciseSelected}
+                                        className={`border text-white rounded-lg px-4 py-2
+        ${!isExerciseSelected ? "opacity-40 cursor-not-allowed" : ""}
+        ${seriesErrors[i]
+                                                ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                                                : "border-gray-500 focus:ring-2 focus:ring-[#D4FF00]"}
+    `}
                                     />
+
+                                    {seriesErrors[i] && (
+                                        <p className="text-red-500 text-sm mt-1">{seriesErrors[i]}</p>
+                                    )}
+
+
                                 </div>
                             ))}
 
                             <button
                                 type="button"
-                                onClick={handleAddSeries}
-                                className="bg-[#2B2B2B] p-4 rounded-xl text-gray-300 hover:bg-[#3A3A3A] flex items-center justify-center min-h-[145px]"
+                                onClick={() => isExerciseSelected && handleAddSeries()}
+                                disabled={!isExerciseSelected}
+                                className={`bg-[#2B2B2B] p-4 rounded-xl text-gray-300 flex items-center justify-center min-h-[145px]
+        ${!isExerciseSelected ? "opacity-40 cursor-not-allowed" : "hover:bg-[#3A3A3A]"}
+    `}
                             >
                                 + Agregar serie
                             </button>
+
+
                         </div>
                     </form>
                 </div>
@@ -257,6 +349,7 @@ export default function ExerciseCreateNew() {
             {/* Guardado OK */}
             {showModalSaved && (
                 <SaveExercise
+                    title="Ejercicio Creado"
                     isOpen={showModalSaved}
                     onContinue={() => router.push(`/pages/users/${id}/${date}?name=${name}`)}
                 />

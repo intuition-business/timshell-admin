@@ -42,6 +42,7 @@ jobs:
             echo "Setting production variables"
             echo PORT=${{ secrets.PORT }} >> .env
             echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+            echo NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} >> .env
           fi
 
           # For Development (dev branch)
@@ -56,6 +57,7 @@ jobs:
             echo "Setting production variables"
             echo PORT=${{ secrets.PORT }} >> .env
             echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+            echo NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} >> .env
       # Validate .env file contents
       - name: Print .env file contents for debugging
         run: cat .env

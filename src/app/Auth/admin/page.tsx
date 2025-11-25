@@ -14,7 +14,7 @@ export default function Index() {
     const [success, setSuccess] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [step, setStep] = useState<any>(1);
-    const [codigoStepDos, setCodigoStepDos] = useState(false)
+    const [codigoStepDos, setCodigoStepDos] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
@@ -38,11 +38,14 @@ export default function Index() {
     const handleSubmit = async () => {
         setError('');
         setSuccess('');
+
         const validationError = validateInputs();
         if (validationError) {
             setError(validationError);
             return;
         }
+
+        setCodigoStepDos(true)
 
         setIsSubmitting(true);
         try {

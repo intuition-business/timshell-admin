@@ -157,15 +157,17 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-6 text-white">
-            <SearchInput placeholder={"Buscador"} />
-            <InputDate placeholder="Fecha"></InputDate>
-            <SelectInput
-              placeholder="Estado del usuario"
-              options={["Opción 1", "Opción 2"]}
-              IconChevronDown
-            ></SelectInput>
-            <button className="bg-white text-[#1A1A1A] flex items-center px-4 py-3 rounded-xl hover:bg-[#d9d9d9] cursor-pointer ms-auto">
+          <div className="flex gap-6 text-white">
+            <div className="flex items-center justify-start w-full gap-5">
+              <SearchInput placeholder={"Buscador"} />
+              <InputDate placeholder="Fecha"></InputDate>
+              <SelectInput
+                placeholder="Estado del usuario"
+                options={["Opción 1", "Opción 2"]}
+                IconChevronDown
+              ></SelectInput>
+            </div>
+            <button className="bg-white text-[#1A1A1A] w-full max-w-[200px] flex items-center px-4 py-3 rounded-xl hover:bg-[#d9d9d9] cursor-pointer ms-auto">
               <Download className="mr-2" size={18} />
               Descargar Excel
             </button>
@@ -195,9 +197,8 @@ export default function Dashboard() {
                   {item.label}
                 </p>
                 <h2
-                  className={`text-3xl mt-auto font-semibold ${
-                    i == 4 ? "text-[#D4FF00]" : "text-white"
-                  } `}
+                  className={`text-3xl mt-auto font-semibold ${i == 4 ? "text-[#D4FF00]" : "text-white"
+                    } `}
                 >
                   {item.value}
                 </h2>

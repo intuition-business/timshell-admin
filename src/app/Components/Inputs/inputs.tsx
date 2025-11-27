@@ -18,7 +18,7 @@ interface InputDateProps {
 
 export function SearchInput({ placeholder, onChange, value }: any) {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full max-w-[390px]">
       <input
         type="text"
         placeholder={placeholder}
@@ -34,7 +34,7 @@ export function SearchInput({ placeholder, onChange, value }: any) {
 export function SelectInput({ placeholder, options }: SelectInputProps) {
   return (
     <>
-      <div className="relative flex w-70 ">
+      <div className="relative flex w-full max-w-[280px]">
         <select
           defaultValue=""
           className="bg-[#2B2B2B] border border-[#777777] w-full pl-3 pr-10 py-4  min-w-[100px] rounded-xl focus:outline-none appearance-none"
@@ -56,7 +56,7 @@ export function SelectInput({ placeholder, options }: SelectInputProps) {
 
 export function InputDate({ placeholder }: { placeholder?: string }) {
   return (
-    <div className="relative text-white flex ">
+    <div className="relative text-white flex w-full max-w-[280px]">
       <input
         type="text"
         placeholder={placeholder}

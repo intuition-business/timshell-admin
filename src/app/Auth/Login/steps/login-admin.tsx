@@ -53,8 +53,7 @@ export default function LoginAdmin({ setEmail, setPhone, email, phone, error, su
                         {error && <p className="text-red-500 mt-3">{error}</p>}
                         {success && <p className="text-green-500 mt-3">{success}</p>}
 
-                        <a href="#" className="w-max block mx-auto ">
-                            <p className="hover:text-gray-300 text-white text-lg flex gap-2 items-center justify-center mt-7"><IconHeadset></IconHeadset> Llamar a soporte tecnico</p>
+                        <a href="#" className="w-max mx-auto hover:text-gray-300 text-white text-lg flex gap-2 items-center justify-center mt-7"><IconHeadset></IconHeadset> <span>Llamar a soporte tecnico</span>
                         </a>
                     </div>
                 </div>

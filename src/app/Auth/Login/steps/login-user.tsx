@@ -42,8 +42,7 @@ export default function Login({ setIdentifier, identifier, error, success, isSub
                     >
                         {isSubmitting ? 'Enviando...' : 'Confirmar'}
                     </button>
-                    <a href="#" className="w-max block mx-auto ">
-                        <p className="hover:text-gray-300 text-white text-lg flex gap-2 items-center justify-center mt-7"><IconHeadset></IconHeadset> Llamar a soporte tecnico</p>
+                    <a href="#" className="w-max mx-auto hover:text-gray-300 text-white text-lg flex gap-2 items-center justify-center mt-7"><IconHeadset></IconHeadset> <span>Llamar a soporte tecnico</span>
                     </a>
                 </div>
             </div>

@@ -85,7 +85,7 @@ export default function UserDashboard() {
 
           <div>
             <div className="flex">
-              <h2 className="font-bold my-6">Gestión de usuaria</h2>
+              <h2 className="font-bold my-6">Gestión de usuarios</h2>
               <p className="font-bold text-[#dff400] mx-16 my-6">
                 Usuarios activos 200
               </p>

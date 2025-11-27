@@ -105,7 +105,7 @@ export default function Trainer() {
         <div className=" ">
           <div className="flex  ">
             <h2 className=" font-bold text-[#dff400]  mx-16 my-6 ">
-              Gestión de usuaria
+              Gestión de usuarios
             </h2>
           </div>
           <div className="flex relative -translate-y-4  flex-col w-full gap-2">

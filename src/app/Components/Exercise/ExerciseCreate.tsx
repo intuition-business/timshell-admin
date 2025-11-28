@@ -9,6 +9,7 @@ import AccionBar from "../navBar/ActionBar";
 import Buttons from "../ui/Buttons";
 import { ConfirmReplaceExercise } from "../ExerciseModal/ConfirmReplaceExercise";
 import { ConfirmDeleteExercise } from "../ModalConfirm/modalConfirm";
+import { Fancybox } from "@fancyapps/ui/dist/fancybox/";
 
 interface ExerciseCreateProps {
   exerciseName?: string | null;
@@ -49,7 +50,11 @@ export default function ExerciseCreate({
   const [error, setError] = useState('')
   const [restError, setRestError] = useState("");
   const [seriesErrors, setSeriesErrors] = useState<string[]>([]);
+  const [exerciseVideo, setVideoExercise] = useState("")
 
+  useEffect(() => {
+    Fancybox.bind("[data-fancybox='exercise-video']", {});
+  }, []);
 
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -143,6 +148,7 @@ export default function ExerciseCreate({
           setTitle(ex.nombre_ejercicio);
           setDescription(ex.description || "");
           setExerciseImage(ex.thumbnail_url);
+          setVideoExercise(ex.video_url)
           setRestTime(ex.Esquema?.Descanso?.toString() || "");
           if (ex.Esquema?.["Detalle series"]) {
             const repsArray = ex.Esquema["Detalle series"].map((s: any) =>
@@ -256,8 +262,6 @@ export default function ExerciseCreate({
     setOpenDelete(false);
   };
 
-
-
   return (
     <>
       <ConfirmDeleteExercise
@@ -271,12 +275,40 @@ export default function ExerciseCreate({
             <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00] ">
               {title}
             </h2>
+            {exerciseVideo ? (
+              <a
+                data-fancybox="exercise-video"
+                href={exerciseVideo}
+                className="relative block w-full h-full max-w-[380px]"
+              >
+                {/* Imagen */}
+                <img
+                  src={exerciseImage}
+                  alt="Ejercicio"
+                  className="rounded-xl border block overflow-hidden border-gray-700 w-full h-full object-cover"
+                />
 
-            <img
-              src={`${exerciseImage}`}
-              alt="Ejercicio"
-              className="rounded-xl border aspect-square block overflow-hidden  border-gray-700 w-full max-w-[380px] h-full object-cover"
-            />
+                {/* Ícono Play */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="w-14 h-14 bg-[#D4FF00] rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="black"
+                      viewBox="0 0 24 24"
+                      className="w-7 h-7"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            ) : (
+              <img
+                src={`${exerciseImage}`}
+                alt="Ejercicio"
+                className="rounded-xl border aspect-square block overflow-hidden  border-gray-700 w-full max-w-[380px] h-full object-cover"
+              />
+            )}
           </div>
         </div>
 

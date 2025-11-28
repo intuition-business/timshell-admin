@@ -30,8 +30,12 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet"
         />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css"
+        />
       </head>
-      <body suppressHydrationWarning  style={{ fontFamily: "'Exo 2', sans-serif" }}>
+      <body suppressHydrationWarning style={{ fontFamily: "'Exo 2', sans-serif" }}>
         <AuthProvider>
           <div className={`h-screen w-full bg-[#0f0f0f] overflow-hidden 
               before:content-[''] before:absolute before:top-0 before:left-0 before:w-[200px] before:h-[200px] before:bg-[url('/iconos-layout.png')] before:bg-no-repeat before:bg-cover before:opacity-20 before:blur-[2px]
@@ -49,6 +53,7 @@ export default function RootLayout({
           </div>
         </AuthProvider>
       </body>
+      <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.umd.js"></script>
     </html>
   );
 }

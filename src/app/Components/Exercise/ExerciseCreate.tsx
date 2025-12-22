@@ -51,6 +51,10 @@ export default function ExerciseCreate({
   const [restError, setRestError] = useState("");
   const [seriesErrors, setSeriesErrors] = useState<string[]>([]);
   const [exerciseVideo, setVideoExercise] = useState("")
+  const [showVideo, setShowVideo] = useState(false);
+  useEffect(() => {
+    setShowVideo(false);
+  }, [exerciseImage, exerciseVideo]);
 
   useEffect(() => {
     Fancybox.bind("[data-fancybox='exercise-video']", {});
@@ -80,7 +84,7 @@ export default function ExerciseCreate({
       const token = localStorage.getItem("token") ?? "";
 
       const detalleSeries = series.map((rep) => ({
-        Reps: Number(rep),
+        Reps: String(rep),
       }));
 
       const body = {
@@ -93,7 +97,7 @@ export default function ExerciseCreate({
           Descanso: restTime,
           "Detalle series": detalleSeries,
           description,
-          video_url: "",
+          video_url: exerciseVideo,
           thumbnail_url: exerciseImage,
         },
       };
@@ -187,6 +191,8 @@ export default function ExerciseCreate({
       setExerciseImage(selectExercise.thumbnail_url || "");
       setRestTime("");
       setSeries([""]);
+      setVideoExercise(selectExercise.video_url || "");
+
     }
   }
 
@@ -271,45 +277,67 @@ export default function ExerciseCreate({
       />
       <div className="flex flex-col p-5 min-h-screen lg:flex-row gap-8">
         <div className="w-full max-w-[380px] ">
-          <div className="max-h-[70vh] h-full sticky top-11 ">
-            <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00] ">
+          <div className="max-h-[70vh] h-full sticky top-11">
+            <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00]">
               {title}
             </h2>
-            {exerciseVideo ? (
-              <a
-                data-fancybox="exercise-video"
-                href={exerciseVideo}
-                className="relative block w-full h-full max-w-[380px]"
-              >
-                {/* Imagen */}
-                <img
-                  src={exerciseImage}
-                  alt="Ejercicio"
-                  className="rounded-xl border block overflow-hidden border-gray-700 w-full h-full object-cover"
-                />
 
-                {/* Ícono Play */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="w-14 h-14 bg-[#D4FF00] rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="black"
-                      viewBox="0 0 24 24"
-                      className="w-7 h-7"
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                </div>
-              </a>
-            ) : (
-              <img
-                src={`${exerciseImage}`}
-                alt="Ejercicio"
-                className="rounded-xl border aspect-square block overflow-hidden  border-gray-700 w-full max-w-[380px] h-full object-cover"
-              />
+            {/* VOLVER A IMAGEN */}
+            {showVideo && (
+              <button
+                onClick={() => setShowVideo(false)}
+                className="mb-2 text-sm text-gray-400 hover:text-[#D4FF00] cursor-pointer"
+              >
+                ⟵ Volver a la imagen
+              </button>
             )}
+
+            <div className="relative aspect-square h-full w-full rounded-xl border border-gray-700 overflow-hidden max-w-[380px]">
+
+              {/* VIDEO */}
+              {exerciseVideo && showVideo ? (
+                <video
+                  src={exerciseVideo}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-cover"
+                />
+              ) : exerciseImage ? (
+                <>
+                  {/* IMAGEN */}
+                  <img
+                    src={exerciseImage}
+                    alt="Ejercicio"
+                    className="w-full h-full object-cover"
+                  />
+
+                  {/* PLAY */}
+                  {exerciseVideo && (
+                    <button
+                      onClick={() => setShowVideo(true)}
+                      className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/40 transition"
+                    >
+                      <span className="w-14 h-14 bg-[#D4FF00] rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="black"
+                          viewBox="0 0 24 24"
+                          className="w-7 h-7 ml-1"
+                        >
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </span>
+                    </button>
+                  )}
+                </>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-500">
+                  Sin imagen
+                </div>
+              )}
+            </div>
           </div>
+
         </div>
 
         <div className="w-full">

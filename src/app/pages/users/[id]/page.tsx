@@ -62,7 +62,6 @@ export default function Pages() {
     const obtenerRutinas = async () => {
       try {
         const url = `https://api.timshell.co/api/routines/ia/?user_id=${id}`;
-        console.log("URL de la API:", url);
         const response = await fetch(url, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -278,11 +277,11 @@ export default function Pages() {
           <UserMovementChart />
         </div>
       </div>
-      <h2 className="text-[16px] my-9 font-bold ">
+      <h2 className="text-[16px] my-9 font-bold flex gap-3 ">
         Rutina diaria{" "}
-        <span className="text-[#dff400] text-sm">plan intermedio</span>
+        <span className="text-[#dff400] text-base">plan intermedio</span>
       </h2>
-      <div className="flex flex-col rounded-lg  backdrop-blur-sm">
+      {/* <div className="flex flex-col rounded-lg  backdrop-blur-sm">
         <div className="flex gap-3  ">
           <div>
             <SearchInput placeholder="Buscar..." />
@@ -302,7 +301,7 @@ export default function Pages() {
         <div className="py-5 text-white">
           <Dates />
         </div>
-      </div>
+      </div> */}
       <div className="grid mt-2">
         <RutsCards
           rutinas={rutinasVisibles}

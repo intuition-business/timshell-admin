@@ -69,7 +69,7 @@ export default function UserDashboard() {
         <div className="w-full justify-end">
           <h1 className="text-3xl font-bold text-[#dff400] mb-9">Usuarios</h1>
 
-          <div className="flex gap-6">
+      {/*     <div className="flex gap-6">
             <SearchInput placeholder="Buscar..." />
             <SelectInput
               placeholder="Tipo de plan"
@@ -81,7 +81,7 @@ export default function UserDashboard() {
               options={["Opción 1", "Opción 2"]}
               IconChevronDown
             />
-          </div>
+          </div> */}
 
           <div>
             <div className="flex">

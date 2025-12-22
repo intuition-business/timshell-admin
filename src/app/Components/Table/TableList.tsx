@@ -15,7 +15,7 @@ export function TableList({ encabezado, home, columns }: TableListProps) {
       <div className="mt-3 w-full rounded-md">
         {/* encabezado */}
         <div
-          className={`grid  !bg-[#0e0d0d] p-3  px-5 rounded-lg text-white border border-[#333]}`}
+          className={`grid bg-[#0e0d0d] p-3  px-5 rounded-lg text-white border border-[#333]}`}
           style={{
             gridTemplateColumns: encabezado
               ?.map((item) => item.width)
@@ -114,19 +114,19 @@ export function CardList({
             </span>
           </div>
 
-          <div className="w-full  px-2 overflow-hidden">
+          <div className="w-full flex items-center  px-2 overflow-hidden">
             <span>{t.id}</span>
           </div>
 
-          <div className="w-full px-2 overflow-hidden">
+          <div className="w-full flex items-center px-2 overflow-hidden">
             <span>{t.email}</span>
           </div>
 
-          <div className="w-full px-2 overflow-hidden">
+          <div className="w-full flex items-center px-2 overflow-hidden">
             {t.plan_id}
           </div>
           {t.valoration ? (
-            <div className=" flex justify-center w-full px-2 overflow-hidden">
+            <div className=" flex items-center justify-center w-full px-2 overflow-hidden">
 
               <Stars rating={Number(t.valoration)} size={20} />
             </div>

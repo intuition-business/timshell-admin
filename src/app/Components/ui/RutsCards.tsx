@@ -35,8 +35,8 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {rutinas.map((rutina, index) => {
-         const fechaUTC = rutina.fecha?.replace("Z", "") || ""; 
-         const fechaLocal = fechaUTC ? new Date(fechaUTC) : null;
+        const fechaUTC = rutina.fecha?.replace("Z", "") || "";
+        const fechaLocal = fechaUTC ? new Date(fechaUTC) : null;
 
         const fechaFormateada = fechaLocal
           ? format(fechaLocal, "yyyy-MM-dd")
@@ -49,8 +49,12 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
 
         return (
           <div
+            onClick={() => {
+              const cleanName = rutina.nombre ? encodeURIComponent(rutina.nombre).replace(/%20/g, ' ') : '';
+              router.push(`/pages/users/${user_id}/${fechaFormateada}?name=${cleanName}`);
+            }}
             key={index}
-            className="relative bg-[#0D0D0D] border border-[#2A2A2A] rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(223,244,0,0.2)] transition-all duration-300 flex flex-col justify-between"
+            className="relative group cursor-pointer bg-[#0D0D0D] border border-[#2A2A2A] rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(223,244,0,0.2)] transition-all duration-300 flex flex-col justify-between"
           >
             {/* Badge de estado */}
             <div
@@ -85,12 +89,12 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
             {/* Botón */}
             <div className="mt-6">
               <button
-                 onClick={() => {
-                   const cleanName = rutina.nombre ? encodeURIComponent(rutina.nombre).replace(/%20/g, ' ') : '';
-                   router.push(`/pages/users/${user_id}/${fechaFormateada}?name=${cleanName}`);
-                 }}
+                onClick={() => {
+                  const cleanName = rutina.nombre ? encodeURIComponent(rutina.nombre).replace(/%20/g, ' ') : '';
+                  router.push(`/pages/users/${user_id}/${fechaFormateada}?name=${cleanName}`);
+                }}
 
-                className="w-full border cursor-pointer border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg hover:bg-[#DFF400] hover:text-black transition"
+                className="w-full border cursor-pointer border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg group-hover:bg-[#DFF400] group-hover:text-black transition"
               >
                 Ver detalles
               </button>

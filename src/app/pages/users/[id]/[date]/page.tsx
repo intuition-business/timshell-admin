@@ -20,6 +20,8 @@ export default function RutinaPage() {
     ? decodeURIComponent(exerciseNameParam)
     : "";
 
+    console.log(exerciseName);
+    
   const [rutina, setRutina] = useState<unknown>(null);
   const [rutinaName, setRutinaName] = useState("");
   const router = useRouter()
@@ -31,7 +33,7 @@ export default function RutinaPage() {
     try {
       const token = localStorage.getItem("token") || "";
 
-      const url = `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${date}&routine_name=${exerciseName}&user_id=${id}`;
+      const url = `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${date}&user_id=${id}`;
 
       const response = await fetch(url, {
         headers: {

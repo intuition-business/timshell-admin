@@ -33,6 +33,7 @@ export default function ExerciseCreateNew() {
     const [restError, setRestError] = useState("");
     const [seriesErrors, setSeriesErrors] = useState<string[]>([]);
     const [generalError, setGeneralError] = useState("");
+    const [showVideo, setShowVideo] = useState(false);
 
 
     const isExerciseSelected = title.trim().length > 0;
@@ -63,9 +64,6 @@ export default function ExerciseCreateNew() {
     // VALIDACIÓN
     // ============================
 
-    // ============================
-    // VALIDACIÓN
-    // ============================
     const canSave = () => {
         let valid = true;
 
@@ -120,7 +118,7 @@ export default function ExerciseCreateNew() {
             const token = localStorage.getItem("token") ?? "";
 
             const detalleSeries = series.map((rep) => ({
-                Reps: Number(rep),
+                Reps: String(rep),
             }));
 
             const body = {
@@ -172,6 +170,8 @@ export default function ExerciseCreateNew() {
             setVideoUrl(selectExercise.video_url || "");
             setSeries([""]);
             setRestTime("");
+            setShowVideo(false);
+
         }
     };
 
@@ -181,23 +181,66 @@ export default function ExerciseCreateNew() {
 
                 {/* PREVIEW */}
                 <div className="w-full max-w-[380px]">
-                    <div className="max-h-[70vh] h-full  sticky top-11">
+                    <div className="max-h-[70vh] h-full sticky top-11">
                         <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00]">
                             {title || "Nuevo ejercicio"}
                         </h2>
-
-                        {exerciseImage ? (
-                            <img
-                                src={exerciseImage}
-                                alt="Ejercicio"
-                                className="rounded-xl border aspect-square block overflow-hidden  border-gray-700 w-full max-w-[380px] h-full object-cover" />
-                        ) : (
-                            <div className="aspect-square w-full h-full rounded-xl border border-gray-700 flex items-center justify-center text-gray-500">
-                                Sin imagen
-                            </div>
+                        {showVideo && (
+                            <button
+                                onClick={() => setShowVideo(false)}
+                                className="mt-3 text-sm text-gray-400 hover:text-[#D4FF00] cursor-pointer mb-2"
+                            >
+                                ⟵ Volver a la imagen
+                            </button>
                         )}
+                        {/* CONTENEDOR */}
+                        <div className="relative h-full w-full aspect-square rounded-xl border border-gray-700 overflow-hidden">
+
+                            {/* VIDEO */}
+                            {videoUrl && showVideo ? (
+                                <video
+                                    src={videoUrl}
+                                    controls
+                                    autoPlay
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : exerciseImage ? (
+                                <>
+                                    {/* IMAGEN */}
+                                    <img
+                                        src={exerciseImage}
+                                        alt="Ejercicio"
+                                        className="w-full h-full object-cover"
+                                    />
+
+                                    {/* BOTÓN PLAY */}
+                                    {videoUrl && (
+                                        <button
+                                            onClick={() => setShowVideo(true)}
+                                            className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/40 transition"
+                                        >
+                                            <span className="w-14 h-14 bg-[#D4FF00] rounded-full flex items-center justify-center">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="black"
+                                                    className="w-7 h-7 ml-1"
+                                                >
+                                                    <path d="M8 5v14l11-7z" />
+                                                </svg>
+                                            </span>
+                                        </button>
+                                    )}
+                                </>
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-gray-500">
+                                    Sin imagen
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
+
 
                 {/* FORMULARIO */}
                 <div className="w-full">

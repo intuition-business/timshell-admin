@@ -5,6 +5,7 @@ import ExerciseModal from "@/app/Components/ExerciseModal/ExerciseModal";
 import { SaveExercise } from "@/app/Components/ExerciseModal/SaveExercise";
 import AccionBar from "@/app/Components/navBar/ActionBar";
 import Buttons from "@/app/Components/ui/Buttons";
+import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -177,6 +178,13 @@ export default function ExerciseCreateNew() {
 
     return (
         <>
+            <Buttons
+                data="Atrás"
+                onClick={() => router.push(`/pages/users/${id}/${date}?name=${name}`)}
+                className="flex bg-transparent hover:bg-transparent text-white cursor-pointer"
+            >
+                <ChevronLeft className=" text-white" />
+            </Buttons>
             <div className="flex flex-col p-5 min-h-screen lg:flex-row gap-8">
 
                 {/* PREVIEW */}

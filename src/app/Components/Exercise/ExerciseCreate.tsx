@@ -10,6 +10,7 @@ import Buttons from "../ui/Buttons";
 import { ConfirmReplaceExercise } from "../ExerciseModal/ConfirmReplaceExercise";
 import { ConfirmDeleteExercise } from "../ModalConfirm/modalConfirm";
 import { Fancybox } from "@fancyapps/ui/dist/fancybox/";
+import { ChevronLeft } from "lucide-react";
 
 interface ExerciseCreateProps {
   exerciseName?: string | null;
@@ -275,6 +276,15 @@ export default function ExerciseCreate({
         onConfirm={handleDelete}
         onCancel={() => setOpenDelete(false)}
       />
+      <div>
+        <Buttons
+          data="Atrás"
+          onClick={() => router.push(`/pages/users/${id}/${date}?name=${routineName}`)}
+          className="flex bg-transparent hover:bg-transparent text-white cursor-pointer"
+        >
+          <ChevronLeft className=" text-white" />
+        </Buttons>
+      </div>
       <div className="flex flex-col p-5 min-h-screen lg:flex-row gap-8">
         <div className="w-full max-w-[380px] ">
           <div className="max-h-[70vh] h-full sticky top-11">

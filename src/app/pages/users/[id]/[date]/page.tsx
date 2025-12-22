@@ -92,8 +92,8 @@ export default function RutinaPage() {
         <div className="mb-5">
           <Buttons
             data="Atrás"
-            // onClick={() => router.back()}
-            className="flex bg-transparent hover:bg-transparent text-white"
+            onClick={() => router.push(`/pages/users/${id}`)}
+            className="flex bg-transparent hover:bg-transparent text-white cursor-pointer"
           >
             <ChevronLeft className=" text-white" />
           </Buttons>

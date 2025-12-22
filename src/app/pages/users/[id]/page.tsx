@@ -245,7 +245,7 @@ export default function Pages() {
         <Buttons
           data="Atrás"
           onClick={() => router.back()}
-          className="flex bg-transparent hover:bg-transparent text-white"
+          className="flex bg-transparent hover:bg-transparent text-white cursor-pointer"
         >
           <ChevronLeft className=" text-white" />
         </Buttons>

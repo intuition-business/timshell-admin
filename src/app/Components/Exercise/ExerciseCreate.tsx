@@ -104,7 +104,7 @@ export default function ExerciseCreate({
       };
 
       const res = await fetch(
-        `https://api.timshell.co/api/routines/edit-exercise?user_id=${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}routines/edit-exercise?user_id=${id}`,
         {
           method: "PATCH",
           headers: {
@@ -130,7 +130,7 @@ export default function ExerciseCreate({
         const token = localStorage.getItem("token") ?? "";
 
         const res = await fetch(
-          `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${date}&exercise_name=${title}&user_id=${id}&exercise_id=${idExersiceProps}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}routines/search-in-generated?fecha_rutina=${date}&exercise_name=${title}&user_id=${id}&exercise_id=${idExersiceProps}`,
           {
             method: "GET",
             headers: {
@@ -235,7 +235,7 @@ export default function ExerciseCreate({
       const token = localStorage.getItem("token") || "";
 
       const res = await fetch(
-        `https://api.timshell.co/api/routines/delete-exercise?user_id=${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}routines/delete-exercise?user_id=${id}`,
         {
           method: "DELETE",
           headers: {

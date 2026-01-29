@@ -33,7 +33,7 @@ export default function RutinaPage() {
     try {
       const token = localStorage.getItem("token") || "";
 
-      const url = `https://api.timshell.co/api/routines/search-in-generated?fecha_rutina=${date}&user_id=${id}`;
+      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}routines/search-in-generated?fecha_rutina=${date}&user_id=${id}`;
 
       const response = await fetch(url, {
         headers: {

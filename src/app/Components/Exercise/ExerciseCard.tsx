@@ -34,7 +34,7 @@ export default function ExerciseCard({
       const token = localStorage.getItem("token") || "";
 
       const res = await fetch(
-        `https://api.timshell.co/api/routines/delete-exercise?user_id=${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}routines/delete-exercise?user_id=${id}`,
         {
           method: "DELETE",
           headers: {

@@ -39,7 +39,7 @@ export default function ExerciseModal({
 
         const token = localStorage.getItem("token") ?? "";
 
-        const res = await fetch("https://api.timshell.co/api/exercises/all", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}exercises/all`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",

@@ -49,7 +49,7 @@ export default function Index() {
 
         setIsSubmitting(true);
         try {
-            const response = await fetch('https://api.timshell.co/api/send-otp', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}send-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ export default function Index() {
 
         setIsSubmitting(true);
         try {
-            const response = await fetch('https://api.timshell.co/api/send-otp', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}send-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

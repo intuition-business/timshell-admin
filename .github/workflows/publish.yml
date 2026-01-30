@@ -7,25 +7,13 @@ on:
       - develop
 
 jobs:
-  build_docker_image:
-    name: Build and Push Docker Image
+  build_and_push:
+    name: Build and Push Frontend Image
     runs-on: ubuntu-latest
-    services:
-      docker:
-        image: docker:dind
-        options: --privileged
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -34,44 +22,25 @@ jobs:
           username: ${{ secrets.USER_NAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Add environment variables to .env
-      - name: Add environment variables to .env
-        run: |
-          # For Production (main branch)
-          if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
-            echo "Setting production variables"
-            echo PORT=${{ secrets.PORT }} >> .env
-            echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
-            echo NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} >> .env
-          fi
-
-          # For Development (dev branch)
-          if [ "${GITHUB_REF}" == "refs/heads/develop" ]; then
-            echo "Setting development variables"
-            echo PORT=${{ secrets.PORT_DEV }} >> .env
-            echo NODE_ENV=${{ secrets.NODE_ENV_DEV }} >> .env
-            echo NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL_DEV }} >> .env
-          fi
-
-          # Common environment variables for both
-          echo "Setting common variables"
-          echo PORT=${{ secrets.PORT }} >> .env
-          echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
-          echo NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} >> .env
-
-      # Validate .env file contents
-      - name: Print .env file contents for debugging
-        run: cat .env
-
-      # Build Docker image for production
-      - name: Build Production Docker image
+      # Build Production Frontend Image
+      - name: Build Production Frontend Image
         if: github.ref == 'refs/heads/main'
-        run: docker build --build-arg NODE_ENV=production --build-arg NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} --build-arg env_port=${{ secrets.PORT }} -t ghcr.io/intuition-business/timshel/admin:production .
+        run: |
+          docker build \
+            --build-arg NODE_ENV=production \
+            --build-arg NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} \
+            --build-arg PORT=3001 \
+            -t ghcr.io/intuition-business/timshel/admin:production .
 
-      # Build Docker image for development
-      - name: Build Development Docker image
+      # Build Development Frontend Image
+      - name: Build Development Frontend Image
         if: github.ref == 'refs/heads/develop'
-        run: docker build --build-arg NODE_ENV=development --build-arg NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL_DEV }} --build-arg env_port=${{ secrets.PORT_DEV }} -t ghcr.io/intuition-business/timshel/admin:dev .
+        run: |
+          docker build \
+            --build-arg NODE_ENV=development \
+            --build-arg NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL_DEV }} \
+            --build-arg PORT=3001 \
+            -t ghcr.io/intuition-business/timshel/admin:dev .
 
       # Push Production Docker image to registry
       - name: Push Production Docker image to registry
@@ -83,72 +52,90 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         run: docker push ghcr.io/intuition-business/timshel/admin:dev
 
-  # Job to deploy the application to production
+
   deploy_production:
-    name: Deploy to Production
+    name: Deploy Frontend to Production
     runs-on: ubuntu-latest
-    needs: build_docker_image
-    if: github.ref == 'refs/heads/main'  # Only for the master branch
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    needs: build_and_push
+    if: github.ref == 'refs/heads/main'
 
-      - name: Install SSH and SSHPass
+    steps:
+      - name: Install SSH tools
         run: sudo apt-get update && sudo apt-get install -y openssh-client sshpass
 
-      - name: Set up deployment directory
+      - name: Decode SSH key
         run: |
-          mkdir timshel-admin
-          chmod +x timshel-admin
-          mv docker-compose-production.yml timshel-admin/docker-compose.yml
+          echo "${{ secrets.SERVER_SSH_KEY }}" | base64 -d > my_ssh
+          chmod 400 my_ssh
 
-      - name: Set up SSH Key and set permissions
-        run: printf "%s" "${{ secrets.SERVER_SSH_KEY }}" > my_ssh && chmod 400 my_ssh
-
-      - name: Copy files to server
+      - name: Create .env for production
         run: |
-          sshpass scp -i my_ssh -o StrictHostKeyChecking=no -r timshel-admin ec2-user@${{ secrets.SERVER_IP }}:/home/ec2-user/
+          echo PORT=${{ secrets.PORT }} > .env
+          echo NODE_ENV=production >> .env
+          echo NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} >> .env
 
-      - name: SSH and deploy
+      - name: Copy .env to server
         run: |
-          sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.SERVER_IP }} \
-          "cd /home/ec2-user/timshel-admin; \
-           sudo docker login -u "${{ secrets.USER_NAME }}" -p ${{ secrets.DOCKER_PASSWORD }} ghcr.io/intuition-business/timshel/admin:production; \
-           sudo docker compose down; \
-           sudo docker image rm ghcr.io/intuition-business/timshel/admin:production; \
-           sudo docker compose up -d;"
+          sshpass scp -i my_ssh -o StrictHostKeyChecking=no .env \
+          ec2-user@${{ secrets.SERVER_IP }}:/home/ec2-user/.env
 
-  # Job to deploy the application to development (testing)
+      - name: Deploy on EC2
+        run: |
+          sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.SERVER_IP }} << 'EOF'
+            sudo docker login ghcr.io -u "${{ secrets.USER_NAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+
+            sudo docker pull ghcr.io/intuition-business/timshel/admin:production
+
+            sudo docker stop timshel-admin || true
+            sudo docker rm timshel-admin || true
+
+            sudo docker run -d \
+              --name timshel-admin \
+              --env-file /home/ec2-user/.env \
+              -p 3001:3000 \
+              ghcr.io/intuition-business/timshel/admin:production
+          EOF
+
+
   deploy_dev:
-    name: Deploy to Development (Testing)
+    name: Deploy Frontend to Development
     runs-on: ubuntu-latest
-    needs: build_docker_image
-    if: github.ref == 'refs/heads/dev'  # Only for the dev branch
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    needs: build_and_push
+    if: github.ref == 'refs/heads/develop'
 
-      - name: Install SSH and SSHPass
+    steps:
+      - name: Install SSH tools
         run: sudo apt-get update && sudo apt-get install -y openssh-client sshpass
 
-      - name: Set up deployment directory
+      - name: Decode SSH key
         run: |
-          mkdir timshel-admin-dev
-          chmod +x timshel-admin-dev
-          mv docker-compose-dev.yml timshel-admin-dev/docker-compose.yml
+          echo "${{ secrets.SERVER_SSH_KEY }}" | base64 -d > my_ssh
+          chmod 400 my_ssh
 
-      - name: Decode SSH Key and set permissions
-        run: echo "${{ secrets.SERVER_SSH_KEY }}" | base64 -d > my_ssh && chmod 400 my_ssh
-
-      - name: Copy files to server
+      - name: Create .env for development
         run: |
-          sshpass scp -i my_ssh -o StrictHostKeyChecking=no -r timshel-admin-dev ec2-user@${{ secrets.SERVER_IP }}:/home/ec2-user/
+          echo PORT=${{ secrets.PORT_DEV }} > .env
+          echo NODE_ENV=development >> .env
+          echo NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL_DEV }} >> .env
 
-      - name: SSH and deploy
+      - name: Copy .env to server
         run: |
-          sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.SERVER_IP }} \
-          "cd /home/ec2-user/timshel-admin-dev; \
-           sudo docker login -u "${{ secrets.USER_NAME }}" -p ${{ secrets.DOCKER_PASSWORD }} ghcr.io/intuition-business/timshel/admin:dev; \
-           sudo docker compose down; \
-           sudo docker image rm ghcr.io/intuition-business/timshel/admin:dev; \
-           sudo docker compose up -d;"
+          sshpass scp -i my_ssh -o StrictHostKeyChecking=no .env \
+          ec2-user@${{ secrets.SERVER_IP }}:/home/ec2-user/.env
+
+      - name: Deploy on EC2
+        run: |
+          sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.SERVER_IP }} << 'EOF'
+            sudo docker login ghcr.io -u "${{ secrets.USER_NAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+
+            sudo docker pull ghcr.io/intuition-business/timshel/admin:dev
+
+            sudo docker stop timshel-admin-dev || true
+            sudo docker rm timshel-admin-dev || true
+
+            sudo docker run -d \
+              --name timshel-admin-dev \
+              --env-file /home/ec2-user/.env \
+              -p 3001:3000 \
+              ghcr.io/intuition-business/timshel/admin:dev
+          EOF

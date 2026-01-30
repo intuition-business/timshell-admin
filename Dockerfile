@@ -19,6 +19,10 @@ ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
 # Ajustar la configuración de Node.js para aumentar la memoria
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
+# Definir las variables de entorno para la URL de la API (backend) y el entorno
+ARG NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+
 # Directorio de trabajo y copia de la aplicación
 WORKDIR /usr/src/app
 

@@ -137,7 +137,7 @@ export default function ExerciseCreateNew() {
             };
 
             const res = await fetch(
-                `https://api.timshell.co/api/routines/add-exercise?user_id=${id}`,
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}routines/add-exercise?user_id=${id}`,
                 {
                     method: "POST",
                     headers: {

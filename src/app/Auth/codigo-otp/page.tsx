@@ -47,7 +47,7 @@ export default function Index({setStep}:any) {
             return;
         }
         try {
-            const response = await fetch('https://api.timshell.co/api/validate-otp', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}validate-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

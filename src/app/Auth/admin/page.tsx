@@ -45,7 +45,7 @@ export default function Index() {
             return;
         }
 
-   /*      setCodigoStepDos(true) */
+        /*      setCodigoStepDos(true) */
 
         setIsSubmitting(true);
         try {
@@ -148,11 +148,21 @@ export default function Index() {
             )
         case 2:
             return (
-                <ValidacionOtp step={step} email={email} setCodigoStepDos={setCodigoStepDos}></ValidacionOtp>
+                <ValidacionOtp
+                    key="email-otp"
+                    step={step}
+                    email={email}
+                    setCodigoStepDos={setCodigoStepDos}
+                />
             )
+
         case 3:
             return (
-                <ValidacionOtp step={step} phone={phone}></ValidacionOtp>
+                <ValidacionOtp
+                    key="phone-otp"
+                    step={step}
+                    phone={phone}
+                />
             )
         default:
             return null

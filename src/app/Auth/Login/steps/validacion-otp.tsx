@@ -14,6 +14,11 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
+        setOtp(["", "", "", "", "", ""]);
+    }, [step]);
+
+
+    useEffect(() => {
         setTimeout(() => {
             setLoading(false);
         }, 1000);
@@ -41,6 +46,10 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
         if (code.length !== 6) {
             setError("Por favor ingresa el código completo");
             return;
+        }
+        if (step == 2) {
+            setOtp(["", "", "", "", "", ""]);
+            setCodigoStepDos(true);
         }
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}validate-otp`, {

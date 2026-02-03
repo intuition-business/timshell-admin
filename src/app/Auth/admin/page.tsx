@@ -45,7 +45,7 @@ export default function Index() {
             return;
         }
 
-        setCodigoStepDos(true)
+   /*      setCodigoStepDos(true) */
 
         setIsSubmitting(true);
         try {

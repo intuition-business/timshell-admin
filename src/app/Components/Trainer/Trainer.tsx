@@ -5,8 +5,12 @@ import Inputs from "../Inputs/inputs";
 import AccionBar from "../navBar/ActionBar";
 import { CardList, TableList } from "../Table/TableList";
 import type { Entrenador } from "../typeScript/trainerType";
+import { useRouter } from "next/navigation";
 
 export default function Trainer() {
+
+  const router = useRouter();
+
   const EncabezadosData = [
     { label: "Nombre", width: "250px" },
     { label: "ID", width: "100px" },
@@ -24,7 +28,7 @@ export default function Trainer() {
         const token = localStorage.getItem("token") || "";
 
         const response = await fetch(
-          "https://api.timshell.co/api/trainers",
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers`,
           {
             method: "GET",
             headers: {
@@ -62,6 +66,10 @@ export default function Trainer() {
     fetchTrainers();
   }, []);
 
+  const handleTrainerClick = (userId: string) => {
+    router.push(`/pages/trainer/${userId}`);
+  };
+
   return (
     <section className="fp-6 rounded-3xl shadow-lg w-full text-white items-center">
       <div className="w-full justify-end p-4">
@@ -90,7 +98,7 @@ export default function Trainer() {
         ) : (
           <div className="flex flex-col w-full gap-2">
             <TableList encabezado={EncabezadosData} data={data} columns={5} />
-            <CardList encabezado={EncabezadosData} data={data} columns={5} />
+            <CardList encabezado={EncabezadosData} data={data} columns={5} onCardClick={handleTrainerClick} />
           </div>
         )}
       </div>

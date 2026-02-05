@@ -12,7 +12,7 @@ interface ProfileCardProps {
 export const ProfileCard: React.FC<ProfileCardProps> = ({
   name,
   role = "Usuario",
-  imageUrl = "/default-avatar.png",
+  imageUrl,
   onClick,
 }) => {
   return (
@@ -28,7 +28,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             className=" w-[67px] h-[67px] object-cover rounded-full border-4 border-[#2a2a2b] shadow-lg"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "/default-avatar.png";
+              target.src = imageUrl ? imageUrl : '/default-avatar.png';
             }}
           />
         ) : (

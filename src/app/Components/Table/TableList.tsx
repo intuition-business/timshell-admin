@@ -19,7 +19,7 @@ export function TableList({ encabezado, home, columns }: TableListProps) {
           style={{
             gridTemplateColumns: encabezado
               ?.map((item) => item.width)
-              .join(" "), // 👈 aquí usas los width personalizados
+              .join(" "),
           }}
         >
           {encabezado?.map((item, index: number) => (
@@ -77,26 +77,24 @@ export function CardList({
   useEffect(() => {
     respuesta;
   }, []);
-  console.log(data);
 
   return (
     <div className="flex flex-col gap-2  w-full">
       {data.map((t: any, i) => (
         <div
           key={i}
-          onClick={() => onCardClick && onCardClick(t.id)}
+          onClick={() => onCardClick && onCardClick(t.id ? t.id : t.user_id)}
           className="grid text-[20px] rounded-md  bg-[#333] p-5 cursor-pointer hover:bg-[#484848] text-white"
           style={{
             gridTemplateColumns: encabezado
               ?.map((item) => item.width)
-              .join(" "), // 👈 aquí usas los width personalizados
+              .join(" "),
           }}
         >
           {/* Columna 1: Nombre */}
           <div className="flex gap-3 items-center w-full px-2">
             <div className="h-15 w-15 rounded-full overflow-hidden bg-gray-700 flex items-center justify-between">
               {t.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={t.image}
                   alt={t.name}
@@ -115,11 +113,11 @@ export function CardList({
           </div>
 
           <div className="w-full flex items-center  px-2 overflow-hidden">
-            <span>{t.id}</span>
+            <span>{t.id ? t.id : t.user_id}</span>
           </div>
 
           <div className="w-full flex items-center px-2 overflow-hidden">
-            <span>{t.email}</span>
+            <span>{t.email ? t.email : t.user_email}</span>
           </div>
 
           <div className="w-full flex items-center px-2 overflow-hidden">

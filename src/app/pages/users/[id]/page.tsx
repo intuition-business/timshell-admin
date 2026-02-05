@@ -258,7 +258,7 @@ export default function Pages() {
         <ProfileCard
           name={user.name || "sin nombre"}
           role={user.plan_name || "Sin plan"}
-          imageUrl={user.user_image || "/default-avatar.png"}
+          imageUrl={user.user_image}
         />
       </div>
       <div className=" flex py-4  ">

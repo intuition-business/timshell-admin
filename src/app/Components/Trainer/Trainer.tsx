@@ -6,6 +6,7 @@ import AccionBar from "../navBar/ActionBar";
 import { CardList, TableList } from "../Table/TableList";
 import type { Entrenador } from "../typeScript/trainerType";
 import { useRouter } from "next/navigation";
+import ModalTrainersRegister from "./TrainerRegister";
 
 export default function Trainer() {
 
@@ -21,6 +22,7 @@ export default function Trainer() {
 
   const [data, setData] = useState<Entrenador[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const fetchTrainers = async () => {
@@ -103,7 +105,16 @@ export default function Trainer() {
         )}
       </div>
 
-      <AccionBar textButton="Crear entrenador" />
+      <AccionBar
+        textButton="Crear entrenador"
+        useAccionState={setOpenModal}
+      />
+
+      <ModalTrainersRegister
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+      />
+
     </section>
   );
 }

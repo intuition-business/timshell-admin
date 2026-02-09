@@ -94,9 +94,9 @@ export function CardList({
           {/* Columna 1: Nombre */}
           <div className="flex gap-3 items-center w-full px-2">
             <div className="h-15 w-15 rounded-full overflow-hidden bg-gray-700 flex items-center justify-between">
-              {t.image ? (
+              {t.image || t.userImage ? (
                 <img
-                  src={t.image}
+                  src={t.image ? t.image : t.userImage}
                   alt={t.name}
                   className="h-full w-full object-cover"
                 />

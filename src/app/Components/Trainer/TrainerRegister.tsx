@@ -15,27 +15,37 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
     name: "",
     email: "",
     phone: "",
-    age: "",
+    address: "",
+    experience_years: "",
+    certifications: "",
     description: "",
-    profession: "",
-    password: "",
+    image: null as File | null,
   });
+
 
   const [error, setError] = useState("");
 
   const handleChange = (e: any) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, files } = e.target;
+
+    if (name === "image") {
+      setForm({ ...form, image: files[0] });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
+
 
   const validate = () => {
     if (!form.name) return "Nombre requerido";
     if (!/\S+@\S+\.\S+/.test(form.email)) return "Correo inválido";
     if (!form.phone) return "Teléfono requerido";
-    if (!form.age || Number(form.age) < 18) return "Debe ser mayor de edad";
-    if (!form.password || form.password.length < 6)
-      return "La contraseña debe tener mínimo 6 caracteres";
+    if (!form.address) return "Dirección requerida";
+    if (!form.experience_years || Number(form.experience_years) < 0)
+      return "Años de experiencia inválidos";
     return "";
   };
+
 
   const handleSubmit = async () => {
     const validationError = validate();
@@ -46,21 +56,41 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
 
     setError("");
 
-    console.log("DATA A ENVIAR:", form);
-    /*
-    await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}trainers`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem("token") || "",
-      },
-      body: JSON.stringify(form),
-    });
-    */
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("email", form.email);
+    formData.append("phone", form.phone);
+    formData.append("address", form.address);
+    formData.append("certifications", form.certifications);
+    formData.append("description", form.description);
 
-    onClose();
+    if (form.image) {
+      formData.append("image", form.image);
+    }
+    const token = localStorage.getItem("token") || "";
+    try {
+      const res = await fetch(
+        "https://timshel-backend.onrender.com/api/trainers/create",
+        {
+          method: "POST",
+          headers: {
+            "x-access-token": token,
+          },
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Error al crear entrenador");
+      }
+
+      onClose();
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
       <div className="bg-[#0e0e0e] w-full max-w-lg rounded-2xl p-6 relative">
@@ -75,14 +105,39 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
           Registrar entrenador
         </h2>
 
+        <div className="mt-3">
+          <label className="text-sm text-gray-300">Imagen de perfil</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setForm({ ...form, image: e.target.files?.[0] || null })
+            }
+            className="mt-1 w-full text-sm text-gray-300"
+          />
+        </div>
+
+
         <div className="grid grid-cols-2 gap-3">
           <Input label="Nombre" name="name" value={form.name} onChange={handleChange} />
           <Input label="Correo" name="email" value={form.email} onChange={handleChange} />
           <Input label="Teléfono" name="phone" value={form.phone} onChange={handleChange} />
-          <Input label="Edad" name="age" type="number" value={form.age} onChange={handleChange} />
-          <Input label="Profesión" name="profession" value={form.profession} onChange={handleChange} />
-          <Input label="Contraseña" name="password" type="password" value={form.password} onChange={handleChange} />
+          <Input label="Dirección" name="address" value={form.address} onChange={handleChange} />
+          <Input
+            label="Años de experiencia"
+            name="experience_years"
+            type="number"
+            value={form.experience_years}
+            onChange={handleChange}
+          />
+          <Input
+            label="Certificaciones"
+            name="certifications"
+            value={form.certifications}
+            onChange={handleChange}
+          />
         </div>
+
 
         <div className="mt-3">
           <label className="text-sm text-gray-300">Descripción</label>
@@ -93,6 +148,7 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
             className="w-full mt-1 p-3 rounded-xl bg-black border border-gray-700 text-white"
           />
         </div>
+
 
         {error && (
           <p className="text-red-400 text-sm mt-3">{error}</p>

@@ -1,4 +1,4 @@
-import Interna from "@/app/Components/Interna/Interna";
+/* import Interna from "@/app/Components/Interna/Interna";
 
 export default function page() {
   return (
@@ -7,3 +7,4 @@ export default function page() {
     </div>
   );
 }
+ */

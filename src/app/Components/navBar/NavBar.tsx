@@ -26,7 +26,7 @@ export default function NavBar() {
   return (
     <nav className="sticky left-0 top-0 h-screen z-10 max-w-[290px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg text-xl rounded-r-[40px]">
       {/* Logo */}
-      {role === 'admin' ? (
+      {role !== 'admin' ? (
         <div>
           <div className="px-0 py-0 mt-14 flex justify-center">
             <img className="max-w-[180px]" src="/logo.png" alt="Logo" />
@@ -70,7 +70,7 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <Link href="/exercises" passHref>
+            <Link href="/pages/exercise" passHref>
               <div
                 className={`flex items-center gap-3 font-bold transition-colors ${isActive("/exercises")
                   ? "text-lime-400"

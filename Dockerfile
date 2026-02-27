@@ -16,19 +16,22 @@ RUN apk update && \
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
 
-# Ajustar la configuración de Node.js para aumentar la memoria
+# Aumentar memoria de Node
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
-# Directorio de trabajo y copia de la aplicación
+# Directorio de trabajo
 WORKDIR /usr/src/app
 
-# Copiar todos los archivos, incluyendo el archivo .env
+# Copiar todo
 COPY . .
 
-# Instalar dependencias de la aplicación
+# Instalar dependencias
 RUN npm install
 RUN npm install typescript
 RUN npm install dotenv
+
+# Construir la aplicación en producción (IMPORTANTE)
+RUN npm run build
 
 # Definir variables de entorno y exponer puerto
 ARG env_name
@@ -37,5 +40,5 @@ ENV NODE_ENV=$env_name
 ENV PORT=$env_port
 EXPOSE $env_port
 
-# Comando para iniciar la aplicación
-CMD ["npm", "run", "dev"]
+# Comando de producción (cambia esto)
+CMD ["npm", "run", "start"]

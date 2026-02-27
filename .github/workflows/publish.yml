@@ -91,10 +91,13 @@ jobs:
 
             sudo docker run -d \
               --name timshel-admin \
+              --restart unless-stopped \
+              --memory=1g \                  # Limita RAM para evitar que se coma toda la instancia
+              --cpus=1 \                     # Limita CPU para estabilidad
               --env-file /home/ubuntu/.env \
               -p 3001:3000 \
-              --restart unless-stopped \
-              ghcr.io/intuition-business/timshel/admin:production
+              ghcr.io/intuition-business/timshel/admin:production \
+              npm run start                  # Fuerza modo producción (next start)
           EOF
 
 
@@ -136,8 +139,11 @@ jobs:
 
             sudo docker run -d \
               --name timshel-admin-dev \
+              --restart unless-stopped \
+              --memory=1g \
+              --cpus=1 \
               --env-file /home/ubuntu/.env \
               -p 3001:3000 \
-              --restart unless-stopped \
-              ghcr.io/intuition-business/timshel/admin:dev
+              ghcr.io/intuition-business/timshel/admin:dev \
+              npm run start                 
           EOF

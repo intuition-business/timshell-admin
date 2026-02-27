@@ -15,6 +15,8 @@ export default function Page() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  // nuevo campo para grupo muscular
+  const [muscleGroup, setMuscleGroup] = useState<string>("");
   const [video, setVideo] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>("");
 
@@ -45,6 +47,9 @@ export default function Page() {
     if (!title.trim()) return setError("Debes escribir el título");
     if (!description.trim()) return setError("Debes escribir la descripción");
     if (!category) return setError("Debes seleccionar una categoría");
+    if (!muscleGroup || (muscleGroup !== "small muscle" && muscleGroup !== "large muscle")) {
+      return setError("El grupo muscular debe ser \"small muscle\" o \"large muscle\"");
+    }
     // si ya hay un preview (video cargado anteriormente) no exige nuevo archivo
     if (!video && !preview) return setError("Debes subir un video");
 
@@ -66,26 +71,40 @@ export default function Page() {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append("exercise", title);
-      formData.append("description", description);
-      formData.append("category", category);
-      formData.append("muscle_group", "musculos grandes");
-      formData.append("at_home", "true");
+      if (!editingId) {
+        formData.append("exercise", title);
+        formData.append("description", description);
+        formData.append("category", category);
+        // se envía el valor seleccionado (small muscle / large muscle)
+        formData.append("muscle_group", muscleGroup);
+        formData.append("at_home", "true");
+        if (video) {
+          formData.append("video", video);
 
-      if (video) {
-        formData.append("video", '');
+          // 🔥 Generar thumbnail automático
+          const thumbnail = await generateThumbnail(video);
+          formData.append("thumbnail", thumbnail);
+        }
+      }else{
+        formData.append("new_exercise", title);
+        formData.append("new_description", description);
+        formData.append("new_category", category);
+        formData.append("new_muscle_group", muscleGroup);
+        if (video) {
+          formData.append("new_video", video);
+          const thumbnail = await generateThumbnail(video);
+          formData.append("new_thumbnail", thumbnail);
+        }
 
-        // 🔥 Generar thumbnail automático
-        const thumbnail = await generateThumbnail(video);
-        formData.append("thumbnail", thumbnail);
       }
+
 
       const token = localStorage.getItem("token") || "";
 
       const endpoint = editingId
         ? `exercises/update/${editingId}`
         : `exercises/create`;
-      const method = editingId ? "PUT" : "POST";
+      const method = editingId ? "PATCH" : "POST";
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}${endpoint}`,
@@ -101,11 +120,15 @@ export default function Page() {
 
       if (!res.ok) throw new Error("Error al guardar");
 
-      // después de un update limpiamos el estado
-      if (editingId) {
-        setEditingId(null);
-        setIsEditing(false);
-      }
+      // después de un update/crear limpiamos el estado
+      setTitle("");
+      setDescription("");
+      setCategory("");
+      setMuscleGroup("");
+      setVideo(null);
+      setPreview("");
+      setEditingId(null);
+      setIsEditing(false);
     } catch (error) {
       setError(
         `Ocurrió un error al ${editingId ? "actualizar" : "crear"} el ejercicio`
@@ -130,7 +153,13 @@ export default function Page() {
         ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         canvas.toBlob((blob) => {
-          if (blob) resolve(blob);
+          if (blob) {
+            console.log("Tamaño en bytes:", blob.size);
+            console.log("Tamaño en KB:", (blob.size / 1024).toFixed(2) + " KB");
+            console.log("Tamaño en MB:", (blob.size / (1024 * 1024)).toFixed(2) + " MB");
+
+            resolve(blob);
+          }
         }, "image/jpeg", 0.8);
       };
     });
@@ -145,7 +174,7 @@ export default function Page() {
     try {
       const token = localStorage.getItem("token") || "";
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}exercises/${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}exercises/single/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -165,6 +194,10 @@ export default function Page() {
         setPreview(exercise.video_url);
       } else if (exercise.thumbnail_url) {
         setPreview(exercise.thumbnail_url);
+      }
+      // cargar grupo muscular si existe
+      if (exercise.muscle_group) {
+        setMuscleGroup(exercise.muscle_group);
       }
       setEditingId(id);
       setIsEditing(true);
@@ -279,6 +312,20 @@ export default function Page() {
             </select>
           </div>
 
+          {/* GRUPO MUSCULAR */}
+          <div>
+            <label className="text-gray-300">Grupo muscular</label>
+            <select
+              value={muscleGroup}
+              onChange={(e) => setMuscleGroup(e.target.value)}
+              className="w-full mt-2 bg-[#2B2B2B] border border-gray-700 text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-[#D4FF00]"
+            >
+              <option value="">Seleccionar grupo muscular</option>
+              <option value="small muscle">Musculo pequeño</option>
+              <option value="large muscle">Musculo grande</option>
+            </select>
+          </div>
+
           {/* BOTÓN */}
           {isEditing && (
             <Buttons
@@ -288,6 +335,7 @@ export default function Page() {
                 setTitle("");
                 setDescription("");
                 setCategory("");
+                setMuscleGroup("");
                 setVideo(null);
                 setPreview("");
               }}
@@ -304,8 +352,8 @@ export default function Page() {
                   ? "Guardando..."
                   : "Creando ejercicio..."
                 : isEditing
-                ? "Actualizar ejercicio"
-                : "Crear ejercicio"
+                  ? "Actualizar ejercicio"
+                  : "Crear ejercicio"
             }
             disabled={loading}
             className={`w-full bg-white text-black font-bold py-4 hover:bg-[#D4FF00] ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}

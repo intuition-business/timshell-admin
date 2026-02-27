@@ -53,7 +53,7 @@ export default function Trainer() {
           email: trainer.email,
           usuarios: trainer.user_count ?? 0,
           valoration: Number(trainer.rating) || 0,
-          image: trainer.image || "https://i.pravatar.cc/100",
+          image: trainer.image,
         }));
 
 

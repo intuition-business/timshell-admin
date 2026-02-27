@@ -56,8 +56,6 @@ export default function Index() {
                 },
                 body: JSON.stringify({
                     email: email || undefined,
-                    phonenumber: undefined,
-                    /* platform: 'web', */
                 }),
             });
 

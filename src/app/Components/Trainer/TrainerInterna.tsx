@@ -44,7 +44,7 @@ interface User {
   trainer_image?: string;
   user_image?: string;
   fecha?: string;
-  certificacion?: string;
+  certification?: string;
   description?: string;
   rating?: string;
 }
@@ -52,7 +52,7 @@ interface User {
 export default function TrainerDashboard() {
   const [rutinasVisibles, setRutinasVisibles] = useState<Rutina[]>([]);
   const [user, setUser] = useState<User | null>(null);
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
 
@@ -211,7 +211,7 @@ export default function TrainerDashboard() {
             trainer_image: userData.image || "",
             user_image: userData.image || "",
             rating: userData.rating,
-            certificacion: userData.certifications,
+            certification: userData.certifications,
             description: userData.description,
           });
         } else {
@@ -276,7 +276,7 @@ export default function TrainerDashboard() {
           name={user.name}
           image={user.user_image}
           rating={user.rating}
-          specialty={user.certificacion}
+          specialty={user.certification}
           price="$120.000"
           description={user.description}
         />

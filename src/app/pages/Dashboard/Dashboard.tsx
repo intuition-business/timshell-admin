@@ -46,7 +46,7 @@ export default function Dashboard() {
     ],
     datasets: [
       {
-        label: "Altas mensuales vvvvvvvvvvvvvvv",
+        label: "Altas mensuales ",
         data: [
           600, 900, 1400, 1300, 1250, 1600, 1500, 1200, 900, 1500, 1600, 1200,
         ],

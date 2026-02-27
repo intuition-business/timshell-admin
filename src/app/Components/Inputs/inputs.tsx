@@ -16,9 +16,9 @@ interface InputDateProps {
   icon?: ReactNode;
 }
 
-export function SearchInput({ placeholder, onChange, value }: any) {
+export function SearchInput({ placeholder, onChange, value, wFull }: any) {
   return (
-    <div className="relative w-full max-w-[390px]">
+    <div className={`relative ${wFull ? "w-full" : "w-full max-w-[390px]"}`}>
       <input
         type="text"
         placeholder={placeholder}

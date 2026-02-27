@@ -72,7 +72,7 @@ export default function ExerciseModal({
       onClick={onClose}
     >
       <div
-        className="bg-[#282828] h-full max-w-[560px] w-full rounded-l-2xl py-4 relative border-l border-[#2A2A2A] shadow-xl"
+        className="bg-[#282828] h-full w-[3/12] min-w-[250px] max-w-[560px] rounded-l-2xl py-4 relative border-l border-[#2A2A2A] shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button

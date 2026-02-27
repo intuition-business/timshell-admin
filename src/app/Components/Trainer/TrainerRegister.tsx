@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Buttons from "../ui/Buttons";
 
 interface Props {
   open: boolean;
@@ -9,43 +8,60 @@ interface Props {
 }
 
 export default function ModalTrainersRegister({ open, onClose }: Props) {
-  if (!open) return null;
-
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    address: "",
     experience_years: "",
-    certifications: "",
+    address: "",
+    goal: "",
     description: "",
-    image: null as File | null,
+    certifications: null as File | null,
   });
 
-
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  if (!open) return null;
+
+  const resetForm = () => {
+    setForm({
+      name: "",
+      email: "",
+      phone: "",
+      experience_years: "",
+      address: "",
+      goal: "",
+      description: "",
+      certifications: null,
+    });
+    setError("");
+  };
+
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
 
   const handleChange = (e: any) => {
     const { name, value, files } = e.target;
 
-    if (name === "image") {
-      setForm({ ...form, image: files[0] });
+    if (name === "certifications") {
+      setForm({ ...form, certifications: files?.[0] || null });
     } else {
       setForm({ ...form, [name]: value });
     }
   };
 
-
   const validate = () => {
-    if (!form.name) return "Nombre requerido";
+    if (!form.name.trim()) return "Nombre requerido";
     if (!/\S+@\S+\.\S+/.test(form.email)) return "Correo inválido";
-    if (!form.phone) return "Teléfono requerido";
-    if (!form.address) return "Dirección requerida";
-    if (!form.experience_years || Number(form.experience_years) < 0)
-      return "Años de experiencia inválidos";
+    if (!form.phone.trim()) return "Teléfono requerido";
+    if (!form.experience_years || Number(form.experience_years) <= 0) return "Años de experiencia inválidos";
+    if (!form.address.trim()) return "Dirección requerida";
+    if (!form.goal.trim()) return "Tarifa requerida";
     return "";
   };
-
 
   const handleSubmit = async () => {
     const validationError = validate();
@@ -54,23 +70,19 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
       return;
     }
 
-    setError("");
-
-    const formData = new FormData();
-    formData.append("name", form.name);
-    formData.append("email", form.email);
-    formData.append("phone", form.phone);
-    formData.append("address", form.address);
-    formData.append("certifications", form.certifications);
-    formData.append("description", form.description);
-
-    if (form.image) {
-      formData.append("image", form.image);
-    }
-    const token = localStorage.getItem("token") || "";
     try {
+      setLoading(true);
+      setError("");
+
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        if (value) formData.append(key, value as any);
+      });
+
+      const token = localStorage.getItem("token") || "";
+
       const res = await fetch(
-        "https://timshel-backend.onrender.com/api/trainers/create",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/create`,
         {
           method: "POST",
           headers: {
@@ -83,83 +95,93 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data?.message || "Error al crear entrenador");
+        throw new Error(data?.message || "Error al registrar entrenador");
       }
 
-      onClose();
+      handleClose();
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-      <div className="bg-[#0e0e0e] w-full max-w-lg rounded-2xl p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+      <div className="w-full max-w-3xl rounded-2xl bg-[#1c1c1c] p-8 relative border border-gray-700">
+
+        {/* Close */}
         <button
-          onClick={onClose}
-          className="absolute right-4 top-4 text-gray-400 hover:text-white"
+          onClick={handleClose}
+          className="absolute right-5 top-5 text-gray-400 hover:text-white text-lg"
         >
           ✕
         </button>
 
-        <h2 className="text-2xl font-bold text-[#dff400] mb-4">
+        <h2 className="text-2xl font-semibold text-[#d4ff00] mb-6">
           Registrar entrenador
         </h2>
 
-        <div className="mt-3">
-          <label className="text-sm text-gray-300">Imagen de perfil</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) =>
-              setForm({ ...form, image: e.target.files?.[0] || null })
-            }
-            className="mt-1 w-full text-sm text-gray-300"
-          />
+        {/* Grid */}
+        <div className="grid grid-cols-2 gap-6">
+          <Input label="Nombre" name="name" placeholder="Escribe tu nombre" value={form.name} onChange={handleChange} />
+          <Input label="Correo" name="email" placeholder="Escribe tu correo" value={form.email} onChange={handleChange} />
+          <Input label="Teléfono" name="phone" placeholder="Escribe tu numero" value={form.phone} onChange={handleChange} />
+          <Input label="Edad" name="experience_years" placeholder="Escribe tu edad" type="number" value={form.experience_years} onChange={handleChange} />
+          <Input label="Dirección" name="address" placeholder="Ej: Calle 40 #5-12" value={form.address} onChange={handleChange} />
+          <Input label="Tarifa" name="goal" placeholder="Ej: 20.000/hora" value={form.goal} onChange={handleChange} />
         </div>
 
-
-        <div className="grid grid-cols-2 gap-3">
-          <Input label="Nombre" name="name" value={form.name} onChange={handleChange} />
-          <Input label="Correo" name="email" value={form.email} onChange={handleChange} />
-          <Input label="Teléfono" name="phone" value={form.phone} onChange={handleChange} />
-          <Input label="Dirección" name="address" value={form.address} onChange={handleChange} />
-          <Input
-            label="Años de experiencia"
-            name="experience_years"
-            type="number"
-            value={form.experience_years}
-            onChange={handleChange}
-          />
-          <Input
-            label="Certificaciones"
-            name="certifications"
-            value={form.certifications}
-            onChange={handleChange}
-          />
-        </div>
-
-
-        <div className="mt-3">
+        {/* Descripción */}
+        <div className="mt-6">
           <label className="text-sm text-gray-300">Descripción</label>
           <textarea
             name="description"
+            placeholder="Escribe un mensaje"
             value={form.description}
             onChange={handleChange}
-            className="w-full mt-1 p-3 rounded-xl bg-black border border-gray-700 text-white"
+            className="w-full mt-2 p-4 rounded-xl bg-[#111] border border-gray-600 text-white focus:outline-none focus:border-[#d4ff00]"
+            rows={4}
           />
         </div>
 
+        {/* Subir certificado */}
+        <div className="mt-6">
+          <label className="text-sm text-gray-300">Subir certificado</label>
+
+          <label className="mt-2 flex flex-col items-center justify-center border-2 border-dashed border-gray-600 rounded-xl p-10 cursor-pointer hover:border-[#d4ff00] transition">
+            <span className="text-gray-400 text-sm">
+              {form.certifications ? form.certifications.name : "Sube un archivo"}
+            </span>
+            <input
+              type="file"
+              name="certifications"
+              onChange={handleChange}
+              className="hidden"
+            />
+          </label>
+        </div>
 
         {error && (
-          <p className="text-red-400 text-sm mt-3">{error}</p>
+          <p className="text-red-400 text-sm mt-4">{error}</p>
         )}
 
-        <div className="mt-6 flex justify-end">
-          <Buttons
-            data="Registrar"
+        {/* Buttons */}
+        <div className="flex justify-end gap-4 mt-8">
+          <button
+            onClick={handleClose}
+            className="px-6 py-3 rounded-xl bg-gray-300 text-black font-medium hover:opacity-90 transition"
+          >
+            Cancelar
+          </button>
+
+          <button
             onClick={handleSubmit}
-            className="max-w-[220px] w-full py-3"
-          />
+            disabled={loading}
+            className="px-8 py-3 rounded-xl bg-[#d4ff00] text-black font-semibold hover:brightness-110 transition disabled:opacity-50"
+          >
+            {loading ? "Guardando..." : "Guardar cambios"}
+          </button>
         </div>
       </div>
     </div>
@@ -172,7 +194,7 @@ function Input({ label, ...props }: any) {
       <label className="text-sm text-gray-300">{label}</label>
       <input
         {...props}
-        className="mt-1 p-3 rounded-xl bg-black border border-gray-700 text-white"
+        className="mt-2 p-3 rounded-xl bg-[#111] border border-gray-600 text-white focus:outline-none focus:border-[#d4ff00]"
       />
     </div>
   );

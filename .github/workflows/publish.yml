@@ -63,8 +63,7 @@ jobs:
       - name: Install SSH tools
         run: sudo apt-get update && sudo apt-get install -y openssh-client sshpass
 
-      # Mantener la clave SSH como estaba antes
-      - name: Set up SSH key (como antes)
+      - name: Set up SSH key
         run: |
           printf "%s" "${{ secrets.SERVER_SSH_KEY }}" > my_ssh
           chmod 400 my_ssh
@@ -78,11 +77,11 @@ jobs:
       - name: Copy .env to server
         run: |
           sshpass scp -i my_ssh -o StrictHostKeyChecking=no .env \
-          ec2-user@${{ secrets.SERVER_IP }}:/home/ec2-user/.env
+            ubuntu@${{ secrets.SERVER_IP }}:/home/ubuntu/.env
 
       - name: Deploy on EC2
         run: |
-          sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.SERVER_IP }} << 'EOF'
+          sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} << 'EOF'
             sudo docker login ghcr.io -u "${{ secrets.USER_NAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
 
             sudo docker pull ghcr.io/intuition-business/timshel/admin:production
@@ -92,8 +91,9 @@ jobs:
 
             sudo docker run -d \
               --name timshel-admin \
-              --env-file /home/ec2-user/.env \
+              --env-file /home/ubuntu/.env \
               -p 3001:3000 \
+              --restart unless-stopped \
               ghcr.io/intuition-business/timshel/admin:production
           EOF
 
@@ -108,8 +108,7 @@ jobs:
       - name: Install SSH tools
         run: sudo apt-get update && sudo apt-get install -y openssh-client sshpass
 
-      # Mantener la clave SSH como estaba antes
-      - name: Set up SSH key (como antes)
+      - name: Set up SSH key
         run: |
           printf "%s" "${{ secrets.SERVER_SSH_KEY }}" > my_ssh
           chmod 400 my_ssh
@@ -123,11 +122,11 @@ jobs:
       - name: Copy .env to server
         run: |
           sshpass scp -i my_ssh -o StrictHostKeyChecking=no .env \
-          ec2-user@${{ secrets.SERVER_IP }}:/home/ec2-user/.env
+            ubuntu@${{ secrets.SERVER_IP }}:/home/ubuntu/.env
 
       - name: Deploy on EC2
         run: |
-          sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.SERVER_IP }} << 'EOF'
+          sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} << 'EOF'
             sudo docker login ghcr.io -u "${{ secrets.USER_NAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
 
             sudo docker pull ghcr.io/intuition-business/timshel/admin:dev
@@ -137,7 +136,8 @@ jobs:
 
             sudo docker run -d \
               --name timshel-admin-dev \
-              --env-file /home/ec2-user/.env \
+              --env-file /home/ubuntu/.env \
               -p 3001:3000 \
+              --restart unless-stopped \
               ghcr.io/intuition-business/timshel/admin:dev
           EOF

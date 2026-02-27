@@ -1,35 +1,44 @@
 "use client";
 
-import Loading from "@/app/Components/Loading/loading";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Loading from "@/app/Components/Loading/loading";
 
 export default function Home() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+
     const token = localStorage.getItem("token");
 
     if (!token) {
-      router.push("/Auth/Login");
+
+      router.replace("/Auth/Login");
     } else {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000); // Aquí defines el retraso para simular la carga
+      setIsAuthenticated(true);
+      setIsLoading(false);
     }
+
+
+    return () => {
+    };
   }, [router]);
 
-  if (loading) {
-    return <Loading />; // Muestra el componente de loading mientras se verifica el token
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!isAuthenticated) {
+    return null;
   }
 
   return (
-    <div>
-      <main>
-        <Dashboard />
-      </main>
-    </div>
+    <main>
+      <Dashboard />
+    </main>
   );
 }

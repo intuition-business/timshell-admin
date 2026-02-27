@@ -1,10 +1,9 @@
-/* import Interna from "@/app/Components/Interna/Interna";
+// src/app/pages/interna/page.tsx
 
-export default function page() {
+export default function Interna() {
   return (
-    <div className=" w-full relative min-h-full">
-      <Interna />
+    <div>
+      <h1>Página Interna</h1>
     </div>
   );
 }
- */

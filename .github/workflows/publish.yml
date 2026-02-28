@@ -83,21 +83,10 @@ jobs:
         run: |
           sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} << 'EOF'
             sudo docker login ghcr.io -u "${{ secrets.USER_NAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
-
             sudo docker pull ghcr.io/intuition-business/timshel/admin:production
-
             sudo docker stop timshel-admin || true
             sudo docker rm timshel-admin || true
-
-            sudo docker run -d \
-              --name timshel-admin \
-              --restart unless-stopped \
-              --memory=1g \                  # Limita RAM para evitar que se coma toda la instancia
-              --cpus=1 \                     # Limita CPU para estabilidad
-              --env-file /home/ubuntu/.env \
-              -p 3001:3000 \
-              ghcr.io/intuition-business/timshel/admin:production \
-              npm run start                  # Fuerza modo producción (next start)
+            sudo docker run -d --name timshel-admin --restart unless-stopped --memory=1g --cpus=1 --env-file /home/ubuntu/.env -p 3001:3000 ghcr.io/intuition-business/timshel/admin:production npm run start
           EOF
 
 
@@ -131,19 +120,8 @@ jobs:
         run: |
           sshpass ssh -i my_ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.SERVER_IP }} << 'EOF'
             sudo docker login ghcr.io -u "${{ secrets.USER_NAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
-
             sudo docker pull ghcr.io/intuition-business/timshel/admin:dev
-
             sudo docker stop timshel-admin-dev || true
             sudo docker rm timshel-admin-dev || true
-
-            sudo docker run -d \
-              --name timshel-admin-dev \
-              --restart unless-stopped \
-              --memory=1g \
-              --cpus=1 \
-              --env-file /home/ubuntu/.env \
-              -p 3001:3000 \
-              ghcr.io/intuition-business/timshel/admin:dev \
-              npm run start                 
+            sudo docker run -d --name timshel-admin-dev --restart unless-stopped --memory=1g --cpus=1 --env-file /home/ubuntu/.env -p 3001:3000 ghcr.io/intuition-business/timshel/admin:dev npm run start
           EOF

@@ -1,44 +1,42 @@
-# Utilizar la imagen base de Node.js 20.12.2 en Alpine
-FROM node:22.14.0-alpine
+# Stage 1: Builder (construye la app)
+FROM node:22.14.0-alpine AS builder
 
-# Instalar dependencias necesarias
-RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache \
-    udev \
-    ttf-freefont \
-    chromium \
-    git \
-    bash \
-    && rm -rf /var/cache/apk/*
-
-# Establecer variables de entorno para Puppeteer
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser
-
-# Aumentar memoria de Node
-ENV NODE_OPTIONS="--max-old-space-size=4096"
-
-# Directorio de trabajo
 WORKDIR /usr/src/app
 
-# Copiar todo
+# Copia solo package.json y lock primero (cachea dependencias)
+COPY package*.json ./
+
+RUN npm install
+
+# Copia el resto del código
 COPY . .
 
-# Instalar dependencias
-RUN npm install
-RUN npm install typescript
-RUN npm install dotenv
-
-# Construir la aplicación en producción (IMPORTANTE)
-RUN npm run build
-
-# Definir variables de entorno y exponer puerto
+# Construye en producción
 ARG env_name
 ARG env_port
 ENV NODE_ENV=$env_name
 ENV PORT=$env_port
+
+RUN npm run build
+
+# Stage 2: Producción (imagen liviana)
+FROM node:22.14.0-alpine
+
+WORKDIR /usr/src/app
+
+# Copia solo lo necesario de builder
+COPY --from=builder /usr/src/app/.next ./.next
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/package.json ./package.json
+COPY --from=builder /usr/src/app/public ./public  
+
+# Variables de entorno
+ARG env_name
+ARG env_port
+ENV NODE_ENV=$env_name
+ENV PORT=$env_port
+
 EXPOSE $env_port
 
-# Comando de producción (cambia esto)
+# Comando de producción
 CMD ["npm", "run", "start"]

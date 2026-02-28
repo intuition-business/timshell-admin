@@ -1,9 +1,9 @@
-// src/app/pages/interna/page.tsx
 
-export default function Interna() {
+
+export default function page() {
   return (
-    <div>
-      <h1>Página Interna</h1>
+    <div className=" w-full relative min-h-full">
+      <h1 className="text-2xl font-bold mb-4">Página Interna</h1>
     </div>
   );
 }

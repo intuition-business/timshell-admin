@@ -60,7 +60,7 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
                 body: JSON.stringify({
                     email: email,
                     phonenumber: '+57' + phone,
-                    otp: Number(code)
+                    otp: String(code)
                 }),
             });
 

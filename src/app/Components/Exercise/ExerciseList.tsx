@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { SearchInput } from "../Inputs/inputs";
 import ReusableExercise from "../ui/ReusableExercise";
 import { Pencil, Trash2 } from "lucide-react";
+import { ModalConfirm } from "../Modals/ModalConfirm";
 // import ConfirmReplaceExercise from "../modals/ConfirmReplaceExercise";
 
 interface ListadoEjerciciosProps {
@@ -11,12 +12,15 @@ interface ListadoEjerciciosProps {
    * Recibe el objeto completo del ejercicio seleccionado.
    */
   onEdit?: (item: any) => void;
+  update?: boolean;
+  setUpdate?: (update: boolean) => void;
 }
 
-export default function ListadoEjercicios({ onEdit }: ListadoEjerciciosProps) {
+export default function ListadoEjercicios({ onEdit, update, setUpdate }: ListadoEjerciciosProps & { update?: boolean, setUpdate?: (update: boolean) => void }) {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   // estados para confirmar solo la eliminación
   const [selectExercise, setSelectExercise] = useState<any>(null);
@@ -24,39 +28,41 @@ export default function ListadoEjercicios({ onEdit }: ListadoEjerciciosProps) {
 
   // Saber qué acción estamos confirmando
   const [actionType, setActionType] = useState<"delete" | null>(null);
-
   // ==========================
   // FETCH
   // ==========================
+  const fetchExercises = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token") ?? "";
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}exercises/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "x-access-token": token,
+          },
+        }
+      );
+      const json = await res.json();
+      setData(Array.isArray(json.data) ? json.data : []);
+    } catch (e) {
+      console.log("ERROR FETCH:", e);
+      setData([]);
+    } finally {
+      setLoading(false);
+      setUpdate && setUpdate(false);
+    }
+  };
   useEffect(() => {
-    const fetchExercises = async () => {
-      try {
-        setLoading(true);
-
-        const token = localStorage.getItem("token") ?? "";
-
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}exercises/all`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "x-access-token": token,
-            },
-          }
-        );
-
-        const json = await res.json();
-        setData(Array.isArray(json.data) ? json.data : []);
-      } catch (e) {
-        console.log("ERROR FETCH:", e);
-        setData([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchExercises();
   }, []);
+
+  useEffect(() => {
+    if (update) {
+      fetchExercises();
+    }
+  }, [update]);
 
   // ==========================
   // FILTRO
@@ -80,7 +86,7 @@ export default function ListadoEjercicios({ onEdit }: ListadoEjerciciosProps) {
   const handleDeleteClick = (item: any) => {
     setSelectExercise(item);
     setActionType("delete");
-    setShowConfirm(true);
+    setOpenDelete(true);
   };
 
   // ==========================
@@ -107,6 +113,7 @@ export default function ListadoEjercicios({ onEdit }: ListadoEjerciciosProps) {
         setData((prev) =>
           prev.filter((item) => item.id !== selectExercise.id)
         );
+        setOpenDelete(false);
       } catch (error) {
         console.log("Error eliminando:", error);
       }
@@ -170,14 +177,14 @@ export default function ListadoEjercicios({ onEdit }: ListadoEjerciciosProps) {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => handleEditClick(item)}
-                className="text-gray-300 hover:text-white transition"
+                className="text-gray-300 hover:text-white transition cursor-pointer"
               >
                 <Pencil size={18} />
               </button>
 
               <button
                 onClick={() => handleDeleteClick(item)}
-                className="text-gray-400 hover:text-red-400 transition"
+                className="text-gray-400 hover:text-red-400 transition cursor-pointer"
               >
                 <Trash2 size={18} />
               </button>
@@ -191,6 +198,13 @@ export default function ListadoEjercicios({ onEdit }: ListadoEjerciciosProps) {
           </p>
         )}
       </div>
+      {/* MODAL CONFIRMAR */}
+      <ModalConfirm
+        isOpen={openDelete}
+        onConfirm={handleConfirm}
+        text="Estas seguro de que deseas eliminar este ejercicio?"
+        onCancel={() => setOpenDelete(false)}
+      />
     </div>
   );
 }

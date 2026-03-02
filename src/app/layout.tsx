@@ -53,7 +53,6 @@ export default function RootLayout({
           </div>
         </AuthProvider>
       </body>
-      <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.umd.js"></script>
     </html>
   );
 }

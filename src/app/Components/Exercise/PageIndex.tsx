@@ -8,6 +8,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 import ListadoEjercicios from "./ExerciseList";
 import { IconEdit, IconPencil } from "@tabler/icons-react";
+import { ModalCheck } from "../Modals/ModalCheck";
 
 export default function Page() {
   const router = useRouter();
@@ -20,6 +21,9 @@ export default function Page() {
   const [video, setVideo] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>("");
 
+  const [updateList, setUpdateList] = useState(false);
+  const [showModalCheck, setShowModalCheck] = useState(false);
+
   // editing state
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -28,6 +32,7 @@ export default function Page() {
   const [generalError, setGeneralError] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
   // ==========================
   // IMAGE HANDLER
   // ==========================
@@ -85,7 +90,7 @@ export default function Page() {
           const thumbnail = await generateThumbnail(video);
           formData.append("thumbnail", thumbnail);
         }
-      }else{
+      } else {
         formData.append("new_exercise", title);
         formData.append("new_description", description);
         formData.append("new_category", category);
@@ -118,7 +123,9 @@ export default function Page() {
         }
       );
 
-      if (!res.ok) throw new Error("Error al guardar");
+      const resData = await res.json();
+
+      if (!res.ok) throw new Error(resData.message || "Error al guardar el ejercicio");
 
       // después de un update/crear limpiamos el estado
       setTitle("");
@@ -129,9 +136,12 @@ export default function Page() {
       setPreview("");
       setEditingId(null);
       setIsEditing(false);
+      setUpdateList((prev) => !prev);
+      setShowModalCheck(true);
+      setMessage(resData.message || "Ejercicio creado correctamente");
     } catch (error) {
       setError(
-        `Ocurrió un error al ${editingId ? "actualizar" : "crear"} el ejercicio`
+        `Ocurrió un error ${error}`
       );
     } finally {
       setLoading(false);
@@ -359,7 +369,7 @@ export default function Page() {
             className={`w-full bg-white text-black font-bold py-4 hover:bg-[#D4FF00] ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           />
         </div>
-        <ListadoEjercicios onEdit={loadExercise} />
+        <ListadoEjercicios onEdit={loadExercise} update={updateList} setUpdate={setUpdateList} />
       </div>
       {/* MANTENEMOS EL MODAL */}
       {showModalExercise && (
@@ -369,6 +379,14 @@ export default function Page() {
           title="Asignar ejercicio"
         />
       )}
+      {/* { checkmodal} */
+        <ModalCheck
+          isOpen={showModalCheck}
+          text={message}
+          btnMessage="Continuar"
+          onConfirm={() => setShowModalCheck(false)}
+        />
+      }
     </>
   );
 }

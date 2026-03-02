@@ -11,7 +11,10 @@ RUN npm install
 # Copia el resto del código
 COPY . .
 
-# Construye en producción
+# Asegurarse de que las variables de entorno estén disponibles para el build
+ARG NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+
 ARG env_name
 ARG env_port
 ENV NODE_ENV=$env_name
@@ -30,7 +33,10 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package.json ./package.json
 COPY --from=builder /usr/src/app/public ./public  
 
-# Variables de entorno
+# Variables de entorno para producción
+ARG NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+
 ARG env_name
 ARG env_port
 ENV NODE_ENV=$env_name

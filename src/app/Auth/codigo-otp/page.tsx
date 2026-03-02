@@ -48,7 +48,7 @@ function CodigoOtpContent() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     phonenumber: '+' + phone,
-                    otp: Number(code)
+                    otp: String(code)
                 }),
             });
 

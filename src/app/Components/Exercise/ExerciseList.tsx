@@ -114,6 +114,7 @@ export default function ListadoEjercicios({ onEdit, update, setUpdate }: Listado
           prev.filter((item) => item.id !== selectExercise.id)
         );
         setOpenDelete(false);
+        onEdit?.(null); // Para cerrar el modal de edición si el ejercicio eliminado estaba abierto
       } catch (error) {
         console.log("Error eliminando:", error);
       }

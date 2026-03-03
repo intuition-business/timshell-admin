@@ -23,50 +23,57 @@ export default function Trainer() {
   const [data, setData] = useState<Entrenador[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [openModal, setOpenModal] = useState(false);
+/*   const [update, setUpdate] = useState(false); */
+
+  const fetchTrainers = async () => {
+    try {
+      const token = localStorage.getItem("token") || "";
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al obtener entrenadores");
+      }
+
+      const result = await response.json();
+
+      // 🔁 Adaptamos la data del backend a tu tipo Entrenador
+      const formattedData: Entrenador[] = result.data.map((trainer: any) => ({
+        id: trainer.id,
+        name: trainer.name,
+        email: trainer.email,
+        usuarios: trainer.user_count ?? 0,
+        valoration: Number(trainer.rating) || 0,
+        image: trainer.image,
+      }));
+
+
+      setData(formattedData);
+    } catch (error) {
+      console.error("Error fetching trainers:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchTrainers = async () => {
-      try {
-        const token = localStorage.getItem("token") || "";
-
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-access-token": token,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Error al obtener entrenadores");
-        }
-
-        const result = await response.json();
-
-        // 🔁 Adaptamos la data del backend a tu tipo Entrenador
-        const formattedData: Entrenador[] = result.data.map((trainer: any) => ({
-          id: trainer.id,
-          name: trainer.name,
-          email: trainer.email,
-          usuarios: trainer.user_count ?? 0,
-          valoration: Number(trainer.rating) || 0,
-          image: trainer.image,
-        }));
-
-
-        setData(formattedData);
-      } catch (error) {
-        console.error("Error fetching trainers:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTrainers();
   }, []);
+
+/*   useEffect(() => {
+    if (update) {
+      fetchTrainers();
+    }
+  }, [update]); */
 
   const handleTrainerClick = (userId: string) => {
     router.push(`/pages/trainer/${userId}`);
@@ -112,6 +119,7 @@ export default function Trainer() {
 
       <ModalTrainersRegister
         open={openModal}
+        setUpdateTrainers={() => { fetchTrainers() }}
         onClose={() => setOpenModal(false)}
       />
 

@@ -13,7 +13,7 @@ export default function TrainerInfoCard({
   name,
   image,
   specialty,
-  price = "$120.000",
+  price,
   rating,
   description,
 }: TrainerInfoCardProps) {

@@ -1,26 +1,31 @@
 "use client";
 
 import { useState } from "react";
+import { ModalCheck } from "../Modals/ModalCheck";
 
 interface Props {
-  open: boolean;
+  open?: boolean;
+  setUpdateTrainers?: () => void;
   onClose: () => void;
 }
 
-export default function ModalTrainersRegister({ open, onClose }: Props) {
+export default function ModalTrainersRegister({ open, setUpdateTrainers, onClose }: Props) {
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     experience_years: "",
     address: "",
-    goal: "",
+    price: "", // new field requested by Elvis
     description: "",
     certifications: null as File | null,
+    goal: "", // to match backend field, but will be sent as "focus"
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showModalCheck, setShowModalCheck] = useState(false);
+  const [message, setMessage] = useState("");
 
   if (!open) return null;
 
@@ -32,6 +37,7 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
       experience_years: "",
       address: "",
       goal: "",
+      price: "",
       description: "",
       certifications: null,
     });
@@ -59,7 +65,8 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
     if (!form.phone.trim()) return "Teléfono requerido";
     if (!form.experience_years || Number(form.experience_years) <= 0) return "Años de experiencia inválidos";
     if (!form.address.trim()) return "Dirección requerida";
-    if (!form.goal.trim()) return "Tarifa requerida";
+    if (!form.goal.trim()) return "Enfoque del entrenador requerido";
+    if (!form.price.trim() || Number(form.price) <= 0) return "Precio inválido";
     return "";
   };
 
@@ -97,8 +104,10 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
       if (!res.ok) {
         throw new Error(data?.message || "Error al registrar entrenador");
       }
+      setUpdateTrainers && setUpdateTrainers();
+      setShowModalCheck(true);
+      setMessage(data?.message || "Entrenador registrado exitosamente");
 
-      handleClose();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -107,9 +116,8 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className="w-full max-w-3xl rounded-2xl bg-[#1c1c1c] p-8 relative border border-gray-700">
-
+    <>    <div className="fixed inset-0 z-50 flex items-start overflow-auto justify-center bg-black/70 backdrop-blur-sm">
+      <div className="w-full max-w-3xl rounded-2xl my-11 bg-[#1c1c1c] p-8 relative border border-gray-700">
         {/* Close */}
         <button
           onClick={handleClose}
@@ -129,7 +137,8 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
           <Input label="Teléfono" name="phone" placeholder="Escribe tu numero" value={form.phone} onChange={handleChange} />
           <Input label="Edad" name="experience_years" placeholder="Escribe tu edad" type="number" value={form.experience_years} onChange={handleChange} />
           <Input label="Dirección" name="address" placeholder="Ej: Calle 40 #5-12" value={form.address} onChange={handleChange} />
-          <Input label="Tarifa" name="goal" placeholder="Ej: 20.000/hora" value={form.goal} onChange={handleChange} />
+          <Input label="Enfoque del entrenador" name="goal" placeholder="Ej: fuerza, cardio, etc." value={form.goal} onChange={handleChange} />
+          <Input label="Precio" name="price" placeholder="Ej: 20.000" type="number" value={form.price} onChange={handleChange} />
         </div>
 
         {/* Descripción */}
@@ -184,7 +193,18 @@ export default function ModalTrainersRegister({ open, onClose }: Props) {
           </button>
         </div>
       </div>
+
     </div>
+      {/* { checkmodal} */
+        <ModalCheck
+          isOpen={showModalCheck}
+          text={message}
+          btnMessage="Continuar"
+          onConfirm={() => { setShowModalCheck(false), onClose() }}
+        />
+      }
+    </>
+
   );
 }
 

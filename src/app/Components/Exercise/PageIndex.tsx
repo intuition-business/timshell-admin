@@ -179,6 +179,19 @@ export default function Page() {
   // CARGAR EJERCICIO EXISTENTE
   // ==========================
   const loadExercise = async (item: any) => {
+    // Si se llama con null (por ejemplo después de eliminar), limpiamos el formulario
+    if (!item) {
+      setTitle("");
+      setDescription("");
+      setCategory("");
+      setMuscleGroup("");
+      setVideo(null);
+      setPreview("");
+      setEditingId(null);
+      setIsEditing(false);
+      return;
+    }
+
     setLoading(true);
     const id = item?.id;
     try {

@@ -1,12 +1,6 @@
 "use client";
-import ProgressCard from "@/app/Components/Interna/components/ProgressCard";
 import Loading from "@/app/Components/Loading/loading";
 import Buttons from "@/app/Components/ui/Buttons";
-import Dates from "@/app/Components/ui/Dates";
-import { ProfileCard } from "@/app/Components/ui/ReusableProfile";
-import { RutsCards } from "@/app/Components/ui/RutsCards";
-import UserMovementChart from "@/app/Components/ui/UserMovementChart";
-import WeightChart from "@/app/Components/ui/WeightChart";
 import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,6 +8,7 @@ import TrainerInfoCard from "../ui/profileTrainers";
 import { CardList, TableList } from "../Table/TableList";
 import TrainerMovementChart from "../ui/trainerMovementChart";
 import MonthlyRevenueChart from "../ui/trainerBarChart";
+import EditarTrinerModal from "./editarTriner"; // modal for editing trainer info
 
 interface Rutina {
   id: string;
@@ -47,6 +42,8 @@ interface User {
   certification?: string;
   description?: string;
   rating?: string;
+  price?: number | string;
+  specialty?: string;
 }
 
 export default function TrainerDashboard() {
@@ -55,13 +52,12 @@ export default function TrainerDashboard() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
-  const [paginaActual, setPaginaActual] = useState<number>(1);
   const params = useParams();
   const { id } = params;
   const router = useRouter();
-  const totalPaginas = 5;
 
   useEffect(() => {
     const token = localStorage.getItem("token") || "";
@@ -103,131 +99,80 @@ export default function TrainerDashboard() {
       obtenerRutinas();
     }
   }, [id]);
-  // Datos de ejemplo para la gráfica de peso
-  const weightData = [79.5, 79.2, 78.8, 78.5, 78.3, 78.1, 77.9];
-  const weightLabels = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
-  const lineData = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        label: "Altas mensuales",
-        data: [
-          600, 900, 1400, 1300, 1250, 1600, 1500, 1200, 900, 1500, 1600, 1200,
-        ],
-        borderColor: "#D4FF00",
-        backgroundColor: "rgba(173, 255, 47, 0.1)",
-        tension: 0.3,
-        fill: true,
-      },
-      {
-        label: "Media de usuarios",
-        data: [
-          1000, 1100, 1200, 1300, 1250, 1300, 1200, 1100, 1000, 1300, 1250,
-          1150,
-        ],
-        borderColor: "#ff4b4b",
-        backgroundColor: "transparent",
-        borderDash: [5, 5],
-        tension: 0.2,
-      },
-    ],
-  };
-  const lineOptions = {
-    responsive: true,
-    plugins: { legend: { labels: { color: "#fff" } } },
-    scales: {
-      x: { ticks: { color: "#ccc" }, grid: { color: "#222" } },
-      y: { ticks: { color: "#ccc" }, grid: { color: "#222" } },
-    },
-  };
 
-  const handleVerDetalles = (rutinaId: string | number, userId: string) => {
-    router.push(`/pages/users/${userId}/page/${rutinaId}`);
-  };
+  // fetch trainer info helper so we can call from effects and after updates
+  const fetchTrainer = async () => {
+    setLoading(true);
+    setError(null);
 
-  useEffect(() => {
-    const fetchTrainer = async () => {
-      setLoading(true);
-      setError(null);
+    const token = localStorage.getItem("token");
 
-      const token = localStorage.getItem("token");
+    if (!token) {
+      setError("No hay token de autenticación");
+      setLoading(false);
+      return;
+    }
 
-      if (!token) {
-        setError("No hay token de autenticación");
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/${id}`,
+        {
+          headers: { "x-access-token": token },
+          signal: controller.signal,
+        }
+      );
+
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        setError(`Error: ${res.status} - Usuario no encontrado`);
         setLoading(false);
         return;
       }
 
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
+      const json = await res.json();
+      console.log("Datos recibidos:", json);
 
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/${id}`,
-          {
-            headers: { "x-access-token": token },
-            signal: controller.signal,
-          }
-        );
+      if (json.data) {
+        const userData = json.data;
 
-        clearTimeout(timeoutId);
-
-        if (!res.ok) {
-          setError(`Error: ${res.status} - Usuario no encontrado`);
-          setLoading(false);
-          return;
-        }
-
-        const json = await res.json();
-        console.log("Datos recibidos:", json);
-
-        if (json.data) {
-          const userData = json.data;
-
-          setData(userData.assigned_users);
-          setLoadingUser(false);
-          setUser({
-            fecha: userData.fecha,
-            id: userData.id?.toString() || "",
-            name: userData.name || "",
-            email: userData.email || "",
-            phone: userData.phone || "",
-            plan_id: userData.plan_id ?? null,
-            plan_name: userData.plan_name || "",
-            trainer_name: userData.name || "Sin entrenador",
-            trainer_image: userData.image || "",
-            user_image: userData.image || "",
-            rating: userData.rating,
-            certification: userData.certifications,
-            description: userData.description,
-          });
-        } else {
-          setError("No se encontraron datos del entrenador");
-        }
-
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Error desconocido";
-        setError(`Error al cargar usuario: ${errorMessage}`);
-        console.error("Error fetching user:", err);
-      } finally {
-        setLoading(false);
+        setData(userData.assigned_users);
+        setLoadingUser(false);
+        setUser({
+          fecha: userData.fecha,
+          id: userData.id?.toString() || "",
+          name: userData.name || "",
+          email: userData.email || "",
+          phone: userData.phone || "",
+          plan_id: userData.plan_id ?? null,
+          plan_name: userData.plan_name || "",
+          trainer_name: userData.name || "Sin entrenador",
+          trainer_image: userData.image || "",
+          user_image: userData.image || "",
+          rating: userData.rating,
+          certification: userData.certifications,
+          description: userData.description,
+          specialty: userData.specialty || "",
+          price: userData.price ?? "",
+        });
+      } else {
+        setError("No se encontraron datos del entrenador");
       }
-    };
 
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Error desconocido";
+      setError(`Error al cargar usuario: ${errorMessage}`);
+      console.error("Error fetching user:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchTrainer();
   }, [id]);
 
@@ -271,15 +216,21 @@ export default function TrainerDashboard() {
       <div className="mb-8">
         <h1 className=" text-[32px] text-[#dff400] font-bold ">Entrenador</h1>
       </div>
-      <div className=" flex mb-9">
+      <div className=" flex mb-9 items-start">
         <TrainerInfoCard
           name={user.name}
           image={user.user_image}
           rating={user.rating}
           specialty={user.certification}
-          price="$120.000"
+          price={user.price}
           description={user.description}
         />
+        <button
+          onClick={() => setShowEditModal(true)}
+          className="ml-4 self-center px-4 py-2 bg-[#d4ff00] text-black font-semibold rounded-lg hover:brightness-110"
+        >
+          Editar
+        </button>
       </div>
 
       <div className="grid grid-cols-2 gap-8">
@@ -309,6 +260,12 @@ export default function TrainerDashboard() {
           onChange={setPaginaActual}
         /> */}
       </div>
+      <EditarTrinerModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        trainer={user}
+        onUpdated={() => fetchTrainer()}
+      />
     </section>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import Loading from "@/app/Components/Loading/loading";
 import Buttons from "@/app/Components/ui/Buttons";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Pencil } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import TrainerInfoCard from "../ui/profileTrainers";
@@ -216,6 +216,15 @@ export default function TrainerDashboard() {
       <div className="mb-8">
         <h1 className=" text-[32px] text-[#dff400] font-bold ">Entrenador</h1>
       </div>
+      <div className="w-full relative">
+        <button
+          onClick={() => setShowEditModal(true)}
+          className="ml-auto flex gap-1 items-center right-0 absolute self-center px-4 py-2 bg-[#1A1A1A] border-white text-white font-semibold rounded-lg hover:brightness-110 cursor-pointer z-50"
+        >
+          <Pencil className="mr-2 w-4 h-4" />
+          Editar
+        </button>
+      </div>
       <div className=" flex mb-9 items-start">
         <TrainerInfoCard
           name={user.name}
@@ -225,12 +234,6 @@ export default function TrainerDashboard() {
           price={user.price}
           description={user.description}
         />
-        <button
-          onClick={() => setShowEditModal(true)}
-          className="ml-4 self-center px-4 py-2 bg-[#d4ff00] text-black font-semibold rounded-lg hover:brightness-110"
-        >
-          Editar
-        </button>
       </div>
 
       <div className="grid grid-cols-2 gap-8">

@@ -3,10 +3,12 @@ import Loading from "@/app/Components/Loading/loading";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/app/AuthContext";
 
 
 export default function ValidacionOtp({ step, email, phone, setStep, setCodigoStepDos }: any) {
     const router = useRouter()
+    const auth = useAuth();
     const [loading, setLoading] = useState(true);
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [error, setError] = useState('');
@@ -76,7 +78,8 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
                 if (step == 2) {
                     setCodigoStepDos(true);
                 } else {
-                    localStorage.setItem('token', data?.token)
+                    // actualizar contexto de auth
+                    auth?.login(data?.token);
                     router.push('/');
                 }
             }

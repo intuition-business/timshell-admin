@@ -13,6 +13,7 @@ import {
   ClipboardMinus,
 } from "lucide-react";
 import { useAuth } from "@/app/AuthContext";
+import { useEffect } from "react";
 
 export default function NavBar() {
   const pathname = usePathname();
@@ -23,9 +24,17 @@ export default function NavBar() {
   const auth = useAuth();
   const role = auth?.role;
 
-  if (role !== "admin" && role !== "trainer") {
-    return null; 
+  // si aún no hay rol, no renderizar nada hasta que llegue
+  if (role === undefined || role === null) {
+    return null;
   }
+
+  useEffect(() => {
+    if (role !== "admin" && role !== "trainer") {
+      // Si el rol no es admin ni trainer, redirige a la página de login
+      // Aquí podrías usar un router.push('/login') u otra lógica de redirección.
+    }
+  }, [role]);
 
   return (
     <nav className="sticky left-0 top-0 h-screen z-10 max-w-[290px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg text-xl rounded-r-[40px]">

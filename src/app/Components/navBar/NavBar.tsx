@@ -24,17 +24,9 @@ export default function NavBar() {
   const auth = useAuth();
   const role = auth?.role;
 
-  // si aún no hay rol, no renderizar nada hasta que llegue
-  if (role === undefined || role === null) {
-    return null;
-  }
+  console.log(role);
 
-  useEffect(() => {
-    if (role !== "admin" && role !== "trainer") {
-      // Si el rol no es admin ni trainer, redirige a la página de login
-      // Aquí podrías usar un router.push('/login') u otra lógica de redirección.
-    }
-  }, [role]);
+  if (!role) return null;
 
   return (
     <nav className="sticky left-0 top-0 h-screen z-10 max-w-[290px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg text-xl rounded-r-[40px]">

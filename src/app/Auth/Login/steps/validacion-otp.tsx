@@ -80,7 +80,9 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
                 } else {
                     // actualizar contexto de auth
                     auth?.login(data?.token);
-                    router.push('/');
+                    setTimeout(() => {
+                        router.push('/');
+                    }, 50);
                 }
             }
 

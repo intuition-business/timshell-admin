@@ -16,11 +16,13 @@ interface User {
   phone?: string;
   trainer_name?: string;
   trainer_image?: string;
+  total_users?: string;
 }
 
 export default function UserDashboard() {
   const router = useRouter(); 
   const [data, setData] = useState([]);
+  const [totalUser, setTotalUser] = useState()
 
   const EncabezadosData = [
     { label: "Nombre", width: "250px" },
@@ -50,6 +52,7 @@ export default function UserDashboard() {
               trainer_image: user.trainer_image || "",
               userImage: user.user_image || "",
             }));
+            setTotalUser(json.total_users)
             setData(mappedData);
           }
         })
@@ -87,7 +90,7 @@ export default function UserDashboard() {
             <div className="flex">
               <h2 className="font-bold my-6">Gestión de usuarios</h2>
               <p className="font-bold text-[#dff400] mx-16 my-6">
-                Usuarios activos 200
+                Usuarios activos {totalUser}
               </p>
             </div>
 

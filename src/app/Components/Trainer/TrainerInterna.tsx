@@ -40,10 +40,13 @@ interface User {
   user_image?: string;
   fecha?: string;
   certification?: string;
-  description?: string;
+  description?: [];
   rating?: string;
   price?: number | string;
   specialty?: string;
+  goal?: string;
+  onEdit?: () => void;
+
 }
 
 export default function TrainerDashboard() {
@@ -157,6 +160,7 @@ export default function TrainerDashboard() {
           description: userData.description,
           specialty: userData.specialty || "",
           price: userData.price ?? "",
+          goal: userData.goal ?? "",
         });
       } else {
         setError("No se encontraron datos del entrenador");
@@ -216,7 +220,7 @@ export default function TrainerDashboard() {
       <div className="mb-8">
         <h1 className=" text-[32px] text-[#dff400] font-bold ">Entrenador</h1>
       </div>
-      <div className="w-full relative">
+     {/*  <div className="w-full relative">
         <button
           onClick={() => setShowEditModal(true)}
           className="ml-auto flex gap-1 items-center right-0 absolute self-center px-4 py-2 bg-[#1A1A1A] border-white text-white font-semibold rounded-lg hover:brightness-110 cursor-pointer z-50"
@@ -224,15 +228,17 @@ export default function TrainerDashboard() {
           <Pencil className="mr-2 w-4 h-4" />
           Editar
         </button>
-      </div>
+      </div> */}
       <div className=" flex mb-9 items-start">
         <TrainerInfoCard
           name={user.name}
           image={user.user_image}
           rating={user.rating}
-          specialty={user.certification}
+          specialty={user.goal}
           price={user.price}
           description={user.description}
+          certification={user.certification}
+          onEdit={() => setShowEditModal(true)}
         />
       </div>
 

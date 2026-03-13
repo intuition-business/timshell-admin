@@ -86,16 +86,16 @@ export default function EditarTrinerModal({
 
       const formData = new FormData();
       if (trainer?.id) formData.append("id", trainer.id);
-      formData.append("name", name);
-      formData.append("goal", goal);
-      formData.append("price", price);
-      formData.append("description", description);
+      formData.append("new_name", name);
+      formData.append("new_goal", goal);
+      formData.append("new_price", price);
+      formData.append("new_description", description);
       if (imageFile) {
         formData.append("image", imageFile);
       }
 
       const token = localStorage.getItem("token") || "";
-      const res = await fetch("https://api.timshell.co/api/trainers/update", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/update`, {
         method: "Put",
         headers: {
           "x-access-token": token,

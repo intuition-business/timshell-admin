@@ -43,11 +43,11 @@ export default function ReusableExercise({
         )}
 
         {description && (
-          <p className="text-gray-300 text-sm mb-2">{description}</p>
+          <p className="text-gray-300 text-base mb-2">{description}</p>
         )}
 
         {paragraph && (
-          <p className="text-gray-400 text-sm leading-relaxed">{paragraph}</p>
+          <p className="text-gray-400 text-base leading-relaxed">{paragraph}</p>
         )}
       </div>
     </div>

@@ -37,14 +37,17 @@ interface Rutina {
 interface User {
   id: string;
   name: string;
-  email?: string;
-  phone?: string;
-  plan_id?: number | null;
-  plan_name?: string;
-  trainer_name?: string;
-  trainer_image?: string;
-  user_image?: string;
-  fecha?: string;
+  email: string;
+  phone: string;
+  plan_id: number | null;
+  plan_name: string;
+  trainer_name: string;
+  trainer_image: string;
+  user_image: string;
+  fecha: string;
+  peso: number;
+  estatura: number;
+  edad: number;
 }
 
 export default function Pages() {
@@ -191,7 +194,7 @@ export default function Pages() {
         if (json.data) {
           // Buscar el usuario específico por ID en la lista
           const userData = json.data.find(
-            (user: any) => user.id?.toString() === id
+            (user: User) => user.id?.toString() === id
           );
 
           if (userData) {
@@ -201,6 +204,9 @@ export default function Pages() {
               name: userData.name || "",
               email: userData.email || "",
               phone: userData.phone || "",
+              peso: Number(userData.peso) || 0,
+              estatura: Number(userData.estatura) || 0,
+              edad: Number(userData.edad) || 0,
               plan_id: userData.plan_id || null,
               plan_name: userData.plan_name || "",
               trainer_name: userData.trainer_name || "Sin entrenador",
@@ -262,7 +268,7 @@ export default function Pages() {
         />
       </div>
       <div className=" flex py-4  ">
-        <ProgressCard weight={80} variation={1.2} height={1.78} />
+        <ProgressCard weight={user.peso} variation={user.edad} height={user.estatura} />
       </div>
 
       <div className="grid grid-cols-2 gap-8">

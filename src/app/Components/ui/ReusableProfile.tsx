@@ -32,8 +32,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
             }}
           />
         ) : (
-          <div className="w-full h-full rounded-full border-4 border-[#16459D] bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-lg">
+          <div className="w-full h-full rounded-full border-4 border-white bg-[#dff400flex items-center justify-center gap-5] flex items-center justify-center shadow-lg">
+            <span className="text-[#dff400] font-bold text-lg w-11 h-11 flex items-center justify-center">
               {name
                 .split(" ")
                 .map((n) => n[0])

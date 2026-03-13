@@ -140,7 +140,6 @@ export default function Dashboard() {
                   className="w-12 rounded-lg h-12"
                   alt=""
                 />
-                sssss
               </div>
               <div>
                 <h1 className="text-white text-lg">Bienvenido de nuevo</h1>

@@ -260,7 +260,7 @@ export default function Pages() {
       <div className="mb-8">
         <h1 className=" text-[32px] text-[#dff400] font-bold ">Usuarios</h1>
       </div>
-      <div className=" flex mb-9">
+      <div className=" flex mb-7">
         <ProfileCard
           name={user.name || "sin nombre"}
           role={user.plan_name || "Sin plan"}

@@ -40,10 +40,10 @@ interface User {
   user_image?: string;
   fecha?: string;
   certification?: string;
-  description?: [];
+  description?: [] | undefined;
   rating?: string;
   price?: number | string;
-  specialty?: string;
+  specialty?: string | undefined;
   goal?: string;
   onEdit?: () => void;
 
@@ -220,7 +220,7 @@ export default function TrainerDashboard() {
       <div className="mb-8">
         <h1 className=" text-[32px] text-[#dff400] font-bold ">Entrenador</h1>
       </div>
-     {/*  <div className="w-full relative">
+      {/*  <div className="w-full relative">
         <button
           onClick={() => setShowEditModal(true)}
           className="ml-auto flex gap-1 items-center right-0 absolute self-center px-4 py-2 bg-[#1A1A1A] border-white text-white font-semibold rounded-lg hover:brightness-110 cursor-pointer z-50"
@@ -229,7 +229,7 @@ export default function TrainerDashboard() {
           Editar
         </button>
       </div> */}
-      <div className=" flex mb-9 items-start">
+      <div className=" flex mb-7 items-start">
         <TrainerInfoCard
           name={user.name}
           image={user.user_image}
@@ -250,16 +250,21 @@ export default function TrainerDashboard() {
           <MonthlyRevenueChart />
         </div>
       </div>
-      <h2 className="text-[16px] my-9 font-bold flex gap-3 ">
-        Rutina diaria{" "}
-        <span className="text-[#dff400] text-base">plan intermedio</span>
+      <h2 className="mt-9 mb-2 font-bold flex gap-3 text-[#dff400] text-3xl">
+        Usuarios vinculados
       </h2>
       {loadingUser ? (
         <p className="text-center text-gray-400">Cargando usuarios...</p>
       ) : (
         <div className="flex flex-col w-full gap-2">
           <TableList encabezado={EncabezadosData} data={data} columns={5} />
-          <CardList encabezado={EncabezadosData} data={data} columns={5} onCardClick={handleUserClick} />
+          {data.length > 1 ? (
+            <CardList encabezado={EncabezadosData} data={data} columns={5} onCardClick={handleUserClick} />
+          ) : (
+            <div className="p-4 text-center text-xl my-11">
+              <p>No se encontraron usuarios registrados.</p>
+            </div>
+          )}
         </div>
       )}
       <div className="flex justify-center mt-8">

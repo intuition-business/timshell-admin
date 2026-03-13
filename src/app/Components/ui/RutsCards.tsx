@@ -74,12 +74,12 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
 
             {/* Contenido principal */}
             <div className="mt-6">
-              <h2 className="text-lg font-bold text-white">
+              <h2 className="text-xl font-bold text-white">
                 {rutina.nombre || "Rutina sin nombre"}
               </h2>
-              <p className="text-sm text-gray-400 mt-1">Fecha: {fechaVisible}</p>
+              <p className="text-lg text-gray-400 mt-1">Fecha: {fechaVisible}</p>
 
-              <ul className="text-sm text-gray-200 mt-4 space-y-1">
+              <ul className="text-base text-gray-200 mt-4 space-y-1">
                 {rutina.ejercicios?.slice(0, 6).map((ej, i) => (
                   <li key={i}>• {ej.nombre_ejercicio}</li>
                 ))}

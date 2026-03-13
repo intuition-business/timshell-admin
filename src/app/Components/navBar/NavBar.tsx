@@ -11,6 +11,7 @@ import {
   Dumbbell,
   SquareChartGantt,
   ClipboardMinus,
+  MessageCircle,
 } from "lucide-react";
 import { useAuth } from "@/app/AuthContext";
 import { useEffect } from "react";
@@ -106,8 +107,8 @@ export default function NavBar() {
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <ClipboardMinus size={28} />
-                Reportes
+                <MessageCircle size={24} />
+                Chats
               </div>
             </Link>
           </div>

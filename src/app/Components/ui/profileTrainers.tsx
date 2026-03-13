@@ -9,9 +9,9 @@ interface TrainerInfoCardProps {
   specialty?: string;
   price?: number | string;
   rating?: number | string;
-  description?: string;
+  description?: [];
   onEdit?: () => void;
-  certification?: [];
+  certification?: string;
 }
 
 export default function TrainerInfoCard({
@@ -72,7 +72,7 @@ export default function TrainerInfoCard({
             {/* Botón editar */}
             <button
               onClick={onEdit}
-              className="flex gap-1 items-center px-4 py-2 bg-black text-white font-semibold rounded-lg hover:brightness-110 cursor-pointer z-50"
+              className="flex gap-1 items-center px-4 py-2 bg-black text-white font-semibold rounded-lg hover:brightness-110 cursor-pointer text-base z-50"
             >
               <Pencil className="mr-2 w-4 h-4" />
               Editar
@@ -86,21 +86,21 @@ export default function TrainerInfoCard({
           {/* Precio + Rating */}
           <div className="flex items-center gap-4 mt-6">
             <div>
-              <span className="text-sm">Costo por servicio</span>
-              <p className="text-2xl font-bold">{precio}</p>
+              <span className="text-base">Costo por servicio</span>
+              <p className="text-3xl font-bold">{precio}</p>
             </div>
 
             <div className="flex items-center gap-2 bg-[#282828] px-4 py-3 rounded-lg">
               <img src="/star.svg" alt="estrella de rating" />
-              <span className="text-sm font-medium">{rating}</span>
+              <span className="text-xl font-medium">{rating == '0.0' ? '5.0' : rating }</span>
             </div>
           </div>
 
           {/* Descripción */}
           {description && (
             <div className="pt-2 mt-6">
-              <h4 className="font-semibold mb-1">Descripción</h4>
-              <p className="text-base text-gray-300 leading-relaxed">
+              <h4 className="font-semibold text-xl mb-1">Descripción</h4>
+              <p className="text-lg text-gray-300 leading-relaxed">
                 {description}
               </p>
             </div>
@@ -108,7 +108,7 @@ export default function TrainerInfoCard({
 
           {/* certificacion */}
           <div className="pt-2 mt-2">
-            <h4 className="font-semibold mb-3">Certificaciones</h4>
+            <h4 className="font-semibold text-xl mb-3">Certificaciones</h4>
             <div>
               {certificationsArray?.map((cert: string, index: number) => (
                 <a
@@ -117,7 +117,7 @@ export default function TrainerInfoCard({
                   download
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#282828] text-white rounded-lg hover:brightness-110"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#282828] text-white text-lg rounded-lg hover:brightness-110"
                 >
                   Descargar certificación {index + 1}
                 </a>

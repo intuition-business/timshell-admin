@@ -28,33 +28,32 @@ const ProgressCard: React.FC<ProgressCardProps> = ({
           : "Obesidad";
 
   return (
-    <div className="flex rounded-2xl shadow-md  border-gray-200 h-auto w-full  mr-9">
+    <div className="flex rounded-2xl shadow-md  border-gray-200 h-auto w-full">
       <div className="flex  text-white justify-between  w-full gap-10 ">
         <div className="bg-[#2B2B2B] text-white rounded-xl p-3 flex flex-col items-center w-full justify-center">
           <p className="text-xl ">Peso actual</p>
-          <p className="text-2xl font-bold ">{weight} kg</p>
+          <p className="text-3xl font-bold ">{weight} kg</p>
         </div>
 
         <div className=" bg-[#2B2B2B] rounded-xl p-4  flex flex-col items-center w-full justify-center">
           <p className="text-xl ">Edad</p>
           <div className="flex items-center space-x-1">
             <p
-              className={`text-2xl font-bold `}
+              className={`text-3xl font-bold text-[#D4FF00]`}
             >
-              {variation}
+              {variation} años
             </p>
           </div>
         </div>
 
         <div className="bg-[#2B2B2B] rounded-xl p-4 text-center w-full flex items-center flex-col justify-center">
           <p className="text-xl">Altura</p>
-          <p className="text-2xl font-bold ">{height.toFixed(2)} cm</p>
+          <p className="text-3xl font-bold ">{height.toFixed(2)} cm</p>
         </div>
 
         <div className="bg-[#2B2B2B] rounded-xl p-4 text-center w-full justify-center">
           <p className="text-xl">IMC estimado</p>
-          <p className="text-2xl font-bold ">{bmi}</p>
-          <span>{bmiStatus}</span>
+          <p className="text-3xl font-bold ">{bmi}</p>
         </div>
       </div>
     </div>

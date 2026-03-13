@@ -84,7 +84,7 @@ export default function Trainer() {
       <div className="w-full justify-end p-4">
         <h1 className="text-3xl font-bold text-[#dff400]">Entrenador</h1>
 
-        <div className="flex gap-3 my-4">
+        <div className="flex gap-3 my-4 hidden">
           <Inputs.SearchInput placeholder="Buscar..." />
           <Inputs.SelectInput
             placeholder="Tipo de plan"
@@ -98,8 +98,8 @@ export default function Trainer() {
           />
         </div>
 
-        <h2 className="font-bold text-[#dff400] mx-16 my-6">
-          Gestión de usuarios
+        <h2 className="font-bold text-[#dff400] my-6">
+          Gestión de entrenadores
         </h2>
 
         {loading ? (

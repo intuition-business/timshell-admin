@@ -9,7 +9,9 @@ interface Props {
     id: string;
     name?: string;
     price?: number | string;
-    description?: string;
+    description?: any;
+    onEdit?: () => void;
+    certification?: string;
     image?: string;
     goal?: string;
   } | null;

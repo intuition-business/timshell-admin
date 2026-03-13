@@ -32,7 +32,6 @@ jobs:
             --build-arg PORT=3001 \
             -t ghcr.io/intuition-business/timshel/admin:production .
 
-      # Build Development Frontend Image
       - name: Build Development Frontend Image
         if: github.ref == 'refs/heads/develop'
         run: |

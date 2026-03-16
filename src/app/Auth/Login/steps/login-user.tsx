@@ -1,6 +1,15 @@
 import { IconHeadset } from "@tabler/icons-react";
 import Image from "next/image";
 
+interface LoginProps {
+    setIdentifier: string; 
+    identifier: string; 
+    error: string; 
+    success: string; 
+    isSubmitting: string; 
+    handleSubmit: string;
+}
+
 export default function Login({ setIdentifier, identifier, error, success, isSubmitting, handleSubmit }: any) {
     return (
         <div className="h-screen w-full bg-[#0f0f0f] relative overflow-hidden">
@@ -26,9 +35,13 @@ export default function Login({ setIdentifier, identifier, error, success, isSub
                     <input
                         className="bg-[#2B2C2A] text-white border border-white px-6 py-4 rounded-xl w-full max-w-[500px] text-lg my-3"
                         type="text"
-                        placeholder="Ingresa tu Correo o Numero de teléfono"
+                        placeholder="Ingresa tu Correo o Número de teléfono"
                         value={identifier}
-                        onChange={(e) => setIdentifier(e.target.value.trim())}
+                        onChange={(e) => {
+                            let v = e.target.value.trim();
+                            v = v.replace(/[^a-zA-Z0-9@._+\-()\s]/g, "");
+                            setIdentifier(v);
+                        }}
                     />
 
                     {error && <p className="text-red-500 mt-3">{error}</p>}

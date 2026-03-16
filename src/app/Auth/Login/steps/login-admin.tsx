@@ -30,7 +30,12 @@ export default function LoginAdmin({ setEmail, setPhone, email, phone, error, su
                             placeholder="Ingresa tu correo"
                             value={email}
                             required
-                            onChange={(e) => setEmail(e.target.value)}
+                            maxLength={254}
+                            onChange={(e) => {
+                                let v = e.target.value.trim();
+                                v = v.replace(/['";\\`]/g, ""); // quita caracteres peligrosos comunes
+                                setEmail(v);
+                            }}
                         />
 
                         <input
@@ -39,7 +44,20 @@ export default function LoginAdmin({ setEmail, setPhone, email, phone, error, su
                             placeholder="Ingresa tu teléfono"
                             value={phone}
                             required
-                            onChange={(e) => setPhone(e.target.value)}
+                            inputMode="numeric"
+                            pattern="[0-9+ ]*"
+                            maxLength={15}
+                            onChange={(e) => {
+                                let v = e.target.value.trim();
+
+                                // Permitir solo números y un + al inicio
+                                v = v.replace(/[^\d+]/g, "");
+                                if (v.includes("+") && !v.startsWith("+")) {
+                                    v = v.replace(/\+/g, "");
+                                }
+
+                                setPhone(v);
+                            }}
                         />
 
                         <button

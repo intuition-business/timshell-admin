@@ -2,7 +2,7 @@
 
 import { InputDate, SearchInput, SelectInput } from "@/app/Components/Inputs/inputs";
 import { TableList } from "@/app/Components/Table/TableList";
-import { IconSettings } from "@tabler/icons-react";
+import { IconOutbound, IconSettings } from "@tabler/icons-react";
 import {
   BarElement,
   CategoryScale,
@@ -13,7 +13,8 @@ import {
   PointElement,
   Tooltip,
 } from "chart.js";
-import { Download } from "lucide-react";
+import { Download, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Bar, Line } from "react-chartjs-2";
 
 // Registrar componentes de Chart.js
@@ -28,6 +29,9 @@ ChartJS.register(
 );
 
 export default function Dashboard() {
+
+  const router = useRouter();
+
   // === Datos de ejemplo ===
   const lineData = {
     labels: [
@@ -127,6 +131,10 @@ export default function Dashboard() {
     { label: 'Desempeño', width: '200px' },
   ]
 
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // borra el token
+    router.push("/"); // redirige al login si quieres
+  };
   return (
     <div className=" w-full relative">
       <div className="">
@@ -149,10 +157,11 @@ export default function Dashboard() {
               </div>
             </div>
             <div>
-              <IconSettings
+              <LogOut
+                onClick={handleLogout}
                 size={50}
-                className="text-white p-2 rounded-lg bg-[#1a1a1a]"
-              ></IconSettings>
+                className="text-white p-2 rounded-lg bg-[#1a1a1a] border-2 cursor-pointer border-[#D4FF00]"
+              />
             </div>
           </div>
 
@@ -253,6 +262,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

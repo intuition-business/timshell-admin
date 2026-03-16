@@ -379,10 +379,22 @@ export default function ExerciseCreate({
               </label>
               <input
                 type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={3}
                 value={restTime}
                 onChange={(e) => {
-                  setRestTime(e.target.value);
-                  if (restError) setRestError(""); // limpiar error al escribir
+                  let v = e.target.value;
+
+                  // Quitar todo lo que no sea número
+                  v = v.replace(/\D/g, "");
+
+                  // Evitar ceros a la izquierda (ej: 007 → 7)
+                  if (v.length > 1) v = v.replace(/^0+/, "");
+
+                  setRestTime(v);
+
+                  if (restError) setRestError("");
                 }}
                 placeholder="Agregar el tiempo en minutos"
                 className={`bg-[#2B2B2B] border text-white rounded-lg px-4 py-2 focus:outline-none 
@@ -426,18 +438,35 @@ export default function ExerciseCreate({
 
                     <input
                       type="text"
+                      inputMode="numeric"
                       value={rep}
                       onChange={(e) => {
-                        handleSeriesChange(index, e.target.value);
+                        let v = e.target.value.trim();
 
-                        // limpiar error solo de esta serie
+                        // Permitir solo números y guion
+                        v = v.replace(/[^0-9-]/g, "");
+
+                        // Evitar más de un guion
+                        const parts = v.split("-");
+                        if (parts.length > 2) {
+                          v = parts[0] + "-" + parts[1];
+                        }
+
+                        // Evitar guion al inicio
+                        if (v.startsWith("-")) {
+                          v = v.slice(1);
+                        }
+
+                        handleSeriesChange(index, v);
+
+                        // Limpiar error solo de esta serie
                         if (seriesErrors[index]) {
                           const updated = [...seriesErrors];
                           updated[index] = "";
                           setSeriesErrors(updated);
                         }
                       }}
-                      placeholder="Número de repeticiones"
+                      placeholder="Ej: 12-15"
                       className={`border text-white rounded-lg px-4 py-2 focus:outline-none 
     ${seriesErrors[index]
                           ? "border-red-500 focus:ring-2 focus:ring-red-500"

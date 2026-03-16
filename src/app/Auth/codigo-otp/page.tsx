@@ -5,6 +5,11 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
+interface ApiError {
+    message: string;
+}
+
+
 function CodigoOtpContent() {
     const router = useRouter();
     const searchParams = useSearchParams(); // Ahora está dentro de Suspense → seguro
@@ -16,8 +21,6 @@ function CodigoOtpContent() {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const phone = searchParams.get('phone');
-
-    console.log('Phone from URL:', phone);
 
     useEffect(() => {
         // Quita el timeout artificial, no es necesario
@@ -61,8 +64,12 @@ function CodigoOtpContent() {
 
             localStorage.setItem('token', data?.token);
             router.push('/');
-        } catch (err: any) {
-            setError(err.message || 'Ocurrió un error');
+        } catch (err) {
+            const error = err as ApiError;
+            if (error) {
+                setError(error.message || 'Ocurrió un error');
+            }
+
         } finally {
             setIsSubmitting(false);
         }
@@ -101,9 +108,14 @@ function CodigoOtpContent() {
                                     key={i}
                                     id={`otp-input-${i}`}
                                     type="text"
+                                    inputMode="numeric"
+                                    pattern="[0-9]*"
                                     maxLength={1}
                                     value={num}
-                                    onChange={(e) => handleChange(i, e.target.value)}
+                                    onChange={(e) => {
+                                        const v = e.target.value.replace(/\D/g, ""); // solo números
+                                        handleChange(i, v);
+                                    }}
                                     className="w-16 h-16 rounded-xl bg-[rgba(255,255,255,0.2)] text-white font-mono text-lg text-center focus:outline-none focus:ring-2 focus:ring-[#D4FF00] border border-white"
                                 />
                             ))}

@@ -284,19 +284,33 @@ export default function ExerciseCreateNew() {
                             <label className="text-xl font-medium text-gray-300">Tiempo de descanso</label>
                             <input
                                 type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
+                                maxLength={3}
                                 value={restTime}
                                 onChange={(e) => {
-                                    if (isExerciseSelected) {
-                                        setRestTime(e.target.value);
-                                        if (restError) setRestError("");
-                                    }
+                                    if (!isExerciseSelected) return;
+
+                                    let v = e.target.value;
+
+                                    // Solo dígitos
+                                    v = v.replace(/\D/g, "");
+
+                                    // Quitar ceros a la izquierda (ej: 007 → 7)
+                                    if (v.length > 1) v = v.replace(/^0+/, "");
+
+                                    setRestTime(v);
+
+                                    if (restError) setRestError("");
                                 }}
                                 placeholder="Minutos"
                                 disabled={!isExerciseSelected}
                                 className={`bg-[#2B2B2B] border text-white rounded-lg px-4 py-2
-        ${!isExerciseSelected ? "opacity-40 cursor-not-allowed" : ""}
-        ${restError ? "border-red-500 focus:ring-2 focus:ring-red-500" : "border-gray-700 focus:ring-2 focus:ring-[#D4FF00]"}
-    `}
+    ${!isExerciseSelected ? "opacity-40 cursor-not-allowed" : ""}
+    ${restError
+                                        ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                                        : "border-gray-700 focus:ring-2 focus:ring-[#D4FF00]"
+                                    }`}
                             />
 
                             {restError && (
@@ -326,27 +340,44 @@ export default function ExerciseCreateNew() {
                                     <label className="text-lg text-gray-300">Repeticiones</label>
                                     <input
                                         type="text"
+                                        inputMode="numeric"
                                         value={rep}
                                         onChange={(e) => {
-                                            if (isExerciseSelected) {
-                                                handleSeriesChange(i, e.target.value);
+                                            if (!isExerciseSelected) return;
 
-                                                // limpiar error solo de esta serie
-                                                if (seriesErrors[i]) {
-                                                    const updated = [...seriesErrors];
-                                                    updated[i] = "";
-                                                    setSeriesErrors(updated);
-                                                }
+                                            let v = e.target.value.trim();
+
+                                            // Permitir solo números y guion
+                                            v = v.replace(/[^0-9-]/g, "");
+
+                                            // Evitar más de un guion
+                                            const parts = v.split("-");
+                                            if (parts.length > 2) {
+                                                v = parts[0] + "-" + parts[1];
+                                            }
+
+                                            // Evitar guion al inicio
+                                            if (v.startsWith("-")) {
+                                                v = v.slice(1);
+                                            }
+
+                                            handleSeriesChange(i, v);
+
+                                            // Limpiar error solo de esta serie
+                                            if (seriesErrors[i]) {
+                                                const updated = [...seriesErrors];
+                                                updated[i] = "";
+                                                setSeriesErrors(updated);
                                             }
                                         }}
-                                        placeholder="Número de reps"
+                                        placeholder="Ej: 10-12"
                                         disabled={!isExerciseSelected}
                                         className={`border text-white rounded-lg px-4 py-2
-        ${!isExerciseSelected ? "opacity-40 cursor-not-allowed" : ""}
-        ${seriesErrors[i]
+    ${!isExerciseSelected ? "opacity-40 cursor-not-allowed" : ""}
+    ${seriesErrors[i]
                                                 ? "border-red-500 focus:ring-2 focus:ring-red-500"
-                                                : "border-gray-500 focus:ring-2 focus:ring-[#D4FF00]"}
-    `}
+                                                : "border-gray-500 focus:ring-2 focus:ring-[#D4FF00]"
+                                            }`}
                                     />
 
                                     {seriesErrors[i] && (

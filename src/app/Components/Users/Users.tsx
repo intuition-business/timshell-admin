@@ -63,7 +63,7 @@ export default function UserDashboard() {
   }, []);
 
   const handleUserClick = (userId: string) => {
-    router.push(`/pages/users/${userId}`);
+    router.push(`/users/${userId}`);
   };
 
   return (

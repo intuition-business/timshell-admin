@@ -180,7 +180,7 @@ export default function ExerciseCreateNew() {
         <>
             <Buttons
                 data="Atrás"
-                onClick={() => router.push(`/pages/users/${id}/${date}?name=${name}`)}
+                onClick={() => router.push(`/users/${id}/${date}?name=${name}`)}
                 className="flex bg-transparent hover:bg-transparent text-white cursor-pointer"
             >
                 <ChevronLeft className=" text-white" />
@@ -433,7 +433,7 @@ export default function ExerciseCreateNew() {
                 <SaveExercise
                     title="Ejercicio Creado"
                     isOpen={showModalSaved}
-                    onContinue={() => router.push(`/pages/users/${id}/${date}?name=${name}`)}
+                    onContinue={() => router.push(`/users/${id}/${date}?name=${name}`)}
                 />
             )}
 

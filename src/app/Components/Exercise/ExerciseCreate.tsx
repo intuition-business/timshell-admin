@@ -279,7 +279,7 @@ export default function ExerciseCreate({
       <div>
         <Buttons
           data="Atrás"
-          onClick={() => router.push(`/pages/users/${id}/${date}?name=${routineName}`)}
+          onClick={() => router.push(`/users/${id}/${date}?name=${routineName}`)}
           className="flex bg-transparent hover:bg-transparent text-white cursor-pointer"
         >
           <ChevronLeft className=" text-white" />
@@ -514,7 +514,7 @@ export default function ExerciseCreate({
           isOpen={showModal}
           onContinue={() =>
             router.push(
-              `/pages/users/${id}/${date}?name=${encodeURIComponent(
+              `/users/${id}/${date}?name=${encodeURIComponent(
                 routineName
               )}`
             )

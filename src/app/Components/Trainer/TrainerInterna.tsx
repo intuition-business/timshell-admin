@@ -202,7 +202,7 @@ export default function TrainerDashboard() {
   ];
 
   const handleUserClick = (userId: string) => {
-    router.push(`/pages/users/${userId}`);
+    router.push(`/users/${userId}`);
   };
 
   return (

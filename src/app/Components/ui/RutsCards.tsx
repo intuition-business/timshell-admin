@@ -56,7 +56,7 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
                     ? encodeURIComponent(rutina.nombre).replace(/%20/g, " ")
                     : "";
                   router.push(
-                    `/pages/users/${user_id}/${fechaFormateada}?name=${cleanName}`
+                    `/users/${user_id}/${fechaFormateada}?name=${cleanName}`
                   );
                 }
                 : undefined
@@ -105,7 +105,7 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
                     ? encodeURIComponent(rutina.nombre).replace(/%20/g, " ")
                     : "";
 
-                  router.push(`/pages/users/${user_id}/${fechaFormateada}?name=${cleanName}`);
+                  router.push(`/users/${user_id}/${fechaFormateada}?name=${cleanName}`);
                 }}
                 disabled={rutina.status === "completed"}
                 className="w-full border border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg group-hover:bg-[#DFF400] group-hover:text-black transition disabled:opacity-40 disabled:cursor-not-allowed"

@@ -152,7 +152,7 @@ export default function Pages() {
   };
 
   const handleVerDetalles = (rutinaId: string | number, userId: string) => {
-    router.push(`/pages/users/${userId}/page/${rutinaId}`);
+    router.push(`/users/${userId}/page/${rutinaId}`);
   };
 
   useEffect(() => {

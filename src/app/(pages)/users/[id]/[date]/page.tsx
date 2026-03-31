@@ -63,7 +63,7 @@ export default function RutinaPage() {
 
   useEffect(() => {
     createExercise && router.push(
-      `/pages/exercise/${id}/new?date=${date}&name=${encodeURIComponent(exerciseName)}&rutina=${rutinaId}`
+      `/exercise/${id}/new?date=${date}&name=${encodeURIComponent(exerciseName)}&rutina=${rutinaId}`
     );
 
   }, [createExercise])
@@ -92,7 +92,7 @@ export default function RutinaPage() {
         <div className="mb-5">
           <Buttons
             data="Atrás"
-            onClick={() => router.push(`/pages/users/${id}`)}
+            onClick={() => router.push(`/users/${id}`)}
             className="flex bg-transparent hover:bg-transparent text-white cursor-pointer"
           >
             <ChevronLeft className=" text-white" />

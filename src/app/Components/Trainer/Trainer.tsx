@@ -69,14 +69,8 @@ export default function Trainer() {
     fetchTrainers();
   }, []);
 
-/*   useEffect(() => {
-    if (update) {
-      fetchTrainers();
-    }
-  }, [update]); */
-
   const handleTrainerClick = (userId: string) => {
-    router.push(`/pages/trainer/${userId}`);
+    router.push(`/trainer/${userId}`);
   };
 
   return (

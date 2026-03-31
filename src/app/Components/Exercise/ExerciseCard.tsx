@@ -24,7 +24,7 @@ export default function ExerciseCard({
   const editar = (e: React.MouseEvent) => {
     e.stopPropagation();
     router.push(
-      `/pages/exercise/${id}/create?name=${title}&date=${date}&exercise=${idExerciseProps}`
+      `/exercise/${id}/create?name=${title}&date=${date}&exercise=${idExerciseProps}`
     );
   };
 

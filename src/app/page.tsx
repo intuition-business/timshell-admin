@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import Dashboard from "./(pages)/dashboard/Dashboard";
 import Loading from "@/app/Components/Loading/loading";
 
 export default function Home() {

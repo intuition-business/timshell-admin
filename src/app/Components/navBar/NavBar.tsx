@@ -52,9 +52,9 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <Link href="/pages/users" passHref>
+            <Link href="/users" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/pages/users")
+                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/users")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
@@ -64,9 +64,9 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <Link href="/pages/trainer" passHref>
+            <Link href="/trainer" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/pages/trainer")
+                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/trainer")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
@@ -76,7 +76,7 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <Link href="/pages/exercise" passHref>
+            <Link href="/exercise" passHref>
               <div
                 className={`flex items-center gap-3 font-bold transition-colors ${isActive("/exercises")
                   ? "text-lime-400"
@@ -88,9 +88,9 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <Link href="/plans" passHref>
+            <Link href="/plan" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/plans")
+                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/plan")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
@@ -133,9 +133,9 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <Link href="/pages/users" passHref>
+            <Link href="/users" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/pages/users")
+                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/users")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}

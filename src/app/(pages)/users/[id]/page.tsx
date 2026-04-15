@@ -21,6 +21,7 @@ interface Rutina {
   fecha: string;
   nombre: string;
   status: string;
+  semana?: number;
   ejercicios: {
     nombre_ejercicio: string;
     Esquema: {

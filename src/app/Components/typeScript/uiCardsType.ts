@@ -11,6 +11,7 @@ export interface RutinasGridProps {
     fecha?: string;
     nombre?: string;
     status: string;
+    semana?: number;
     ejercicios?: {
       nombre_ejercicio?: string;
       Esquema?: {

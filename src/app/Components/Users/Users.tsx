@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation"; 
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { use, useEffect, useState } from "react";
 import Inputs, { SearchInput, SelectInput } from "../Inputs/inputs";
 import { CardList, TableList } from "../Table/TableList";
 import Pagination from "../ui/Pagination";
@@ -20,9 +20,12 @@ interface User {
 }
 
 export default function UserDashboard() {
-  const router = useRouter(); 
+  const router = useRouter();
   const [data, setData] = useState([]);
-  const [totalUser, setTotalUser] = useState()
+  const [totalUser, setTotalUser] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 36;
 
   const EncabezadosData = [
     { label: "Nombre", width: "250px" },
@@ -32,11 +35,10 @@ export default function UserDashboard() {
     { label: "Entrenador", width: "200px" },
   ];
 
-  // fetch para consultar usuarios
-  useEffect(() => {
+  const fetchInfo = async (page: number) => {
     const token = localStorage.getItem("token");
     if (token) {
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users`, {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=${page}`, {
         headers: { "x-access-token": token },
       })
         .then((res) => res.json())
@@ -52,7 +54,9 @@ export default function UserDashboard() {
               trainer_image: user.trainer_image || "",
               userImage: user.user_image || "",
             }));
-            setTotalUser(json.total_users)
+            setTotalUser(json.total_users);
+            setTotalPages(json.total_pages);
+
             setData(mappedData);
           }
         })
@@ -60,11 +64,27 @@ export default function UserDashboard() {
     } else {
       console.error("No token found in localStorage");
     }
+  };
+
+  // fetch para consultar usuarios
+  useEffect(() => {
+    const savedPage = localStorage.getItem("userListPage");
+    if (savedPage) {
+      setCurrentPage(Number(savedPage));
+      fetchInfo(Number(savedPage));
+    } else {
+      fetchInfo(currentPage);
+    }
   }, []);
 
   const handleUserClick = (userId: string) => {
+    localStorage.setItem("userListPage", currentPage.toString());
     router.push(`/users/${userId}`);
   };
+
+  useEffect(() => {
+    fetchInfo(currentPage);
+  }, [currentPage]);
 
   return (
     <main>
@@ -72,7 +92,7 @@ export default function UserDashboard() {
         <div className="w-full justify-end">
           <h1 className="text-3xl font-bold text-[#dff400] mb-9">Usuarios</h1>
 
-      {/*     <div className="flex gap-6">
+          {/*     <div className="flex gap-6">
             <SearchInput placeholder="Buscar..." />
             <SelectInput
               placeholder="Tipo de plan"
@@ -110,7 +130,10 @@ export default function UserDashboard() {
         </div>
 
         <div className="w-full p-6 mb-11">
-          <Pagination paginaActual={1} totalPaginas={6} onChange={() => {}} />
+          <Pagination paginaActual={currentPage} totalPaginas={totalPages} onChange={(page) => {
+            setCurrentPage(page);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }} />
         </div>
       </div>
     </main>

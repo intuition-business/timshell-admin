@@ -9,6 +9,18 @@ import { useRouter } from "next/navigation";
 
 export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerDetalles }) => {
   const router = useRouter();
+  void onVerDetalles;
+
+  const getDatePart = (value?: string) => {
+    if (!value) return "";
+    return value.split("T")[0];
+  };
+
+  const parseLocalDate = (datePart: string) => {
+    const [year, month, day] = datePart.split("-").map(Number);
+    if (!year || !month || !day) return null;
+    return new Date(year, month - 1, day);
+  };
 
   const getStatusStyle = (status: string) => {
     switch (status) {
@@ -48,9 +60,10 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
     <div className="flex flex-col gap-10">
       {semanas.map((semana) => {
         const rutinasDeEstaSemana = rutinasPorSemana[semana];
-        const primeraFecha = rutinasDeEstaSemana[0]?.fecha;
-        const fechaInicioSemana = primeraFecha
-          ? format(new Date(primeraFecha.replace("Z", "")), "dd/MMM", { locale: es })
+        const primeraFecha = getDatePart(rutinasDeEstaSemana[0]?.fecha);
+        const fechaInicioLocal = primeraFecha ? parseLocalDate(primeraFecha) : null;
+        const fechaInicioSemana = fechaInicioLocal
+          ? format(fechaInicioLocal, "dd/MMM", { locale: es })
           : "";
 
         return (
@@ -69,8 +82,8 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {rutinasDeEstaSemana.map((rutina, index) => {
-                const fechaUTC = rutina.fecha?.replace("Z", "") || "";
-                const fechaLocal = fechaUTC ? new Date(fechaUTC) : null;
+                const fechaBase = getDatePart(rutina.fecha);
+                const fechaLocal = fechaBase ? parseLocalDate(fechaBase) : null;
 
                 const fechaFormateada = fechaLocal
                   ? format(fechaLocal, "yyyy-MM-dd")

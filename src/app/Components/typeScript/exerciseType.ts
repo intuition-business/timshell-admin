@@ -7,6 +7,7 @@ export interface ExerciseCardProps {
   series?: number;
   rest?: string;
   idExerciseProps?: string;
+  db_id?: string;
   rutina_id?: string;
   fecha_rutina?:string
   update?: any;

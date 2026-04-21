@@ -14,6 +14,7 @@ export default function ExerciseCard({
   series,
   rest,
   idExerciseProps,
+  db_id,
   rutina_id,
   update
 }: ExerciseCardProps) {
@@ -43,8 +44,9 @@ export default function ExerciseCard({
           },
           body: JSON.stringify({
             rutina_id: rutina_id,
-            fecha_rutina: date,
+            day_fecha: date,
             exercise_id: idExerciseProps,
+            db_id: db_id,
           }),
         }
       );

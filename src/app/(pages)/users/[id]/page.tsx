@@ -173,8 +173,10 @@ export default function Pages() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
 
+        const savedPage = localStorage.getItem("userListPage") || "1";
+
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=${savedPage}`,
           {
             headers: { "x-access-token": token },
             signal: controller.signal,

@@ -109,6 +109,7 @@ export default function RutinaPage() {
                 key={key}
                 image={ejercicio?.thumbnail_url}
                 idExerciseProps={ejercicio.exercise_id}
+                db_id={ejercicio?.db_id}
                 title={ejercicio?.nombre_ejercicio}
                 date={date}
                 series={ejercicio?.Esquema?.Series}

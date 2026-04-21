@@ -35,7 +35,7 @@ export default function ExerciseCreateNew() {
     const [seriesErrors, setSeriesErrors] = useState<string[]>([]);
     const [generalError, setGeneralError] = useState("");
     const [showVideo, setShowVideo] = useState(false);
-
+    const [dbID, setDbID] = useState("");
 
     const isExerciseSelected = title.trim().length > 0;
 
@@ -125,8 +125,8 @@ export default function ExerciseCreateNew() {
             const body = {
                 rutina_id: rutinaId,
                 day_fecha: date,
-                new_exercise: title,
-                updates: {
+                db_id: dbID,
+                Esquema: {
                     Series: series.length,
                     Descanso: restTime,
                     "Detalle series": detalleSeries,
@@ -172,7 +172,8 @@ export default function ExerciseCreateNew() {
             setSeries([""]);
             setRestTime("");
             setShowVideo(false);
-
+            setDbID(selectExercise.id);
+            
         }
     };
 

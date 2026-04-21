@@ -50,7 +50,6 @@ export default function ModalPlanes({
   title = "Editar plan",
   isSaving = false,
   errorMessage = null,
-  isEditing = false,
 }: ModalPlanesProps) {
   const [formData, setFormData] = useState<PlanFormData>(createDefaultPlanData());
 
@@ -208,15 +207,10 @@ export default function ModalPlanes({
                   onChange={(event) =>
                     handleChange("generacionesPermitidas", event.target.value)
                   }
-                  disabled={isEditing || isSaving}
+                  disabled={isSaving}
                   className="w-full rounded-[14px] border border-[#5c5c5c] bg-[#2d2d2d] px-4 py-3 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f] disabled:cursor-not-allowed disabled:opacity-60"
                   placeholder="10"
                 />
-                {isEditing ? (
-                  <p className="text-sm text-white/55">
-                    Este valor solo se envía al crear el plan.
-                  </p>
-                ) : null}
               </div>
 
               <div className="space-y-2 md:col-span-2">

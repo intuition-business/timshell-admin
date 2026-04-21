@@ -9,8 +9,6 @@ export default function Pagination({
   totalPaginas,
   onChange,
 }: PaginationProps) {
-  if (totalPaginas <= 5) return null;
-
   return (
     <div className="flex justify-center items-center gap-2 mt-8">
       <button

@@ -47,12 +47,15 @@ export default function ExerciseCreate({
   const [accionState, setAccionState] = useState<boolean>(false);
   const [showModalExercise, setShowModalExercise] = useState(false);
   const [exerciseImage, setExerciseImage] = useState(image || "");
-  const [idExersice, setidExersice] = useState('');
+  const [idExersice, setidExersice] = useState(idExersiceProps || "");
   const [error, setError] = useState('')
   const [restError, setRestError] = useState("");
   const [seriesErrors, setSeriesErrors] = useState<string[]>([]);
   const [exerciseVideo, setVideoExercise] = useState("")
   const [showVideo, setShowVideo] = useState(false);
+  const [dayID, setDayID] = useState("");
+  const [dbID, setDbId] = useState("");
+
   useEffect(() => {
     setShowVideo(false);
   }, [exerciseImage, exerciseVideo]);
@@ -83,23 +86,25 @@ export default function ExerciseCreate({
   const handleEditExercise = async () => {
     try {
       const token = localStorage.getItem("token") ?? "";
+      const newDbId = selectExercise?.id ?? idExersice;
 
       const detalleSeries = series.map((rep) => ({
         Reps: String(rep),
       }));
 
       const body = {
-        rutina_id: rutinaId,
-        "fecha_rutina": date,
-        "exercise_id": idExersice,
+        "plan_id": rutinaId,
+        "day_rutina_id": dayID,
+        "db_id": dbID,
+        "new_db_id": newDbId,
         updates: {
-          exercise_name: title,
+          /*  exercise_name: title, */
           Series: series.length,
           Descanso: restTime,
           "Detalle series": detalleSeries,
-          description,
-          video_url: exerciseVideo,
-          thumbnail_url: exerciseImage,
+          /*     description,
+              video_url: exerciseVideo,
+              thumbnail_url: exerciseImage, */
         },
       };
 
@@ -130,7 +135,7 @@ export default function ExerciseCreate({
         const token = localStorage.getItem("token") ?? "";
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}routines/search-in-generated?fecha_rutina=${date}&exercise_name=${title}&user_id=${id}&exercise_id=${idExersiceProps}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}routines/search-in-generated?fecha_rutina=${date}&user_id=${id}&exercise_id=${idExersiceProps}`,
           {
             method: "GET",
             headers: {
@@ -148,8 +153,10 @@ export default function ExerciseCreate({
         if (data?.response?.exercise) {
           const ex = data.response.exercise;
           setRutinaName(data.routine_name);
-          setRutinaId(data.rutina_id);
-          setidExersice(ex.exercise_id)
+          setRutinaId(data.plan_id);
+          setDayID(data.day_rutina_id);
+          setidExersice(ex.exercise_id);
+          setDbId(ex.db_id);
           setTitle(ex.nombre_ejercicio);
           setDescription(ex.description || "");
           setExerciseImage(ex.thumbnail_url);
@@ -244,8 +251,8 @@ export default function ExerciseCreate({
           },
           body: JSON.stringify({
             rutina_id: rutinaId,
-            fecha_rutina: date,
-            exercise_id: idExersice,
+            day_fecha: date,
+            db_id: dbID,
           }),
         }
       );

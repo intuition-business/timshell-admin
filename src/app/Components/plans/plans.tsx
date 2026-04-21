@@ -107,6 +107,7 @@ const buildUpdatePayload = (plan: PlanFormData, estado = plan.estado) => ({
     new_price_cop: normalizeNumericInput(plan.precio),
     new_description_items: plan.beneficios.filter((beneficio) => beneficio.trim() !== ""),
     new_description: plan.descripcion.trim(),
+    new_generations_allowed: normalizeNumericInput(plan.generacionesPermitidas),
     new_activo: estado,
 });
 

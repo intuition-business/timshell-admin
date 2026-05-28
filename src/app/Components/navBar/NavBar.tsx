@@ -100,9 +100,9 @@ export default function NavBar() {
               </div>
             </Link>
 
-            <Link href="/reports" passHref>
+            <Link href="/chat" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/reports")
+                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/chat")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}

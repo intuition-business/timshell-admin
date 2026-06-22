@@ -1,6 +1,6 @@
 "use client";
 
-import ExercisePage from "@/app/Components/Exercise/ExercisePage";
+import ExercisePage from "@/features/exercise/ExercisePage";
 
 export default function ExerciseDetailPage() {
   return (

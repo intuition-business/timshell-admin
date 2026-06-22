@@ -1,9 +1,9 @@
 "use client";
 
-import ExerciseCard from "@/app/Components/Exercise/ExerciseCard";
-import Loading from "@/app/Components/Loading/loading";
-import AccionBar from "@/app/Components/navBar/ActionBar";
-import Buttons from "@/app/Components/ui/Buttons";
+import ExerciseCard from "@/features/exercise/ExerciseCard";
+import Loading from "@/components/loading/Loading";
+import AccionBar from "@/components/navbar/ActionBar";
+import Buttons from "@/components/ui/Buttons";
 import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

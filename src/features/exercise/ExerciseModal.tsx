@@ -2,8 +2,8 @@
 
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { SearchInput } from "../Inputs/inputs";
-import ReusableExercise from "../ui/ReusableExercise";
+import { SearchInput } from "@/components/inputs/inputs";
+import ReusableExercise from "@/components/ui/ReusableExercise";
 
 export default function ExerciseModal({
   isOpen,

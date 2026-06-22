@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { use, useEffect, useState } from "react";
-import Inputs, { SearchInput, SelectInput } from "../Inputs/inputs";
-import { CardList, TableList } from "../Table/TableList";
-import Pagination from "../ui/Pagination";
+import Inputs, { SearchInput, SelectInput } from "@/components/inputs/inputs";
+import { CardList, TableList } from "@/components/table/TableList";
+import Pagination from "@/components/ui/Pagination";
 
 interface User {
   plan_id: null;

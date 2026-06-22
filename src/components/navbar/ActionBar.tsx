@@ -1,4 +1,4 @@
-import Buttons from "../ui/Buttons";
+import Buttons from "@/components/ui/Buttons";
 
 export default function AccionBar({ accionState, textButton, useAccionState }: any) {
     return (

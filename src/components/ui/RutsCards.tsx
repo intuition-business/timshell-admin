@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { Check, Clock, ShieldAlert } from "lucide-react";
 import React from "react";
-import type { RutinasGridProps } from "../typeScript/uiCardsType";
+import type { RutinasGridProps } from "@/types/uiCardsType";
 import { useRouter } from "next/navigation";
 
 export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerDetalles }) => {

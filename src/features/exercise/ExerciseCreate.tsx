@@ -2,13 +2,13 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import ExerciseModal from "../ExerciseModal/ExerciseModal";
-import { SaveExercise } from "../ExerciseModal/SaveExercise";
-import Loading from "../Loading/loading";
-import AccionBar from "../navBar/ActionBar";
-import Buttons from "../ui/Buttons";
-import { ConfirmReplaceExercise } from "../ExerciseModal/ConfirmReplaceExercise";
-import { ConfirmDeleteExercise } from "../ModalConfirm/modalConfirm";
+import ExerciseModal from "@/features/exercise/ExerciseModal";
+import { SaveExercise } from "@/features/exercise/SaveExercise";
+import Loading from "@/components/loading/Loading";
+import AccionBar from "@/components/navbar/ActionBar";
+import Buttons from "@/components/ui/Buttons";
+import { ConfirmReplaceExercise } from "@/features/exercise/ConfirmReplaceExercise";
+import { ConfirmDeleteExercise } from "@/features/exercise/modalConfirm";
 import { Fancybox } from "@fancyapps/ui/dist/fancybox/";
 import { ChevronLeft } from "lucide-react";
 

@@ -13,7 +13,7 @@ import {
   ClipboardMinus,
   MessageCircle,
 } from "lucide-react";
-import { useAuth } from "@/app/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
 
 export default function NavBar() {

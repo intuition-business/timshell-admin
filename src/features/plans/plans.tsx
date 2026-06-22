@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ModalConfirm } from "../Modals/ModalConfirm";
-import { TablaPlan, type PlanTableRow } from "./PlanTable";
-import ModalPlanes, { type PlanFormData } from "./modalPlanes";
+import { ModalConfirm } from "@/components/modals/ModalConfirm";
+import { TablaPlan, type PlanTableRow } from "@/features/plans/PlanTable";
+import ModalPlanes, { type PlanFormData } from "@/features/plans/modalPlanes";
 
 type PlanItem = PlanFormData & { id: string; usuarios: number };
 type ApiPlan = {

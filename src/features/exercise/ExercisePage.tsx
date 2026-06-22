@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import ExerciseEditForm from "./ExerciseCreateForm";
-// import ExerciseCreate from "./ExerciseCreate";
+import ExerciseEditForm from "@/features/exercise/ExerciseCreateForm";
+// import ExerciseCreate from "@/features/exercise/ExerciseCreate";
 
 export default function ExercisePage() {
   const [search, setSearch] = useState("");

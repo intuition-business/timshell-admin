@@ -1,10 +1,10 @@
 "use client";
 
-import { ConfirmReplaceExercise } from "@/app/Components/ExerciseModal/ConfirmReplaceExercise";
-import ExerciseModal from "@/app/Components/ExerciseModal/ExerciseModal";
-import { SaveExercise } from "@/app/Components/ExerciseModal/SaveExercise";
-import AccionBar from "@/app/Components/navBar/ActionBar";
-import Buttons from "@/app/Components/ui/Buttons";
+import { ConfirmReplaceExercise } from "@/features/exercise/ConfirmReplaceExercise";
+import ExerciseModal from "@/features/exercise/ExerciseModal";
+import { SaveExercise } from "@/features/exercise/SaveExercise";
+import AccionBar from "@/components/navbar/ActionBar";
+import Buttons from "@/components/ui/Buttons";
 import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";

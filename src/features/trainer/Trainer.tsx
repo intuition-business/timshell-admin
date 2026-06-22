@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Inputs from "../Inputs/inputs";
-import AccionBar from "../navBar/ActionBar";
-import { CardList, TableList } from "../Table/TableList";
-import type { Entrenador } from "../typeScript/trainerType";
+import Inputs from "@/components/inputs/inputs";
+import AccionBar from "@/components/navbar/ActionBar";
+import { CardList, TableList } from "@/components/table/TableList";
+import type { Entrenador } from "@/types/trainerType";
 import { useRouter } from "next/navigation";
-import ModalTrainersRegister from "./TrainerRegister";
+import ModalTrainersRegister from "@/features/trainer/TrainerRegister";
 
 export default function Trainer() {
 

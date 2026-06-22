@@ -1,9 +1,9 @@
 'use client'
 
-import Loading from "@/app/Components/Loading/loading";
+import Loading from "@/components/loading/Loading";
 import { useEffect, useState } from "react";
-import Login from "./steps/login-user";
-import ValidacionOtp from "./steps/validacion-otp";
+import Login from "@/features/auth/login-user";
+import ValidacionOtp from "@/features/auth/validacion-otp";
 
 export default function Index() {
     const [loading, setLoading] = useState(true);

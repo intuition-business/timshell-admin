@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Buttons from "../ui/Buttons";
+import Buttons from "@/components/ui/Buttons";
 
 interface Props {
   onClose: () => void;

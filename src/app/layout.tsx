@@ -1,7 +1,7 @@
 "use client";
-import NavBar from "@/app/Components/navBar/NavBar";
+import NavBar from "@/components/navbar/NavBar";
 import { usePathname } from "next/navigation";
-import { AuthProvider } from "./AuthContext";
+import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
   const pathname = usePathname();
 
   // Ocultar en estas rutas
-  const hideOn = ["/auth/login", "/auth/codigo-otp", "/auth/admin", "/politicas-de-privacidad", "/terminos-y-condiciones", "/eliminar-cuenta"];
+  const hideOn = ["/login", "/codigo-otp", "/admin", "/politicas-de-privacidad", "/terminos-y-condiciones", "/eliminar-cuenta"];
 
   // Normalizar ambas rutas a minúsculas para evitar problemas de sensibilidad a mayúsculas/minúsculas
   const showNavbar = !hideOn.includes(pathname.toLowerCase());

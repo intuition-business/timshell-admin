@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ModalCheck } from "../Modals/ModalCheck";
+import { ModalCheck } from "@/components/modals/ModalCheck";
 
 interface Props {
   open?: boolean;

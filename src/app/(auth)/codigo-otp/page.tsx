@@ -1,6 +1,6 @@
 'use client';
 
-import Loading from "@/app/Components/Loading/loading";
+import Loading from "@/components/loading/Loading";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";

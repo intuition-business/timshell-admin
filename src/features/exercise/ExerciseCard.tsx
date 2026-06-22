@@ -4,8 +4,8 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
-import type { ExerciseCardProps } from "../typeScript/exerciseType";
-import { ConfirmDeleteExercise } from "../ModalConfirm/modalConfirm";
+import type { ExerciseCardProps } from "@/types/exerciseType";
+import { ConfirmDeleteExercise } from "@/features/exercise/modalConfirm";
 
 export default function ExerciseCard({
   image,

@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     position: "bottom-right",
   },
   images: {
-    domains: ["i.pravatar.cc"],
+    remotePatterns: [{ protocol: "https", hostname: "i.pravatar.cc" }],
   },
 };
 

@@ -1,5 +1,5 @@
 
-import Users from "@/app/Components/Users/Users";
+import Users from "@/features/users/Users";
 
 
 

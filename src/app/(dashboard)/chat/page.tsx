@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useAuth } from "@/app/AuthContext";
-import { useSocket, ChatMessage } from "@/app/Components/Chat/useSocket";
-import { ChevronLeft, ChevronRight, MoreVertical, Send, Smile, Paperclip, Mic, MicOff, X } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { useSocket, ChatMessage } from "@/features/chat/useSocket";
+import { ChevronLeft, ChevronRight, MoreVertical, Send, Smile, Paperclip, Mic, X } from "lucide-react";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
-import ChatAudioPlayer from "@/app/Components/Chat/ChatAudioPlayer";
+import ChatAudioPlayer from "@/features/chat/ChatAudioPlayer";
 
 function formatTime(iso: string) {
   return new Date(iso).toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
@@ -242,28 +242,39 @@ export default function ChatPage() {
   return (
     <div className="flex h-screen bg-[#0e0d0d] overflow-hidden">
 
-      {/* ────── COLUMNA 1: Historial de chats ────── */}
-      <aside className="w-[280px] flex-shrink-0 flex flex-col border-r border-[#1e1e1e]">
-        <div className="px-5 py-4 flex items-center gap-2 border-b border-[#1e1e1e]">
-          <ChevronLeft size={20} className="text-[#dff400]" />
-          <h2 className="text-white font-bold text-base">Historial de chats</h2>
-          <span className={`ml-auto w-2 h-2 rounded-full ${connected ? "bg-[#dff400]" : "bg-red-500"}`} />
+      {/* ────── COLUMNA 1: Lista de chats ────── */}
+      <aside className="w-[300px] flex-shrink-0 flex flex-col border-r border-[#1e1e1e]">
+        {/* Título */}
+        <div className="px-4 py-4 flex items-center gap-2 border-b border-[#1e1e1e]">
+          <button className="text-[#dff400] hover:opacity-80 transition-opacity" aria-label="Colapsar">
+            <ChevronLeft size={22} />
+          </button>
+          <h2 className="flex-1 text-center text-[#dff400] font-bold text-xl">Chats</h2>
+          <span className="w-[22px]" aria-hidden />
+        </div>
+
+        {/* Subtítulo + estado de conexión */}
+        <div className="px-5 pt-4 pb-2 flex items-center gap-2">
+          <h3 className="text-white font-bold text-base">Historial de chats</h3>
+          <span
+            className={`w-2 h-2 rounded-full flex-shrink-0 ${connected ? "bg-[#dff400]" : "bg-red-500"}`}
+            title={connected ? "Conectado" : "Desconectado"}
+          />
         </div>
 
         {/* Buscador */}
-        <div className="px-3 py-2 border-b border-[#1e1e1e]">
+        <div className="px-4 pb-2">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar usuario..."
-            className="w-full bg-[#1e1e1e] text-white placeholder-gray-500 rounded-xl px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#dff400] border border-[#2a2a2a]"
+            className="w-full bg-[#1c1c1c] text-white placeholder-gray-500 rounded-xl px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#dff400] border border-[#2a2a2a]"
           />
         </div>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto px-2 pb-2">
           {(() => {
-            // merge: todos los usuarios + datos de chat activo si existen
             const filtered = allUsers.filter((u) =>
               u.name.toLowerCase().includes(search.toLowerCase()) ||
               u.email.toLowerCase().includes(search.toLowerCase())
@@ -275,25 +286,26 @@ export default function ChatPage() {
 
             return filtered.map((user) => {
               const chatData = chats.find((c) => c.receiverId === user.id);
+              const active = activeReceiverId === user.id;
               return (
                 <button
                   key={user.id}
                   onClick={() => openChat(user.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 border-b border-[#1a1a1a] text-left transition-colors ${
-                    activeReceiverId === user.id ? "bg-[#1e1e1e]" : "hover:bg-[#161616]"
+                  className={`w-full flex items-center gap-3 px-3 py-3 mb-1 rounded-2xl text-left transition-colors ${
+                    active ? "bg-[#1c1c1c] ring-1 ring-[#2f2f2f]" : "hover:bg-[#161616]"
                   }`}
                 >
-                  <UserAvatar src={user.user_image} name={user.name} size={44} />
+                  <UserAvatar src={user.user_image} name={user.name} size={46} />
                   <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center gap-2">
                       <span className="text-white font-semibold text-sm truncate">{user.name}</span>
                       {chatData?.lastMessageTime && (
-                        <span className="text-gray-500 text-[11px] flex-shrink-0 ml-1">
+                        <span className="text-gray-500 text-[11px] flex-shrink-0">
                           {formatDateShort(chatData.lastMessageTime)}
                         </span>
                       )}
                     </div>
-                    <div className="flex justify-between items-center mt-0.5">
+                    <div className="flex justify-between items-center mt-1 gap-2">
                       <span className="text-gray-400 text-xs truncate">
                         {chatData?.lastMessage ||
                           (chatData?.attachmentType === "image" ? "📷 Imagen" :
@@ -301,7 +313,7 @@ export default function ChatPage() {
                            user.email || "Sin mensajes")}
                       </span>
                       {chatData?.unreadCount ? (
-                        <span className="bg-[#dff400] text-black text-[10px] font-bold rounded-full px-1.5 py-0.5 ml-1 flex-shrink-0">
+                        <span className="bg-[#dff400] text-black text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center flex-shrink-0">
                           {chatData.unreadCount}
                         </span>
                       ) : null}
@@ -323,10 +335,10 @@ export default function ChatPage() {
         ) : (
           <>
             {/* Header */}
-            <div className="px-5 py-3 bg-[#111111] border-b border-[#1e1e1e] flex items-center gap-3">
-              <UserAvatar src={activeChat?.receiverImage ?? null} name={activeChat?.receiverName ?? ""} size={40} />
-              <div className="flex-1">
-                <p className="text-white font-semibold text-sm">{activeChat?.receiverName}</p>
+            <div className="px-5 py-3 border-b border-[#1e1e1e] flex items-center gap-3">
+              <UserAvatar src={activeChat?.receiverImage ?? null} name={activeChat?.receiverName ?? ""} size={42} />
+              <div className="flex-1 min-w-0">
+                <p className="text-white font-semibold text-[15px] truncate">{activeChat?.receiverName}</p>
                 <p className="text-[#dff400] text-xs">En línea</p>
               </div>
               <button className="text-gray-400 hover:text-white transition-colors">
@@ -335,38 +347,35 @@ export default function ChatPage() {
             </div>
 
             {/* Mensajes */}
-            <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-1">
+            <div className="flex-1 overflow-y-auto px-6 py-5 flex flex-col">
               {messages.length === 0 ? (
                 <div className="flex items-center justify-center h-full">
                   <p className="text-gray-600 text-sm">No hay mensajes aún</p>
                 </div>
               ) : (
-                grouped.map(({ date, label, msgs }) => (
+                grouped.map(({ date, label, msgs }, gi) => (
                   <div key={date}>
-                    {/* Separador de fecha */}
-                    <div className="flex items-center gap-3 my-4">
-                      <div className="flex-1 h-px bg-[#1e1e1e]" />
-                      <span className="text-gray-500 text-xs">{label}</span>
-                      <div className="flex-1 h-px bg-[#1e1e1e]" />
-                    </div>
+                    {/* Separador de fecha (solo entre días distintos) */}
+                    {gi > 0 && (
+                      <div className="flex items-center gap-3 my-4">
+                        <div className="flex-1 h-px bg-[#1e1e1e]" />
+                        <span className="text-gray-500 text-xs">{label}</span>
+                        <div className="flex-1 h-px bg-[#1e1e1e]" />
+                      </div>
+                    )}
 
                     {msgs.map((msg) => {
                       const isMine = msg.user_id_sender?.toString() === myId;
                       return (
                         <div key={msg.id} className={`flex mb-3 ${isMine ? "justify-end" : "justify-start"}`}>
-                          {!isMine && (
-                            <UserAvatar src={msg.user_image_sender} name={msg.user_name_sender} size={32} />
-                          )}
                           <div
-                            className={`max-w-[60%] ml-2 mr-2 rounded-2xl px-4 py-2.5 ${
-                              isMine
-                                ? "bg-[#2B2B2B] rounded-tr-sm"
-                                : "bg-[#1e1e1e] rounded-tl-sm border border-[#2a2a2a]"
+                            className={`max-w-[62%] rounded-2xl px-4 py-3 ${
+                              isMine ? "bg-[#2f2f2f]" : "bg-[#222222]"
                             }`}
                           >
                             {msg.files?.map((f, i) =>
                               f.file_type === "image" ? (
-                                <img key={i} src={f.file_url} alt="imagen" className="rounded-xl mb-2 max-w-full max-h-48 object-cover" />
+                                <img key={i} src={f.file_url} alt="imagen" className="rounded-xl mb-2 max-w-full max-h-64 object-cover" />
                               ) : f.file_type === "video" ? (
                                 <video key={i} src={f.file_url} controls className="rounded-xl mb-2 max-w-full" />
                               ) : f.file_type === "audio" ? (
@@ -376,14 +385,7 @@ export default function ChatPage() {
                             {msg.message && (
                               <p className="text-white text-sm leading-relaxed whitespace-pre-wrap">{msg.message}</p>
                             )}
-                            <p className="text-gray-500 text-[10px] text-right mt-1">
-                              {formatTime(msg.created_at)}
-                              {isMine && <span className="ml-1 text-[#dff400]">{msg.seen ? "✓✓" : "✓"}</span>}
-                            </p>
                           </div>
-                          {isMine && (
-                            <UserAvatar src={null} name="Yo" size={32} />
-                          )}
                         </div>
                       );
                     })}
@@ -394,22 +396,22 @@ export default function ChatPage() {
             </div>
 
             {/* Input */}
-            <div className="px-4 py-3 bg-[#111111] border-t border-[#1e1e1e]">
+            <div className="px-4 py-4 border-t border-[#1e1e1e]">
               {/* Emoji picker flotante */}
               {showEmoji && (
-                <div ref={emojiPickerRef} className="absolute bottom-[72px] left-[280px] z-50">
+                <div ref={emojiPickerRef} className="absolute bottom-[80px] left-[300px] z-50">
                   <EmojiPicker theme={Theme.DARK} onEmojiClick={onEmojiClick} height={380} width={320} />
                 </div>
               )}
 
               <div className="flex items-center gap-3">
                 {/* Cápsula: emoji + input + paperclip */}
-                <div className="flex-1 flex items-center bg-[#1e1e1e] rounded-2xl border border-[#2a2a2a] px-1 py-1 gap-1">
+                <div className="flex-1 flex items-center bg-[#1c1c1c] rounded-2xl border border-[#2a2a2a] pl-2 pr-2 py-1.5 gap-1">
                   <button
                     onClick={() => setShowEmoji((v) => !v)}
-                    className={`flex-shrink-0 p-2.5 rounded-xl transition-colors ${showEmoji ? "bg-[#2a2a2a] text-[#dff400]" : "text-gray-400 hover:text-white"}`}
+                    className={`flex-shrink-0 p-2 rounded-xl transition-colors ${showEmoji ? "text-[#dff400]" : "text-gray-400 hover:text-white"}`}
                   >
-                    <Smile size={20} />
+                    <Smile size={22} />
                   </button>
 
                   {recording ? (
@@ -432,7 +434,7 @@ export default function ChatPage() {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                      placeholder={uploading ? "Subiendo..." : "Escribe u..."}
+                      placeholder={uploading ? "Subiendo..." : "Escribe un mensaje"}
                       disabled={activeChat?.is_blocked || activeChat?.blocked_by_me || uploading}
                       className="flex-1 bg-transparent text-white placeholder-gray-500 text-sm outline-none disabled:opacity-40 min-w-0"
                     />
@@ -441,9 +443,9 @@ export default function ChatPage() {
                   <button
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading || activeChat?.is_blocked || activeChat?.blocked_by_me}
-                    className="flex-shrink-0 p-2.5 rounded-xl bg-[#2a2a2a] text-gray-300 hover:text-white transition-colors disabled:opacity-40"
+                    className="flex-shrink-0 p-2 rounded-xl text-gray-400 hover:text-white transition-colors disabled:opacity-40"
                   >
-                    <Paperclip size={20} />
+                    <Paperclip size={22} />
                   </button>
                   <input ref={fileInputRef} type="file" accept="image/*,video/*,audio/*" className="hidden" onChange={handleFileChange} />
                 </div>
@@ -457,7 +459,7 @@ export default function ChatPage() {
                   <Send size={20} />
                 </button>
 
-                {/* Micrófono */}
+                {/* Micrófono (mensajes de voz) */}
                 {!recording && (
                   <button
                     onClick={startRecording}
@@ -474,10 +476,13 @@ export default function ChatPage() {
       </main>
 
       {/* ────── COLUMNA 3: Info del usuario ────── */}
-      <aside className="w-[250px] flex-shrink-0 flex flex-col">
-        <div className="px-5 py-4 flex items-center gap-2 border-b border-[#1e1e1e]">
-          <ChevronRight size={20} className="text-[#dff400]" />
-          <h2 className="text-white font-bold text-base">Chats</h2>
+      <aside className="w-[260px] flex-shrink-0 flex flex-col">
+        <div className="px-4 py-4 flex items-center gap-2 border-b border-[#1e1e1e]">
+          <button className="text-[#dff400] hover:opacity-80 transition-opacity" aria-label="Colapsar">
+            <ChevronRight size={22} />
+          </button>
+          <h2 className="flex-1 text-center text-white font-bold text-xl">Chats</h2>
+          <span className="w-[22px]" aria-hidden />
         </div>
 
         {!activeReceiverId ? (
@@ -485,40 +490,39 @@ export default function ChatPage() {
             <p className="text-gray-600 text-xs text-center px-4">Selecciona un chat para ver la info</p>
           </div>
         ) : (
-          <div className="flex-1 overflow-y-auto px-4 py-5 flex flex-col gap-4">
+          <div className="flex-1 overflow-y-auto px-5 py-6 flex flex-col gap-5">
             {/* Avatar + nombre */}
             <div className="flex flex-col items-center gap-3">
-              <div className="relative">
-                <UserAvatar
-                  src={userInfo?.user_image ?? activeChat?.receiverImage ?? null}
-                  name={userInfo?.name ?? activeChat?.receiverName ?? ""}
-                  size={72}
-                />
-                <span className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-[#dff400] border-2 border-[#0e0d0d] flex items-center justify-center text-black text-[9px] font-bold">
-                  {(userInfo?.name ?? activeChat?.receiverName ?? "?").charAt(0).toUpperCase()}
+              <UserAvatar
+                src={userInfo?.user_image ?? activeChat?.receiverImage ?? null}
+                name={userInfo?.name ?? activeChat?.receiverName ?? ""}
+                size={84}
+              />
+              <div className="flex flex-col items-center gap-1.5">
+                <p className="text-white font-bold text-lg">{userInfo?.name ?? activeChat?.receiverName}</p>
+                <span className="bg-[#dff400]/15 text-[#dff400] text-[11px] font-medium px-3 py-0.5 rounded-full">
+                  En linea
                 </span>
-              </div>
-              <div className="text-center">
-                <p className="text-white font-bold text-base">{userInfo?.name ?? activeChat?.receiverName}</p>
-                <p className="text-[#dff400] text-xs mt-0.5">En línea</p>
               </div>
             </div>
 
+            <div className="h-px bg-[#1e1e1e]" />
+
             {/* Información del usuario */}
-            <div className="bg-[#1a1a1a] rounded-2xl p-4 border border-[#2a2a2a]">
-              <h3 className="text-gray-400 text-xs font-semibold uppercase mb-3 tracking-wider">Información del usuario</h3>
-              <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4">
+              <h3 className="text-[#dff400] font-bold text-base text-center">Información del usuario</h3>
+              <div className="flex flex-col gap-4 px-1">
                 <div>
-                  <p className="text-gray-500 text-xs">Objetivo</p>
-                  <p className="text-white text-sm font-medium">{userInfo?.objetivo || "—"}</p>
+                  <p className="text-white font-semibold text-sm">Objetivo</p>
+                  <p className="text-gray-400 text-sm mt-0.5">{userInfo?.objetivo || "—"}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs">Peso</p>
-                  <p className="text-white text-sm font-medium">{userInfo?.peso ? `${userInfo.peso} kg` : "—"}</p>
+                  <p className="text-white font-semibold text-sm">Peso</p>
+                  <p className="text-gray-400 text-sm mt-0.5">{userInfo?.peso ? `${userInfo.peso}kg` : "—"}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs">Altura</p>
-                  <p className="text-white text-sm font-medium">{userInfo?.estatura ? `${userInfo.estatura} cm` : "—"}</p>
+                  <p className="text-white font-semibold text-sm">Altura</p>
+                  <p className="text-gray-400 text-sm mt-0.5">{userInfo?.estatura ? `${userInfo.estatura} cm` : "—"}</p>
                 </div>
               </div>
             </div>

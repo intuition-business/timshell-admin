@@ -1,7 +1,7 @@
 "use client";
 
-import { InputDate, SearchInput, SelectInput } from "@/app/Components/Inputs/inputs";
-import { TableList } from "@/app/Components/Table/TableList";
+import { InputDate, SearchInput, SelectInput } from "@/components/inputs/inputs";
+import { TableList } from "@/components/table/TableList";
 import { IconOutbound, IconSettings } from "@tabler/icons-react";
 import {
   BarElement,

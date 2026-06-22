@@ -1,14 +1,14 @@
 "use client";
-import Loading from "@/app/Components/Loading/loading";
-import Buttons from "@/app/Components/ui/Buttons";
+import Loading from "@/components/loading/Loading";
+import Buttons from "@/components/ui/Buttons";
 import { ChevronLeft, Pencil } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import TrainerInfoCard from "../ui/profileTrainers";
-import { CardList, TableList } from "../Table/TableList";
-import TrainerMovementChart from "../ui/trainerMovementChart";
-import MonthlyRevenueChart from "../ui/trainerBarChart";
-import EditarTrinerModal from "./editarTriner"; // modal for editing trainer info
+import TrainerInfoCard from "@/components/ui/profileTrainers";
+import { CardList, TableList } from "@/components/table/TableList";
+import TrainerMovementChart from "@/components/ui/trainerMovementChart";
+import MonthlyRevenueChart from "@/components/ui/trainerBarChart";
+import EditarTrinerModal from "@/features/trainer/editarTriner"; // modal for editing trainer info
 
 interface Rutina {
   id: string;

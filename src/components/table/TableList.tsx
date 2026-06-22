@@ -7,7 +7,7 @@ import type {
   CardListProps,
   StarsProps,
   TableListProps,
-} from "../typeScript/tablaType";
+} from "@/types/tablaType";
 
 export function TableList({ encabezado, home, columns }: TableListProps) {
   return (

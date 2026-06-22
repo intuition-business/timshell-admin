@@ -1,6 +1,6 @@
 "use client";
 
-import ExerciseCreate from "@/app/Components/Exercise/ExerciseCreate";
+import ExerciseCreate from "@/features/exercise/ExerciseCreate";
 import { useSearchParams } from "next/navigation";
 
 export default function ExerciseCreatePage() {

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { Entrenador } from "./trainerType";
+import { Entrenador } from "@/types/trainerType";
 
 export interface CardItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

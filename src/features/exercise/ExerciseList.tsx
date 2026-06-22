@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { SearchInput } from "../Inputs/inputs";
-import ReusableExercise from "../ui/ReusableExercise";
+import { SearchInput } from "@/components/inputs/inputs";
+import ReusableExercise from "@/components/ui/ReusableExercise";
 import { Pencil, Trash2 } from "lucide-react";
-import { ModalConfirm } from "../Modals/ModalConfirm";
+import { ModalConfirm } from "@/components/modals/ModalConfirm";
 // import ConfirmReplaceExercise from "../modals/ConfirmReplaceExercise";
 
 interface ListadoEjerciciosProps {

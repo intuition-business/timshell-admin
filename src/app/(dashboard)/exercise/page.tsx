@@ -1,4 +1,4 @@
-import PageIndex from "@/app/Components/Exercise/PageIndex";
+import PageIndex from "@/features/exercise/PageIndex";
 
 export default function page() {
   return (

@@ -1,14 +1,14 @@
 
 'use client'
 
-import ExerciseModal from "@/app/Components/ExerciseModal/ExerciseModal";
-import Buttons from "@/app/Components/ui/Buttons";
+import ExerciseModal from "@/features/exercise/ExerciseModal";
+import Buttons from "@/components/ui/Buttons";
 import { ChevronLeft, CloudUpload } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
-import ListadoEjercicios from "./ExerciseList";
+import ListadoEjercicios from "@/features/exercise/ExerciseList";
 import { IconEdit, IconPencil } from "@tabler/icons-react";
-import { ModalCheck } from "../Modals/ModalCheck";
+import { ModalCheck } from "@/components/modals/ModalCheck";
 
 export default function Page() {
   const router = useRouter();

@@ -1,12 +1,12 @@
 "use client";
-import ProgressCard from "@/app/Components/Interna/components/ProgressCard";
-import Loading from "@/app/Components/Loading/loading";
-import Buttons from "@/app/Components/ui/Buttons";
-import Dates from "@/app/Components/ui/Dates";
-import { ProfileCard } from "@/app/Components/ui/ReusableProfile";
-import { RutsCards } from "@/app/Components/ui/RutsCards";
-import UserMovementChart from "@/app/Components/ui/UserMovementChart";
-import WeightChart from "@/app/Components/ui/WeightChart";
+import ProgressCard from "@/features/users/ProgressCard";
+import Loading from "@/components/loading/Loading";
+import Buttons from "@/components/ui/Buttons";
+import Dates from "@/components/ui/Dates";
+import { ProfileCard } from "@/components/ui/ReusableProfile";
+import { RutsCards } from "@/components/ui/RutsCards";
+import UserMovementChart from "@/components/ui/UserMovementChart";
+import WeightChart from "@/components/ui/WeightChart";
 import { ChevronLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ import {
   InputDate,
   SearchInput,
   SelectInput,
-} from "../../../Components/Inputs/inputs";
+} from "@/components/inputs/inputs";
 
 interface Rutina {
   id: string;

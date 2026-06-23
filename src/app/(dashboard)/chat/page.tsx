@@ -105,11 +105,7 @@ export default function ChatPage() {
     });
   }, [messages, activeReceiverId]);
 
-  // cargar usuarios: admin => todos, entrenador => solo sus asignados
-  const role = auth?.role;
-  const myUserId = auth?.userId;
-  const isTrainer = !!role && role !== "admin";
-
+  // cargar usuarios: tanto admin como entrenador ven a todos los usuarios
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -124,16 +120,12 @@ export default function ChatPage() {
       objetivo: u.objetivo,
     });
 
-    const url = isTrainer
-      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/${myUserId}`
-      : `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=100`;
-
-    if (isTrainer && !myUserId) return;
-
-    fetch(url, { headers: { "x-access-token": token } })
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=100`, {
+      headers: { "x-access-token": token },
+    })
       .then((r) => r.json())
       .then((json) => {
-        const rows = isTrainer ? json?.data?.assigned_users : json?.data;
+        const rows = json?.data;
         if (!rows) return;
         const mapped: UserInfo[] = rows.map(mapUser);
         // deduplicar por ID (el JOIN con asignaciones puede traer filas duplicadas)
@@ -141,7 +133,7 @@ export default function ChatPage() {
         setAllUsers(unique);
       })
       .catch(() => {});
-  }, [isTrainer, myUserId]);
+  }, []);
 
   // actualizar info del panel derecho cuando cambia el chat activo
   useEffect(() => {

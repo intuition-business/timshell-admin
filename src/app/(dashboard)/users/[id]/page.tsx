@@ -16,6 +16,15 @@ import {
   SelectInput,
 } from "@/components/inputs/inputs";
 
+const getRoleFromToken = (token: string): string | null => {
+  try {
+    const payload = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(atob(payload))?.role ?? null;
+  } catch {
+    return null;
+  }
+};
+
 interface Rutina {
   id: string;
   fecha: string;
@@ -173,15 +182,20 @@ export default function Pages() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos
 
-        const savedPage = localStorage.getItem("userListPage") || "1";
+        const role = getRoleFromToken(token);
+        const isTrainer = !!role && role !== "admin";
 
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=${savedPage}`,
-          {
-            headers: { "x-access-token": token },
-            signal: controller.signal,
-          }
-        );
+        // Admin: lista paginada de todos los usuarios.
+        // Entrenador: solo sus usuarios asignados (derivados del token).
+        const savedPage = localStorage.getItem("userListPage") || "1";
+        const url = isTrainer
+          ? `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/my-users`
+          : `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=${savedPage}`;
+
+        const res = await fetch(url, {
+          headers: { "x-access-token": token },
+          signal: controller.signal,
+        });
 
         clearTimeout(timeoutId);
 
@@ -194,10 +208,16 @@ export default function Pages() {
         const json = await res.json();
         console.log("Datos recibidos:", json);
 
-        if (json.data) {
+        // Normalizar la lista según el endpoint usado
+        const lista = isTrainer
+          ? json?.data?.assigned_users ?? json?.data ?? json?.users ?? []
+          : json?.data;
+
+        if (Array.isArray(lista)) {
           // Buscar el usuario específico por ID en la lista
-          const userData = json.data.find(
-            (user: User) => user.id?.toString() === id
+          const userData = lista.find(
+            (user: any) =>
+              (user.id ?? user.user_id)?.toString() === id
           );
 
           if (userData) {
@@ -205,7 +225,7 @@ export default function Pages() {
               fecha: userData.fecha,
               id: id?.toString() || "",
               name: userData.name || "",
-              email: userData.email || "",
+              email: userData.email || userData.user_email || "",
               phone: userData.phone || "",
               peso: Number(userData.peso) || 0,
               estatura: Number(userData.estatura) || 0,
@@ -214,7 +234,7 @@ export default function Pages() {
               plan_name: userData.plan_name || "",
               trainer_name: userData.trainer_name || "Sin entrenador",
               trainer_image: userData.trainer_image || "",
-              user_image: userData.user_image || "",
+              user_image: userData.user_image || userData.image || "",
             });
           } else {
             setError(`Usuario con ID ${id} no encontrado`);

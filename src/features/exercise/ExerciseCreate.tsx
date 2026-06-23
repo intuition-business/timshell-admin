@@ -86,17 +86,24 @@ export default function ExerciseCreate({
   const handleEditExercise = async () => {
     try {
       const token = localStorage.getItem("token") ?? "";
-      const newDbId = selectExercise?.id ?? idExersice;
 
       const detalleSeries = series.map((rep) => ({
         Reps: String(rep),
       }));
 
+      // Validación previa: estos IDs vienen del GET; si faltan, el backend
+      // responde "Faltan: plan_id, day_rutina_id, db_id".
+      if (!rutinaId || !dayID || !dbID) {
+        console.error("Faltan IDs para editar:", { rutinaId, dayID, dbID });
+        setError("No se pudieron cargar los datos de la rutina. Recarga e intenta de nuevo.");
+        alert("No se pudieron cargar los datos de la rutina. Recarga e intenta de nuevo.");
+        return;
+      }
+
       const body = {
         "plan_id": rutinaId,
         "day_rutina_id": dayID,
         "db_id": dbID,
-        "new_db_id": newDbId,
         updates: {
           /*  exercise_name: title, */
           Series: series.length,
@@ -120,7 +127,15 @@ export default function ExerciseCreate({
         }
       );
 
-      if (!res.ok) throw new Error("Error al editar ejercicio");
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        console.error("Error edit-exercise:", data);
+        const msg = data?.message || "Error al editar ejercicio";
+        setError(msg);
+        alert(msg);
+        return;
+      }
 
       setShowModal(true);
     } catch (error) {
@@ -149,12 +164,41 @@ export default function ExerciseCreate({
         if (!res.ok) throw new Error("Error al cargar ejercicio");
 
         const data = await res.json();
+        console.log("Respuesta search-in-generated (edición):", data);
 
-        if (data?.response?.exercise) {
-          const ex = data.response.exercise;
-          setRutinaName(data.routine_name);
-          setRutinaId(data.plan_id);
-          setDayID(data.day_rutina_id);
+        // La respuesta puede traer el ejercicio como objeto único (`exercise`)
+        // o dentro de un arreglo (`ejercicios`), según el endpoint.
+        const resp = data?.response ?? data;
+        const ex =
+          resp?.exercise ??
+          (Array.isArray(resp?.ejercicios)
+            ? resp.ejercicios.find(
+                (e: any) =>
+                  e.exercise_id?.toString() === idExersiceProps?.toString()
+              ) ?? resp.ejercicios[0]
+            : null);
+
+        if (ex) {
+          // El id de rutina y el id del día llegan con nombres distintos según
+          // el endpoint (plan_id / rutina_id, day_rutina_id), así que probamos
+          // todas las ubicaciones posibles.
+          const planId =
+            data?.plan_id ??
+            data?.rutina_id ??
+            resp?.plan_id ??
+            resp?.rutina_id ??
+            ex?.plan_id ??
+            ex?.rutina_id ??
+            "";
+          const dayRutId =
+            data?.day_rutina_id ??
+            resp?.day_rutina_id ??
+            ex?.day_rutina_id ??
+            "";
+
+          setRutinaName(data?.routine_name ?? resp?.routine_name ?? "");
+          setRutinaId(planId !== null && planId !== undefined ? planId.toString() : "");
+          setDayID(dayRutId !== null && dayRutId !== undefined ? dayRutId.toString() : "");
           setidExersice(ex.exercise_id);
           setDbId(ex.db_id);
           setTitle(ex.nombre_ejercicio);
@@ -168,6 +212,8 @@ export default function ExerciseCreate({
             );
             setSeries(repsArray);
           }
+        } else {
+          console.warn("No se encontró el ejercicio en la respuesta:", data);
         }
       } catch (err) {
         console.error(err);

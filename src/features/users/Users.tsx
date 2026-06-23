@@ -32,9 +32,6 @@ interface User {
 export default function UserDashboard() {
   const router = useRouter();
   const auth = useAuth();
-  const role = auth?.role;
-  const userId = auth?.userId;
-  const isTrainer = !!role && role !== "admin";
   const [data, setData] = useState([]);
   const [totalUser, setTotalUser] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -76,15 +73,17 @@ export default function UserDashboard() {
 
   const fetchInfo = async (page: number) => {
     const token = localStorage.getItem("token");
-    if (!token || !getRoleFromToken(token)) {
+    const roleFromToken = token ? getRoleFromToken(token) : null;
+    if (!token || !roleFromToken) {
       redirectToLogin();
       return;
     }
 
-    // Entrenador: solo sus usuarios asignados
-    if (isTrainer) {
-      if (!userId) return;
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/${userId}`, {
+    const trainer = roleFromToken !== "admin";
+
+    // Entrenador: solo sus usuarios asignados (el backend los deriva del token)
+    if (trainer) {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/my-users`, {
         headers: { "x-access-token": token },
       })
         .then((res) => {
@@ -96,8 +95,9 @@ export default function UserDashboard() {
         })
         .then((json) => {
           if (!json) return;
-          const assigned = json?.data?.assigned_users ?? [];
-          const mappedData = assigned.map(mapUser);
+          const assigned =
+            json?.data?.assigned_users ?? json?.data ?? json?.users ?? [];
+          const mappedData = (Array.isArray(assigned) ? assigned : []).map(mapUser);
           setTotalUser(mappedData.length);
           setTotalPages(1);
           setData(mappedData);
@@ -140,10 +140,10 @@ export default function UserDashboard() {
     router.push(`/users/${clickedId}`);
   };
 
-  // cargar datos (reacciona a cambios de página y a la resolución del rol/usuario)
+  // cargar datos (el rol se deriva del token dentro de fetchInfo)
   useEffect(() => {
     fetchInfo(currentPage);
-  }, [currentPage, isTrainer, userId]);
+  }, [currentPage]);
 
   return (
     <main>

@@ -32,10 +32,13 @@ interface User {
 export default function UserDashboard() {
   const router = useRouter();
   const auth = useAuth();
-  const [data, setData] = useState([]);
-  const [totalUser, setTotalUser] = useState();
+  const [data, setData] = useState<any[]>([]);
+  const [totalUser, setTotalUser] = useState<number>();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  // Evita disparar el fetch hasta restaurar la página guardada (sin esto se
+  // lanzan dos peticiones que compiten y dejan la lista vacía).
+  const [ready, setReady] = useState(false);
   const itemsPerPage = 36;
 
   const EncabezadosData = [
@@ -119,6 +122,13 @@ export default function UserDashboard() {
       })
       .then((json) => {
         if (json?.data) {
+          // Página fuera de rango (p.ej. guardada en localStorage): volver a la 1
+          if (json.data.length === 0 && json.total_pages > 0 && page > json.total_pages) {
+            localStorage.setItem("userListPage", "1");
+            setCurrentPage(1);
+            return;
+          }
+
           const mappedData = json.data.map(mapUser);
           setTotalUser(json.total_users);
           setTotalPages(json.total_pages);
@@ -129,10 +139,11 @@ export default function UserDashboard() {
       .catch((err) => console.error("Error fetching users:", err));
   };
 
-  // restaurar la página guardada al montar
+  // restaurar la página guardada al montar y habilitar el fetch
   useEffect(() => {
-    const savedPage = localStorage.getItem("userListPage");
-    if (savedPage) setCurrentPage(Number(savedPage));
+    const savedPage = Number(localStorage.getItem("userListPage"));
+    if (savedPage && savedPage > 0) setCurrentPage(savedPage);
+    setReady(true);
   }, []);
 
   const handleUserClick = (clickedId: string) => {
@@ -140,10 +151,11 @@ export default function UserDashboard() {
     router.push(`/users/${clickedId}`);
   };
 
-  // cargar datos (el rol se deriva del token dentro de fetchInfo)
+  // cargar datos solo después de restaurar la página (rol derivado del token)
   useEffect(() => {
+    if (!ready) return;
     fetchInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage, ready]);
 
   return (
     <main>
@@ -191,6 +203,7 @@ export default function UserDashboard() {
         <div className="w-full p-6 mb-11">
           <Pagination paginaActual={currentPage} totalPaginas={totalPages} onChange={(page) => {
             setCurrentPage(page);
+            localStorage.setItem("userListPage", page.toString());
             window.scrollTo({ top: 0, behavior: "smooth" });
           }} />
         </div>

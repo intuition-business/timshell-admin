@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 interface AuthContextType {
     token: string | null;
     role: string | null;
+    userId: string | null;
     login: (token: string) => void;
     logout: () => void;
 }
@@ -19,12 +20,14 @@ const decodeJWT = (token: string) => {
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [role, setRole] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | null>(null);
 
     const login = (newToken: string) => {
         try {
             const decoded = decodeJWT(newToken);
             setToken(newToken);
             setRole(decoded?.role || null);
+            setUserId(decoded?.userId != null ? decoded.userId.toString() : null);
             localStorage.setItem("token", newToken);
         } catch (e) {
             console.error("Invalid token during login", e);
@@ -34,6 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const logout = () => {
         setToken(null);
         setRole(null);
+        setUserId(null);
         localStorage.removeItem("token");
     };
 
@@ -43,12 +47,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (storedToken) {
             const decodedToken = decodeJWT(storedToken);
             setRole(decodedToken?.role || null);
+            setUserId(decodedToken?.userId != null ? decodedToken.userId.toString() : null);
             setToken(storedToken);
         }
     }, []);
 
     return (
-        <AuthContext.Provider value={{ token, role, login, logout }}>
+        <AuthContext.Provider value={{ token, role, userId, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

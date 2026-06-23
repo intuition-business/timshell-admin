@@ -68,6 +68,8 @@ export default function ChatPage() {
   const [allUsers, setAllUsers] = useState<UserInfo[]>([]);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [showEmoji, setShowEmoji] = useState(false);
+  const [showInfo, setShowInfo] = useState(true);
+  const [showChats, setShowChats] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [recording, setRecording] = useState(false);
   const [recordingSeconds, setRecordingSeconds] = useState(0);
@@ -103,31 +105,43 @@ export default function ChatPage() {
     });
   }, [messages, activeReceiverId]);
 
-  // cargar todos los usuarios una sola vez
+  // cargar usuarios: admin => todos, entrenador => solo sus asignados
+  const role = auth?.role;
+  const myUserId = auth?.userId;
+  const isTrainer = !!role && role !== "admin";
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=100`, {
-      headers: { "x-access-token": token },
-    })
+
+    const mapUser = (u: any): UserInfo => ({
+      id: (u.id ?? u.user_id)?.toString(),
+      name: u.name || "",
+      email: u.email || u.user_email || "",
+      user_image: u.user_image || u.image || null,
+      peso: u.peso,
+      estatura: u.estatura,
+      objetivo: u.objetivo,
+    });
+
+    const url = isTrainer
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/${myUserId}`
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=100`;
+
+    if (isTrainer && !myUserId) return;
+
+    fetch(url, { headers: { "x-access-token": token } })
       .then((r) => r.json())
       .then((json) => {
-        if (!json.data) return;
-        const mapped: UserInfo[] = json.data.map((u: any) => ({
-          id: u.id?.toString(),
-          name: u.name || "",
-          email: u.email || "",
-          user_image: u.user_image || null,
-          peso: u.peso,
-          estatura: u.estatura,
-          objetivo: u.objetivo,
-        }));
+        const rows = isTrainer ? json?.data?.assigned_users : json?.data;
+        if (!rows) return;
+        const mapped: UserInfo[] = rows.map(mapUser);
         // deduplicar por ID (el JOIN con asignaciones puede traer filas duplicadas)
         const unique = mapped.filter((u, i, arr) => arr.findIndex((x) => x.id === u.id) === i);
         setAllUsers(unique);
       })
       .catch(() => {});
-  }, []);
+  }, [isTrainer, myUserId]);
 
   // actualizar info del panel derecho cuando cambia el chat activo
   useEffect(() => {
@@ -240,21 +254,26 @@ export default function ChatPage() {
   });
 
   return (
-    <div className="flex h-screen bg-[#0e0d0d] overflow-hidden">
+    <div className="flex h-screen bg-[#1A1A1A] overflow-hidden">
 
       {/* ────── COLUMNA 1: Lista de chats ────── */}
-      <aside className="w-[300px] flex-shrink-0 flex flex-col border-r border-[#1e1e1e]">
+      {showChats && (
+      <aside className="w-[380px] flex-shrink-0 flex flex-col border-r border-[#1e1e1e]">
         {/* Título */}
         <div className="px-4 py-4 flex items-center gap-2 border-b border-[#1e1e1e]">
-          <button className="text-[#dff400] hover:opacity-80 transition-opacity" aria-label="Colapsar">
+          <button
+            onClick={() => setShowChats(false)}
+            className="text-[#dff400] hover:opacity-80 transition-opacity"
+            aria-label="Colapsar"
+          >
             <ChevronLeft size={22} />
           </button>
-          <h2 className="flex-1 text-center text-[#dff400] font-bold text-xl">Chats</h2>
+          <h2 className="flex-1 text-center text-[#dff400] font-bold text-[24px]">Chats</h2>
           <span className="w-[22px]" aria-hidden />
         </div>
 
         {/* Subtítulo + estado de conexión */}
-        <div className="px-5 pt-4 pb-2 flex items-center gap-2">
+        <div className="px-5 pt-3 pb-1.5 flex items-center gap-2">
           <h3 className="text-white font-bold text-base">Historial de chats</h3>
           <span
             className={`w-2 h-2 rounded-full flex-shrink-0 ${connected ? "bg-[#dff400]" : "bg-red-500"}`}
@@ -291,22 +310,22 @@ export default function ChatPage() {
                 <button
                   key={user.id}
                   onClick={() => openChat(user.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-3 mb-1 rounded-2xl text-left transition-colors ${
+                  className={`w-full flex items-center gap-2.5 px-2.5 py-2 mb-0.5 rounded-xl text-left transition-colors ${
                     active ? "bg-[#1c1c1c] ring-1 ring-[#2f2f2f]" : "hover:bg-[#161616]"
                   }`}
                 >
-                  <UserAvatar src={user.user_image} name={user.name} size={46} />
+                  <UserAvatar src={user.user_image} name={user.name} size={48} />
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-center gap-2">
-                      <span className="text-white font-semibold text-sm truncate">{user.name}</span>
+                      <span className="text-white font-semibold text-[18px] truncate">{user.name}</span>
                       {chatData?.lastMessageTime && (
-                        <span className="text-gray-500 text-[11px] flex-shrink-0">
+                        <span className="text-gray-500 text-xs flex-shrink-0">
                           {formatDateShort(chatData.lastMessageTime)}
                         </span>
                       )}
                     </div>
-                    <div className="flex justify-between items-center mt-1 gap-2">
-                      <span className="text-gray-400 text-xs truncate">
+                    <div className="flex justify-between items-center mt-0.5 gap-2">
+                      <span className="text-gray-400 text-base truncate">
                         {chatData?.lastMessage ||
                           (chatData?.attachmentType === "image" ? "📷 Imagen" :
                            chatData?.attachmentType === "video" ? "🎥 Video" :
@@ -325,29 +344,56 @@ export default function ChatPage() {
           })()}
         </div>
       </aside>
+      )}
 
       {/* ────── COLUMNA 2: Ventana de mensajes ────── */}
-      <main className="flex-1 flex flex-col min-w-0 border-r border-[#1e1e1e]">
+      <main className="relative flex-1 flex flex-col min-w-0 border-r border-[#1e1e1e]">
         {!activeReceiverId ? (
           <div className="flex-1 flex flex-col items-center justify-center text-gray-600 gap-3">
+            {!showChats && (
+              <button
+                onClick={() => setShowChats(true)}
+                className="absolute top-4 left-4 text-[#dff400] hover:opacity-80 transition-opacity"
+                aria-label="Mostrar chats"
+              >
+                <ChevronRight size={22} />
+              </button>
+            )}
             <p className="text-lg font-medium text-gray-500">Selecciona una conversación</p>
           </div>
         ) : (
           <>
             {/* Header */}
-            <div className="px-5 py-3 border-b border-[#1e1e1e] flex items-center gap-3">
-              <UserAvatar src={activeChat?.receiverImage ?? null} name={activeChat?.receiverName ?? ""} size={42} />
+            <div className="px-5 py-3 border-b border-[#1e1e1e] bg-[#282828] flex items-center gap-3">
+              {!showChats && (
+                <button
+                  onClick={() => setShowChats(true)}
+                  className="text-[#dff400] hover:opacity-80 transition-opacity flex-shrink-0"
+                  aria-label="Mostrar chats"
+                >
+                  <ChevronRight size={22} />
+                </button>
+              )}
+              <UserAvatar
+                src={userInfo?.user_image ?? activeChat?.receiverImage ?? null}
+                name={userInfo?.name ?? activeChat?.receiverName ?? ""}
+                size={42}
+              />
               <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold text-[15px] truncate">{activeChat?.receiverName}</p>
+                <p className="text-white font-semibold text-[15px] truncate">{userInfo?.name ?? activeChat?.receiverName}</p>
                 <p className="text-[#dff400] text-xs">En línea</p>
               </div>
-              <button className="text-gray-400 hover:text-white transition-colors">
+              <button
+                onClick={() => setShowInfo((v) => !v)}
+                className={`transition-colors ${showInfo ? "text-[#dff400]" : "text-gray-400 hover:text-white"}`}
+                aria-label="Mostrar información del usuario"
+              >
                 <MoreVertical size={20} />
               </button>
             </div>
 
             {/* Mensajes */}
-            <div className="flex-1 overflow-y-auto px-6 py-5 flex flex-col">
+            <div className="flex-1 overflow-y-auto px-6 py-5 flex flex-col bg-white/[0.02]">
               {messages.length === 0 ? (
                 <div className="flex items-center justify-center h-full">
                   <p className="text-gray-600 text-sm">No hay mensajes aún</p>
@@ -476,12 +522,17 @@ export default function ChatPage() {
       </main>
 
       {/* ────── COLUMNA 3: Info del usuario ────── */}
-      <aside className="w-[260px] flex-shrink-0 flex flex-col">
+      {showInfo && activeReceiverId && (
+      <aside className="w-[300px] flex-shrink-0 flex flex-col">
         <div className="px-4 py-4 flex items-center gap-2 border-b border-[#1e1e1e]">
-          <button className="text-[#dff400] hover:opacity-80 transition-opacity" aria-label="Colapsar">
+          <button
+            onClick={() => setShowInfo(false)}
+            className="text-[#dff400] hover:opacity-80 transition-opacity"
+            aria-label="Cerrar"
+          >
             <ChevronRight size={22} />
           </button>
-          <h2 className="flex-1 text-center text-white font-bold text-xl">Chats</h2>
+          <h2 className="flex-1 text-center text-white font-bold text-[24px]">Chats</h2>
           <span className="w-[22px]" aria-hidden />
         </div>
 
@@ -529,6 +580,7 @@ export default function ChatPage() {
           </div>
         )}
       </aside>
+      )}
 
     </div>
   );

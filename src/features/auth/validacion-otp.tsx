@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 
 
-export default function ValidacionOtp({ step, email, phone, setStep, setCodigoStepDos }: any) {
+export default function ValidacionOtp({ step, email, phone }: any) {
     const router = useRouter()
     const auth = useAuth();
     const [loading, setLoading] = useState(true);
@@ -49,10 +49,10 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
             setError("Por favor ingresa el código completo");
             return;
         }
-        if (step == 2) {
-            setOtp(["", "", "", "", "", ""]);
-            setCodigoStepDos(true);
-        }
+
+        setIsSubmitting(true);
+        setError('');
+
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}validate-otp`, {
                 method: 'POST',
@@ -61,7 +61,7 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
                 },
                 body: JSON.stringify({
                     email: email,
-                    phonenumber: '+57' + phone,
+                    phonenumber: phone,
                     otp: String(code)
                 }),
             });
@@ -69,26 +69,18 @@ export default function ValidacionOtp({ step, email, phone, setStep, setCodigoSt
             const data = await response.json();
 
             if (!response.ok) {
-                /* router.push('/Auth/codigo-otp'); */
-                setCodigoStepDos(true);
-                throw new Error(data?.message || 'Error al enviar OTP');
+                throw new Error(data?.message || 'Error al validar OTP');
             }
-            else {
-                setSuccess('OTP enviado correctamente');
-                if (step == 2) {
-                    setCodigoStepDos(true);
-                } else {
-                    // actualizar contexto de auth
-                    auth?.login(data?.token);
-                    setTimeout(() => {
-                        router.push('/');
-                    }, 50);
-                }
-            }
+
+            setSuccess('OTP validado correctamente');
+            // actualizar contexto de auth y redirigir
+            auth?.login(data?.token);
+            setTimeout(() => {
+                router.push('/');
+            }, 50);
 
         } catch (err: any) {
             setError(err.message || 'Ocurrió un error');
-            /* router.push('/Auth/codigo-otp'); */
         } finally {
             setIsSubmitting(false);
         }

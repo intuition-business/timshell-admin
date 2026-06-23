@@ -5,6 +5,16 @@ import { use, useEffect, useState } from "react";
 import Inputs, { SearchInput, SelectInput } from "@/components/inputs/inputs";
 import { CardList, TableList } from "@/components/table/TableList";
 import Pagination from "@/components/ui/Pagination";
+import { useAuth } from "@/context/AuthContext";
+
+const getRoleFromToken = (token: string): string | null => {
+  try {
+    const payload = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(atob(payload))?.role ?? null;
+  } catch {
+    return null;
+  }
+};
 
 interface User {
   plan_id: null;
@@ -21,6 +31,10 @@ interface User {
 
 export default function UserDashboard() {
   const router = useRouter();
+  const auth = useAuth();
+  const role = auth?.role;
+  const userId = auth?.userId;
+  const isTrainer = !!role && role !== "admin";
   const [data, setData] = useState([]);
   const [totalUser, setTotalUser] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,56 +49,101 @@ export default function UserDashboard() {
     { label: "Entrenador", width: "200px" },
   ];
 
-  const fetchInfo = async (page: number) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=${page}`, {
-        headers: { "x-access-token": token },
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.data) {
-            const mappedData = json.data.map((user: User) => ({
-              id: user.id?.toString() || "",
-              name: user.name || "",
-              email: user.email || user.phone || "",
-              plan_id: user.plan_id || null,
-              plan: user.plan_name || "",
-              trainer_name: user.trainer_name || "Sin entrenador",
-              trainer_image: user.trainer_image || "",
-              userImage: user.user_image || "",
-            }));
-            setTotalUser(json.total_users);
-            setTotalPages(json.total_pages);
+  const mapUser = (user: any) => ({
+    id: (user.id ?? user.user_id)?.toString() || "",
+    name: user.name || "",
+    email: user.email || user.user_email || user.phone || "",
+    plan_id: user.plan_id || null,
+    plan: user.plan_name || "",
+    trainer_name: user.trainer_name || "Sin entrenador",
+    trainer_image: user.trainer_image || "",
+    userImage: user.user_image || user.image || "",
+  });
 
-            setData(mappedData);
-          }
-        })
-        .catch((err) => console.error("Error fetching users:", err));
-    } else {
-      console.error("No token found in localStorage");
-    }
+  // Cierra sesión y vuelve al login cuando el token falta, es inválido o lo rechaza el backend
+  const redirectToLogin = () => {
+    auth?.logout?.();
+    router.replace("/login");
   };
 
-  // fetch para consultar usuarios
+  // Guard: sin token o token inválido -> login
   useEffect(() => {
-    const savedPage = localStorage.getItem("userListPage");
-    if (savedPage) {
-      setCurrentPage(Number(savedPage));
-      fetchInfo(Number(savedPage));
-    } else {
-      fetchInfo(currentPage);
+    const token = localStorage.getItem("token");
+    if (!token || !getRoleFromToken(token)) {
+      redirectToLogin();
     }
   }, []);
 
-  const handleUserClick = (userId: string) => {
-    localStorage.setItem("userListPage", currentPage.toString());
-    router.push(`/users/${userId}`);
+  const fetchInfo = async (page: number) => {
+    const token = localStorage.getItem("token");
+    if (!token || !getRoleFromToken(token)) {
+      redirectToLogin();
+      return;
+    }
+
+    // Entrenador: solo sus usuarios asignados
+    if (isTrainer) {
+      if (!userId) return;
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/${userId}`, {
+        headers: { "x-access-token": token },
+      })
+        .then((res) => {
+          if (res.status === 401 || res.status === 403) {
+            redirectToLogin();
+            return null;
+          }
+          return res.json();
+        })
+        .then((json) => {
+          if (!json) return;
+          const assigned = json?.data?.assigned_users ?? [];
+          const mappedData = assigned.map(mapUser);
+          setTotalUser(mappedData.length);
+          setTotalPages(1);
+          setData(mappedData);
+        })
+        .catch((err) => console.error("Error fetching trainer users:", err));
+      return;
+    }
+
+    // Admin: todos los usuarios paginados
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=${page}`, {
+      headers: { "x-access-token": token },
+    })
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          redirectToLogin();
+          return null;
+        }
+        return res.json();
+      })
+      .then((json) => {
+        if (json?.data) {
+          const mappedData = json.data.map(mapUser);
+          setTotalUser(json.total_users);
+          setTotalPages(json.total_pages);
+
+          setData(mappedData);
+        }
+      })
+      .catch((err) => console.error("Error fetching users:", err));
   };
 
+  // restaurar la página guardada al montar
+  useEffect(() => {
+    const savedPage = localStorage.getItem("userListPage");
+    if (savedPage) setCurrentPage(Number(savedPage));
+  }, []);
+
+  const handleUserClick = (clickedId: string) => {
+    localStorage.setItem("userListPage", currentPage.toString());
+    router.push(`/users/${clickedId}`);
+  };
+
+  // cargar datos (reacciona a cambios de página y a la resolución del rol/usuario)
   useEffect(() => {
     fetchInfo(currentPage);
-  }, [currentPage]);
+  }, [currentPage, isTrainer, userId]);
 
   return (
     <main>

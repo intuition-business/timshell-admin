@@ -17,6 +17,9 @@ export default function RootLayout({
   // Normalizar ambas rutas a minúsculas para evitar problemas de sensibilidad a mayúsculas/minúsculas
   const showNavbar = !hideOn.includes(pathname.toLowerCase());
 
+  // Rutas full-screen que no deben tener el padding/margin del contenedor principal
+  const fullBleed = pathname.toLowerCase().startsWith("/chat");
+
   return (
     <html lang="en">
       <head>
@@ -48,7 +51,7 @@ export default function RootLayout({
           </div>
           <div className="flex w-full">
             {showNavbar && <NavBar />}
-            <div className={`main-content w-full z-50 relative ${showNavbar ? 'px-12 mt-16' : ''}`}>{children}</div>{" "}
+            <div className={`main-content w-full z-50 relative ${showNavbar && !fullBleed ? 'px-12 mt-16' : ''}`}>{children}</div>{" "}
             {/* El contenido de la página */}
           </div>
         </AuthProvider>

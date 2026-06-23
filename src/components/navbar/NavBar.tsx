@@ -121,18 +121,6 @@ export default function NavBar() {
 
           {/* Menú de navegación */}
           <div className="mt-16 flex flex-col gap-10 px-6">
-            <Link href="/" passHref>
-              <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/")
-                  ? "text-lime-400"
-                  : "text-gray-300 hover:text-lime-400"
-                  }`}
-              >
-                <IconHome size={28} />
-                Inicio
-              </div>
-            </Link>
-
             <Link href="/users" passHref>
               <div
                 className={`flex items-center gap-3 font-bold transition-colors ${isActive("/users")
@@ -142,6 +130,18 @@ export default function NavBar() {
               >
                 <IconUsers size={28} />
                 Usuarios
+              </div>
+            </Link>
+
+            <Link href="/chat" passHref>
+              <div
+                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/chat")
+                  ? "text-lime-400"
+                  : "text-gray-300 hover:text-lime-400"
+                  }`}
+              >
+                <MessageCircle size={24} />
+                Chats
               </div>
             </Link>
           </div>

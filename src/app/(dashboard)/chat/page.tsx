@@ -105,10 +105,15 @@ export default function ChatPage() {
     });
   }, [messages, activeReceiverId]);
 
-  // cargar usuarios: tanto admin como entrenador ven a todos los usuarios
+  // cargar usuarios: trainer ve solo sus asignados, admin ve todos
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) return;
+
+    let role: string | null = null;
+    try {
+      role = JSON.parse(atob(token.split(".")[1]))?.role ?? null;
+    } catch {}
 
     const mapUser = (u: any): UserInfo => ({
       id: (u.id ?? u.user_id)?.toString(),
@@ -120,15 +125,16 @@ export default function ChatPage() {
       objetivo: u.objetivo,
     });
 
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=100`, {
-      headers: { "x-access-token": token },
-    })
+    const url = role === "trainer"
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/my-users`
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=100`;
+
+    fetch(url, { headers: { "x-access-token": token } })
       .then((r) => r.json())
       .then((json) => {
         const rows = json?.data;
         if (!rows) return;
         const mapped: UserInfo[] = rows.map(mapUser);
-        // deduplicar por ID (el JOIN con asignaciones puede traer filas duplicadas)
         const unique = mapped.filter((u, i, arr) => arr.findIndex((x) => x.id === u.id) === i);
         setAllUsers(unique);
       })

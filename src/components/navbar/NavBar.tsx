@@ -150,8 +150,14 @@ export default function NavBar() {
 
 
       {/* Footer */}
-      <footer className="px-6 py-4 text-xs text-gray-400 border-t border-gray-700">
-        © 2025 Timshel
+      <footer className="px-6 py-4 text-xs text-gray-400 border-t border-gray-700 flex flex-col gap-3">
+        <button
+          onClick={() => auth?.logout?.()}
+          className="w-full text-left font-bold text-red-400 hover:text-red-300 transition-colors"
+        >
+          Cerrar sesión
+        </button>
+        © 2026 Timshell
         <br />
         Desarrollado por Intuition Business
       </footer>

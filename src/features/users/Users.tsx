@@ -43,8 +43,8 @@ export default function UserDashboard() {
 
   const EncabezadosData = [
     { label: "Nombre", width: "250px" },
-    { label: "ID", width: "100px" },
-    { label: "Correo electrónico", width: "300px" },
+    { label: "ID", width: "80px" },
+    { label: "Correo electrónico", width: "minmax(320px, 1fr)" },
     { label: "Plan", width: "150px" },
     { label: "Entrenador", width: "200px" },
   ];

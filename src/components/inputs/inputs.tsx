@@ -54,13 +54,15 @@ export function SelectInput({ placeholder, options }: SelectInputProps) {
   );
 }
 
-export function InputDate({ placeholder }: { placeholder?: string }) {
+export function InputDate({ placeholder, value, onChange }: { placeholder?: string; value?: string; onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
   return (
     <div className="relative text-white flex w-full max-w-[280px]">
       <input
-        type="text"
+        type="date"
         placeholder={placeholder}
-        className="bg-[#2B2B2B] border border-[#777777] w-full py-4 pl-3 pr-10 min-w-[100px] rounded-xl focus:outline-none appearance-none text-white"
+        value={value}
+        onChange={onChange}
+        className="bg-[#2B2B2B] border border-[#777777] w-full py-4 pl-3 pr-10 min-w-[100px] rounded-xl focus:outline-none appearance-none text-white [color-scheme:dark]"
       />
       <IconCalendar className="absolute right-3 top-1/2 -translate-y-1/2 text-white w-5 h-5 pointer-events-none" />
     </div>

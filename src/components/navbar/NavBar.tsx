@@ -12,6 +12,8 @@ import {
   SquareChartGantt,
   ClipboardMinus,
   MessageCircle,
+  CreditCard,
+  CircleUser,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
@@ -111,6 +113,18 @@ export default function NavBar() {
                 Chats
               </div>
             </Link>
+
+            <Link href="/pagos" passHref>
+              <div
+                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/pagos")
+                  ? "text-lime-400"
+                  : "text-gray-300 hover:text-lime-400"
+                  }`}
+              >
+                <CreditCard size={26} />
+                Pagos
+              </div>
+            </Link>
           </div>
         </div>
       ) : (
@@ -142,6 +156,18 @@ export default function NavBar() {
               >
                 <MessageCircle size={24} />
                 Chats
+              </div>
+            </Link>
+
+            <Link href="/perfil" passHref>
+              <div
+                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/perfil")
+                  ? "text-lime-400"
+                  : "text-gray-300 hover:text-lime-400"
+                  }`}
+              >
+                <CircleUser size={28} />
+                Mi perfil
               </div>
             </Link>
           </div>

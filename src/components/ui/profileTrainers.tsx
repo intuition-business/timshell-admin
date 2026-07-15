@@ -70,13 +70,15 @@ export default function TrainerInfoCard({
             </h2>
 
             {/* Botón editar */}
-            <button
-              onClick={onEdit}
-              className="flex gap-1 items-center px-4 py-2 bg-black text-white font-semibold rounded-lg hover:brightness-110 cursor-pointer text-base z-50"
-            >
-              <Pencil className="mr-2 w-4 h-4" />
-              Editar
-            </button>
+            {onEdit && (
+              <button
+                onClick={onEdit}
+                className="flex gap-1 items-center px-4 py-2 bg-black text-white font-semibold rounded-lg hover:brightness-110 cursor-pointer text-base z-50"
+              >
+                <Pencil className="mr-2 w-4 h-4" />
+                Editar
+              </button>
+            )}
           </div>
 
           <p className="text-lg font-bold">

@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function NavBar() {
   const pathname = usePathname();
@@ -26,6 +27,7 @@ export default function NavBar() {
 
   const auth = useAuth();
   const role = auth?.role;
+  const router = useRouter();
 
   console.log(role);
 
@@ -178,7 +180,11 @@ export default function NavBar() {
       {/* Footer */}
       <footer className="px-6 py-4 text-xs text-gray-400 border-t border-gray-700 flex flex-col gap-3">
         <button
-          onClick={() => auth?.logout?.()}
+          onClick={() => {
+            const currentRole = auth?.role;
+            auth?.logout?.();
+            router.push(currentRole === "admin" ? "/admin" : "/login");
+          }}
           className="w-full text-left font-bold text-red-400 hover:text-red-300 transition-colors"
         >
           Cerrar sesión

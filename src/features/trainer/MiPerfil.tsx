@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Mail, Phone, Users, Award } from "lucide-react";
 import Loading from "@/components/loading/Loading";
 import TrainerInfoCard from "@/components/ui/profileTrainers";
+import EditarTrinerModal from "@/features/trainer/editarTriner";
 
 interface TrainerProfile {
   id: number;
@@ -25,6 +26,7 @@ export default function MiPerfil() {
   const [profile, setProfile] = useState<TrainerProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const fetchProfile = async () => {
     setLoading(true);
@@ -122,6 +124,7 @@ export default function MiPerfil() {
           price={profile.price ?? undefined}
           description={profile.description as unknown as [] | undefined}
           certification={profile.certifications as unknown as string}
+          onEdit={() => setShowEditModal(true)}
         />
       </div>
 
@@ -139,6 +142,21 @@ export default function MiPerfil() {
           </div>
         ))}
       </div>
+
+      <EditarTrinerModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        trainer={{
+          id: String(profile.id),
+          name: profile.name,
+          price: profile.price ?? "",
+          description: profile.description ?? "",
+          image: profile.image ?? "",
+          goal: profile.goal ?? "",
+          certification: profile.certifications as unknown as string,
+        }}
+        onUpdated={() => fetchProfile()}
+      />
     </section>
   );
 }

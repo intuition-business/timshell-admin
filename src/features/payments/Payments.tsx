@@ -175,6 +175,9 @@ export default function Payments() {
   const inputClass =
     "bg-[#2B2B2B] border border-[#777777] text-white px-3 py-3 rounded-xl focus:outline-none w-full";
 
+  const fieldClass =
+    "flex flex-col gap-1 text-xs text-gray-400 w-full sm:w-auto sm:flex-1 sm:min-w-[180px] sm:max-w-[250px]";
+
   return (
     <section className="w-full text-white">
       <div className="mb-6">
@@ -182,65 +185,71 @@ export default function Payments() {
         <h2 className="my-3 font-bold text-[#dff400]">Trazabilidad de pagos</h2>
       </div>
 
-      {/* Filtros principales */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-        <select
-          value={filters.status}
-          onChange={(e) => handleFilterChange("status", e.target.value)}
-          className={inputClass}
-        >
-          <option value="">Todos los estados</option>
-          <option value="approved">Aprobado</option>
-          <option value="pending">Pendiente</option>
-          <option value="rejected">Rechazado</option>
-        </select>
+      {/* Filtros */}
+      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-3 mb-4">
+        <label className={fieldClass}>
+          Estado
+          <select
+            value={filters.status}
+            onChange={(e) => handleFilterChange("status", e.target.value)}
+            className={inputClass}
+          >
+            <option value="">Todos los estados</option>
+            <option value="approved">Aprobado</option>
+            <option value="pending">Pendiente</option>
+            <option value="rejected">Rechazado</option>
+          </select>
+        </label>
 
-        <select
-          value={filters.plan_id}
-          onChange={(e) => handleFilterChange("plan_id", e.target.value)}
-          className={inputClass}
-        >
-          <option value="">Todos los planes</option>
-          {plans.map((plan) => (
-            <option key={plan.id} value={plan.id}>
-              {plan.label}
-            </option>
-          ))}
-        </select>
+        <label className={fieldClass}>
+          Plan
+          <select
+            value={filters.plan_id}
+            onChange={(e) => handleFilterChange("plan_id", e.target.value)}
+            className={inputClass}
+          >
+            <option value="">Todos los planes</option>
+            {plans.map((plan) => (
+              <option key={plan.id} value={plan.id}>
+                {plan.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
-        <select
-          value={filters.entrenador_id}
-          onChange={(e) => handleFilterChange("entrenador_id", e.target.value)}
-          className={inputClass}
-        >
-          <option value="">Todos los entrenadores</option>
-          {trainers.map((trainer) => (
-            <option key={trainer.id} value={trainer.id}>
-              {trainer.label}
-            </option>
-          ))}
-        </select>
-      </div>
+        <label className={fieldClass}>
+          Entrenador
+          <select
+            value={filters.entrenador_id}
+            onChange={(e) => handleFilterChange("entrenador_id", e.target.value)}
+            className={inputClass}
+          >
+            <option value="">Todos los entrenadores</option>
+            {trainers.map((trainer) => (
+              <option key={trainer.id} value={trainer.id}>
+                {trainer.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
-      {/* Filtro por rango de fechas (separado) */}
-      <div className="flex flex-col sm:flex-row sm:items-end gap-3 mb-4">
-        <label className="flex flex-col text-xs text-gray-400 gap-1 w-full sm:max-w-[220px]">
+        <label className={fieldClass}>
           Desde
           <input
             type="date"
             value={filters.date_from}
             onChange={(e) => handleFilterChange("date_from", e.target.value)}
-            className={`${inputClass} py-2.5`}
+            className={inputClass}
           />
         </label>
 
-        <label className="flex flex-col text-xs text-gray-400 gap-1 w-full sm:max-w-[220px]">
+        <label className={fieldClass}>
           Hasta
           <input
             type="date"
             value={filters.date_to}
             onChange={(e) => handleFilterChange("date_to", e.target.value)}
-            className={`${inputClass} py-2.5`}
+            className={inputClass}
           />
         </label>
       </div>

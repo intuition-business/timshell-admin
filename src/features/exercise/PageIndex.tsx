@@ -7,7 +7,7 @@ import { ChevronLeft, CloudUpload } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
 import ListadoEjercicios from "@/features/exercise/ExerciseList";
-import { IconEdit, IconPencil } from "@tabler/icons-react";
+import { IconEdit, IconPencil, IconTrash } from "@tabler/icons-react";
 import { ModalCheck } from "@/components/modals/ModalCheck";
 
 export default function Page() {
@@ -33,6 +33,7 @@ export default function Page() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [clearVideo, setClearVideo] = useState(false);
   // ==========================
   // IMAGE HANDLER
   // ==========================
@@ -56,7 +57,7 @@ export default function Page() {
       return setError("El grupo muscular debe ser \"small muscle\" o \"large muscle\"");
     }
     // si ya hay un preview (video cargado anteriormente) no exige nuevo archivo
-    if (!video && !preview) return setError("Debes subir un video");
+    if (!video && !preview && !clearVideo) return setError("Debes subir un video");
 
     return true;
   };
@@ -99,8 +100,9 @@ export default function Page() {
           formData.append("new_video", video);
           const thumbnail = await generateThumbnail(video);
           formData.append("new_thumbnail", thumbnail);
+        } else if (clearVideo) {
+          formData.append("clear_video", "true");
         }
-
       }
 
 
@@ -136,6 +138,7 @@ export default function Page() {
       setPreview("");
       setEditingId(null);
       setIsEditing(false);
+      setClearVideo(false);
       setUpdateList((prev) => !prev);
       setShowModalCheck(true);
       setMessage(resData.message || "Ejercicio creado correctamente");
@@ -189,6 +192,7 @@ export default function Page() {
       setPreview("");
       setEditingId(null);
       setIsEditing(false);
+      setClearVideo(false);
       return;
     }
 
@@ -224,6 +228,7 @@ export default function Page() {
       }
       setEditingId(id);
       setIsEditing(true);
+      setClearVideo(false);
     } catch (e) {
       console.error("Error cargando ejercicio", e);
     } finally {
@@ -254,8 +259,21 @@ export default function Page() {
             <div className={`h-[680px] border-2 border-dashed ${preview ? 'border-gray-700' : ' border-[#D4FF00]'} rounded-xl flex items-center justify-center bg-[#1E1E1E] overflow-hidden`}>
               {preview ? (
                 <div className="relative h-full w-full">
-                  <div className="absolute top-3 right-3 z-50">
-                    <IconPencil className=" bg-black p-2 rounded-full border-[#D4FF00] border text-white w-10 h-10"></IconPencil>
+                  <div className="absolute top-3 right-3 z-50 flex gap-2">
+                    <IconPencil className="bg-black p-2 rounded-full border-[#D4FF00] border text-white w-10 h-10" />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setPreview("");
+                        setVideo(null);
+                        setClearVideo(true);
+                      }}
+                      className="bg-black p-2 rounded-full border-red-500 border text-red-400 w-10 h-10 flex items-center justify-center hover:bg-red-500/20 transition cursor-pointer"
+                    >
+                      <IconTrash size={20} />
+                    </button>
                   </div>
                   <video
                     src={preview}
@@ -361,6 +379,7 @@ export default function Page() {
                 setMuscleGroup("");
                 setVideo(null);
                 setPreview("");
+                setClearVideo(false);
               }}
               data="Cancelar"
               className="w-full bg-gray-600 text-white font-bold py-4 hover:bg-gray-700 mb-2"

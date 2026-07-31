@@ -50,14 +50,14 @@ export default function TrainerInfoCard({
 
   return (
     <div className="relative w-full rounded-2xl overflow-hidden">
-      <div className="flex gap-16 py-12 px-16 items-center bg-[#1A1A1A] rounded-xl h-full shadow-md">
+      <div className="flex gap-8 py-6 px-8 items-center bg-[#1A1A1A] rounded-xl h-full shadow-md">
 
         {/* Imagen */}
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <img
             src={image || "/logo.png"}
             alt={name}
-            className={`w-ful max-w-[21.25rem] h-[28.125rem]  rounded-xl ${image ? "object-cover" : "object-contain"}`}
+            className={`max-w-[9rem] h-[12rem] rounded-xl ${image ? "object-cover" : "object-contain"}`}
           />
         </div>
 
@@ -65,7 +65,7 @@ export default function TrainerInfoCard({
         <div className="text-white w-full">
 
           <div className="flex items-center justify-between w-full">
-            <h2 className="text-[2rem] font-bold text-[#dff400] mb-2">
+            <h2 className="text-xl font-bold text-[#dff400] mb-1">
               {name}
             </h2>
 
@@ -73,36 +73,36 @@ export default function TrainerInfoCard({
             {onEdit && (
               <button
                 onClick={onEdit}
-                className="flex gap-1 items-center px-4 py-2 bg-black text-white font-semibold rounded-lg hover:brightness-110 cursor-pointer text-base z-50"
+                className="flex gap-1 items-center px-3 py-1.5 bg-black text-white font-semibold rounded-lg hover:brightness-110 cursor-pointer text-sm z-50"
               >
-                <Pencil className="mr-2 w-4 h-4" />
+                <Pencil className="mr-1.5 w-3.5 h-3.5" />
                 Editar
               </button>
             )}
           </div>
 
-          <p className="text-lg font-bold">
+          <p className="text-sm font-bold text-gray-300">
             {specialty}
           </p>
 
           {/* Precio + Rating */}
-          <div className="flex items-center gap-4 mt-6">
+          <div className="flex items-center gap-4 mt-3">
             <div>
-              <span className="text-base">Costo por servicio</span>
-              <p className="text-3xl font-bold">{precio}</p>
+              <span className="text-xs text-gray-400">Costo por servicio</span>
+              <p className="text-lg font-bold">{precio}</p>
             </div>
 
-            <div className="flex items-center gap-2 bg-[#282828] px-4 py-3 rounded-lg">
-              <img src="/star.svg" alt="estrella de rating" />
-              <span className="text-xl font-medium">{rating == '0.0' ? '5.0' : rating }</span>
+            <div className="flex items-center gap-2 bg-[#282828] px-3 py-2 rounded-lg">
+              <img src="/star.svg" alt="estrella de rating" className="w-4 h-4" />
+              <span className="text-sm font-medium">{rating == '0.0' ? '5.0' : rating}</span>
             </div>
           </div>
 
           {/* Descripción */}
           {description && (
-            <div className="pt-2 mt-6">
-              <h4 className="font-semibold text-xl mb-1">Descripción</h4>
-              <p className="text-lg text-gray-300 leading-relaxed">
+            <div className="pt-2 mt-3">
+              <h4 className="font-semibold text-sm mb-1">Descripción</h4>
+              <p className="text-sm text-gray-300 leading-relaxed">
                 {description}
               </p>
             </div>
@@ -110,8 +110,8 @@ export default function TrainerInfoCard({
 
           {/* certificacion */}
           <div className="pt-2 mt-2">
-            <h4 className="font-semibold text-xl mb-3">Certificaciones</h4>
-            <div>
+            <h4 className="font-semibold text-sm mb-2">Certificaciones</h4>
+            <div className="flex flex-wrap gap-2">
               {certificationsArray?.map((cert: string, index: number) => (
                 <a
                   key={index}
@@ -119,7 +119,7 @@ export default function TrainerInfoCard({
                   download
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#282828] text-white text-lg rounded-lg hover:brightness-110"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#282828] text-white text-xs rounded-lg hover:brightness-110"
                 >
                   Descargar certificación {index + 1}
                 </a>

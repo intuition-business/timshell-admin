@@ -256,18 +256,18 @@ export default function ChatPage() {
 
       {/* ────── COLUMNA 1: Lista de chats ────── */}
       {showChats && (
-      <aside className="w-[23.75rem] flex-shrink-0 flex flex-col border-r border-[#1e1e1e]">
+      <aside className="w-[16rem] flex-shrink-0 flex flex-col border-r border-[#1e1e1e]">
         {/* Título */}
-        <div className="px-4 py-4 flex items-center gap-2 border-b border-[#1e1e1e]">
+        <div className="px-4 py-3 flex items-center gap-2 border-b border-[#1e1e1e]">
           <button
             onClick={() => setShowChats(false)}
             className="text-[#dff400] hover:opacity-80 transition-opacity"
             aria-label="Colapsar"
           >
-            <ChevronLeft size={22} />
+            <ChevronLeft size={18} />
           </button>
-          <h2 className="flex-1 text-center text-[#dff400] font-bold text-[1.5rem]">Chats</h2>
-          <span className="w-[1.375rem]" aria-hidden />
+          <h2 className="flex-1 text-center text-[#dff400] font-bold text-base">Chats</h2>
+          <span className="w-[1.125rem]" aria-hidden />
         </div>
 
         {/* Subtítulo + estado de conexión */}
@@ -308,29 +308,29 @@ export default function ChatPage() {
                 <button
                   key={user.id}
                   onClick={() => openChat(user.id)}
-                  className={`w-full flex items-center gap-2.5 px-2.5 py-2 mb-0.5 rounded-xl text-left transition-colors ${
+                  className={`w-full flex items-center gap-2 px-2 py-1.5 mb-0.5 rounded-xl text-left transition-colors ${
                     active ? "bg-[#1c1c1c] ring-1 ring-[#2f2f2f]" : "hover:bg-[#161616]"
                   }`}
                 >
-                  <UserAvatar src={user.user_image} name={user.name} size={48} />
+                  <UserAvatar src={user.user_image} name={user.name} size={32} />
                   <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-center gap-2">
-                      <span className="text-white font-semibold text-[1.125rem] truncate">{user.name}</span>
+                    <div className="flex justify-between items-center gap-1">
+                      <span className="text-white font-semibold text-sm truncate">{user.name}</span>
                       {chatData?.lastMessageTime && (
-                        <span className="text-gray-500 text-xs flex-shrink-0">
+                        <span className="text-gray-500 text-[0.625rem] flex-shrink-0">
                           {formatDateShort(chatData.lastMessageTime)}
                         </span>
                       )}
                     </div>
-                    <div className="flex justify-between items-center mt-0.5 gap-2">
-                      <span className="text-gray-400 text-base truncate">
+                    <div className="flex justify-between items-center mt-0.5 gap-1">
+                      <span className="text-gray-400 text-xs truncate">
                         {chatData?.lastMessage ||
                           (chatData?.attachmentType === "image" ? "📷 Imagen" :
                            chatData?.attachmentType === "video" ? "🎥 Video" :
                            user.email || "Sin mensajes")}
                       </span>
                       {chatData?.unreadCount ? (
-                        <span className="bg-[#dff400] text-black text-[0.625rem] font-bold rounded-full min-w-[1.125rem] h-[1.125rem] px-1 flex items-center justify-center flex-shrink-0">
+                        <span className="bg-[#dff400] text-black text-[0.5625rem] font-bold rounded-full min-w-[1rem] h-[1rem] px-1 flex items-center justify-center flex-shrink-0">
                           {chatData.unreadCount}
                         </span>
                       ) : null}
@@ -362,23 +362,23 @@ export default function ChatPage() {
         ) : (
           <>
             {/* Header */}
-            <div className="px-5 py-3 border-b border-[#1e1e1e] bg-[#282828] flex items-center gap-3">
+            <div className="px-4 py-2.5 border-b border-[#1e1e1e] bg-[#282828] flex items-center gap-2.5">
               {!showChats && (
                 <button
                   onClick={() => setShowChats(true)}
                   className="text-[#dff400] hover:opacity-80 transition-opacity flex-shrink-0"
                   aria-label="Mostrar chats"
                 >
-                  <ChevronRight size={22} />
+                  <ChevronRight size={18} />
                 </button>
               )}
               <UserAvatar
                 src={userInfo?.user_image ?? activeChat?.receiverImage ?? null}
                 name={userInfo?.name ?? activeChat?.receiverName ?? ""}
-                size={42}
+                size={32}
               />
               <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold text-[0.9375rem] truncate">{userInfo?.name ?? activeChat?.receiverName}</p>
+                <p className="text-white font-semibold text-sm truncate">{userInfo?.name ?? activeChat?.receiverName}</p>
                 <p className="text-[#dff400] text-xs">En línea</p>
               </div>
               <button
@@ -443,8 +443,8 @@ export default function ChatPage() {
             <div className="px-4 py-4 border-t border-[#1e1e1e]">
               {/* Emoji picker flotante */}
               {showEmoji && (
-                <div ref={emojiPickerRef} className="absolute bottom-[5rem] left-[18.75rem] z-50">
-                  <EmojiPicker theme={Theme.DARK} onEmojiClick={onEmojiClick} height={380} width={320} />
+                <div ref={emojiPickerRef} className="absolute bottom-[4rem] left-[14rem] z-50">
+                  <EmojiPicker theme={Theme.DARK} onEmojiClick={onEmojiClick} height={300} width={260} />
                 </div>
               )}
 
@@ -521,17 +521,17 @@ export default function ChatPage() {
 
       {/* ────── COLUMNA 3: Info del usuario ────── */}
       {showInfo && activeReceiverId && (
-      <aside className="w-[18.75rem] flex-shrink-0 flex flex-col">
-        <div className="px-4 py-4 flex items-center gap-2 border-b border-[#1e1e1e]">
+      <aside className="w-[13rem] flex-shrink-0 flex flex-col">
+        <div className="px-4 py-3 flex items-center gap-2 border-b border-[#1e1e1e]">
           <button
             onClick={() => setShowInfo(false)}
             className="text-[#dff400] hover:opacity-80 transition-opacity"
             aria-label="Cerrar"
           >
-            <ChevronRight size={22} />
+            <ChevronRight size={18} />
           </button>
-          <h2 className="flex-1 text-center text-white font-bold text-[1.5rem]">Chats</h2>
-          <span className="w-[1.375rem]" aria-hidden />
+          <h2 className="flex-1 text-center text-white font-bold text-sm">Info</h2>
+          <span className="w-[1.125rem]" aria-hidden />
         </div>
 
         {!activeReceiverId ? (
@@ -539,17 +539,17 @@ export default function ChatPage() {
             <p className="text-gray-600 text-xs text-center px-4">Selecciona un chat para ver la info</p>
           </div>
         ) : (
-          <div className="flex-1 overflow-y-auto px-5 py-6 flex flex-col gap-5">
+          <div className="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-4">
             {/* Avatar + nombre */}
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center gap-2">
               <UserAvatar
                 src={userInfo?.user_image ?? activeChat?.receiverImage ?? null}
                 name={userInfo?.name ?? activeChat?.receiverName ?? ""}
-                size={84}
+                size={52}
               />
-              <div className="flex flex-col items-center gap-1.5">
-                <p className="text-white font-bold text-lg">{userInfo?.name ?? activeChat?.receiverName}</p>
-                <span className="bg-[#dff400]/15 text-[#dff400] text-[0.6875rem] font-medium px-3 py-0.5 rounded-full">
+              <div className="flex flex-col items-center gap-1">
+                <p className="text-white font-bold text-sm text-center">{userInfo?.name ?? activeChat?.receiverName}</p>
+                <span className="bg-[#dff400]/15 text-[#dff400] text-[0.625rem] font-medium px-2 py-0.5 rounded-full">
                   En linea
                 </span>
               </div>

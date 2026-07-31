@@ -242,7 +242,7 @@ export default function TrainerDashboard() {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-2 gap-4">
         <div className="col-span-1">
           <TrainerMovementChart />
         </div>
@@ -250,7 +250,7 @@ export default function TrainerDashboard() {
           <MonthlyRevenueChart />
         </div>
       </div>
-      <h2 className="mt-9 mb-2 font-bold flex gap-3 text-[#dff400] text-3xl">
+      <h2 className="mt-6 mb-2 font-bold flex gap-3 text-[#dff400] text-xl">
         Usuarios vinculados
       </h2>
       {loadingUser ? (

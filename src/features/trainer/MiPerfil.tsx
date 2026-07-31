@@ -138,7 +138,7 @@ export default function MiPerfil() {
               {stat.icon}
               <p className="text-sm text-gray-300">{stat.label}</p>
             </div>
-            <p className="text-xl font-semibold break-words">{stat.value}</p>
+            <p className="text-base font-semibold break-words">{stat.value}</p>
           </div>
         ))}
       </div>

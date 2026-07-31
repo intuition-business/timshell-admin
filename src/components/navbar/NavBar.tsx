@@ -34,96 +34,96 @@ export default function NavBar() {
   if (!role) return null;
 
   return (
-    <nav className="sticky left-0 top-0 h-screen z-10 max-w-[290px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg text-xl rounded-r-[40px]">
+    <nav className="sticky left-0 top-0 h-screen z-10 max-w-[210px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg text-base rounded-r-[30px]">
       {/* Logo */}
       {role == 'admin' ? (
         <div>
-          <div className="px-0 py-0 mt-14 flex justify-center">
-            <img className="max-w-[180px]" src="/logo.png" alt="Logo" />
+          <div className="px-0 py-0 mt-8 flex justify-center">
+            <img className="max-w-[120px]" src="/logo.png" alt="Logo" />
           </div>
 
           {/* Menú de navegación */}
-          <div className="mt-16 flex flex-col gap-10 px-6">
+          <div className="mt-8 flex flex-col gap-5 px-5">
             <Link href="/" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <IconHome size={28} />
+                <IconHome size={18} />
                 Inicio
               </div>
             </Link>
 
             <Link href="/users" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/users")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/users")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <IconUsers size={28} />
+                <IconUsers size={18} />
                 Usuarios
               </div>
             </Link>
 
             <Link href="/trainer" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/trainer")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/trainer")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <BicepsFlexed size={28} />
+                <BicepsFlexed size={18} />
                 Entrenador
               </div>
             </Link>
 
             <Link href="/exercise" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/exercises")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/exercises")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <Dumbbell size={28} />
+                <Dumbbell size={18} />
                 Ejercicios
               </div>
             </Link>
 
             <Link href="/plan" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/plan")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/plan")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <SquareChartGantt size={28} />
+                <SquareChartGantt size={18} />
                 Planes
               </div>
             </Link>
 
             <Link href="/chat" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/chat")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/chat")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <MessageCircle size={24} />
+                <MessageCircle size={18} />
                 Chats
               </div>
             </Link>
 
             <Link href="/pagos" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/pagos")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/pagos")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <CreditCard size={26} />
+                <CreditCard size={18} />
                 Pagos
               </div>
             </Link>
@@ -131,44 +131,44 @@ export default function NavBar() {
         </div>
       ) : (
         <div>
-          <div className="px-0 py-0 mt-14 flex justify-center">
-            <img className="max-w-[180px]" src="/logo.png" alt="Logo" />
+          <div className="px-0 py-0 mt-8 flex justify-center">
+            <img className="max-w-[120px]" src="/logo.png" alt="Logo" />
           </div>
 
           {/* Menú de navegación */}
-          <div className="mt-16 flex flex-col gap-10 px-6">
+          <div className="mt-8 flex flex-col gap-5 px-5">
             <Link href="/users" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/users")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/users")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <IconUsers size={28} />
+                <IconUsers size={18} />
                 Usuarios
               </div>
             </Link>
 
             <Link href="/chat" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/chat")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/chat")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <MessageCircle size={24} />
+                <MessageCircle size={18} />
                 Chats
               </div>
             </Link>
 
             <Link href="/perfil" passHref>
               <div
-                className={`flex items-center gap-3 font-bold transition-colors ${isActive("/perfil")
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/perfil")
                   ? "text-lime-400"
                   : "text-gray-300 hover:text-lime-400"
                   }`}
               >
-                <CircleUser size={28} />
+                <CircleUser size={18} />
                 Mi perfil
               </div>
             </Link>

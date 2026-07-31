@@ -1,40 +1,10 @@
 'use client'
 
 import { Star } from "lucide-react";
+import type { CardListProps, StarsProps, TableListProps } from "@/types/tablaType";
 
-import { useEffect } from "react";
-import type {
-  CardListProps,
-  StarsProps,
-  TableListProps,
-} from "@/types/tablaType";
-
-export function TableList({ encabezado, home, columns }: TableListProps) {
-  return (
-    <>
-      <div className="mt-3 w-full rounded-md">
-        {/* encabezado */}
-        <div
-          className={`grid bg-[#0e0d0d] p-3  px-5 rounded-lg text-white border border-[#333]}`}
-          style={{
-            gridTemplateColumns: encabezado
-              ?.map((item) => item.width)
-              .join(" "),
-          }}
-        >
-          {encabezado?.map((item, index: number) => (
-            <h3
-              key={index}
-              className={`col-span-1 font-semibold justify-center w-full ${home ? "text-base" : "text-xl"
-                } line-clamp-1 text-ellipsis`}
-            >
-              {item.label}
-            </h3>
-          ))}
-        </div>
-      </div>
-    </>
-  );
+export function TableList(_props: TableListProps) {
+  return null;
 }
 
 export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
@@ -43,7 +13,7 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
   const totalStars = 1;
 
   return (
-    <div className="flex text-[20px] ">
+    <div className="flex items-center">
       {[...Array(totalStars)].map((_, i) => (
         <Star
           key={i}
@@ -58,7 +28,7 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
         />
       ))}
       {showNumber && (
-        <p className="ml-2 text-sm text-gray-300">{rating.toFixed(1)}</p>
+        <p className="ml-1 text-sm text-gray-300">{rating.toFixed(1)}</p>
       )}
     </div>
   );
@@ -66,100 +36,106 @@ export const Stars = ({ rating, size = 16, showNumber = true }: StarsProps) => {
 
 export function CardList({
   data,
-  columns,
   encabezado,
   onCardClick,
   variant,
 }: CardListProps & { variant?: "trainer" }) {
-  const respuesta = data.map((data) => {
-    console.log(Object.keys(data).length);
-  });
-
-  useEffect(() => {
-    respuesta;
-  }, []);
-
   return (
-    <div className="flex flex-col gap-2  w-full">
-      {data.map((t: any, i) => (
-        <div
-          key={i}
-          onClick={() => onCardClick && onCardClick(t.id ? t.id : t.user_id)}
-          className="grid text-[20px] rounded-md  bg-[#333] p-5 cursor-pointer hover:bg-[#484848] text-white"
-          style={{
-            gridTemplateColumns: encabezado
-              ?.map((item) => item.width)
-              .join(" "),
-          }}
-        >
-          {/* Columna 1: Nombre */}
-          <div className="flex gap-3 items-center w-full px-2">
-            <div className="h-12 w-12 rounded-full overflow-hidden bg-gray-700 flex-shrink-0">
-              {t.image || t.userImage ? (
-                <img
-                  src={t.image ?? t.userImage}
-                  alt=""
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="h-full w-full flex items-center justify-center text-gray-400 text-sm font-semibold">
-                  {(t.name || "?")[0].toUpperCase()}
+    <div className="overflow-x-auto rounded-xl border border-white/10 w-full mt-3">
+      <table className="w-full text-base text-left border-collapse">
+        <thead>
+          <tr className="bg-[#282828] text-[#dff400]">
+            {encabezado?.map((col, i) => (
+              <th key={i} className="px-4 py-3 font-semibold whitespace-nowrap">
+                {col.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((t: any, i) => (
+            <tr
+              key={i}
+              onClick={() => onCardClick?.(t.id ?? t.user_id)}
+              className="border-t border-white/5 hover:bg-white/5 cursor-pointer text-white"
+            >
+              {/* Columna 1: Nombre + avatar */}
+              <td className="px-4 py-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-full overflow-hidden bg-gray-700 flex-shrink-0">
+                    {t.image || t.userImage ? (
+                      <img
+                        src={t.image ?? t.userImage}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center text-gray-400 text-xs font-semibold">
+                        {(t.name || "?")[0].toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+                  <span className="truncate">{t.name || "Usuario sin nombre"}</span>
                 </div>
+              </td>
+
+              {/* Columna 2: ID */}
+              <td className="px-4 py-3">{t.id ?? t.user_id}</td>
+
+              {/* Columna 3: Email */}
+              <td className="px-4 py-3 truncate max-w-[280px]">
+                {t.email ?? t.user_email}
+              </td>
+
+              {variant === "trainer" ? (
+                <>
+                  {/* Columna 4 trainer: Cantidad usuarios */}
+                  <td className="px-4 py-3">
+                    {t.usuarios ?? 0} usuario{(t.usuarios ?? 0) !== 1 ? "s" : ""}
+                  </td>
+                  {/* Columna 5 trainer: Valoración */}
+                  <td className="px-4 py-3">
+                    {t.valoration ? (
+                      <Stars rating={Number(t.valoration)} size={16} />
+                    ) : (
+                      <span className="text-gray-400">Sin valoración</span>
+                    )}
+                  </td>
+                </>
+              ) : (
+                <>
+                  {/* Columna 4 usuario: Plan */}
+                  <td className="px-4 py-3">
+                    {t.plan || t.plan_id ? (
+                      <span>{t.plan || t.plan_id}</span>
+                    ) : (
+                      <span className="text-gray-400">Sin plan</span>
+                    )}
+                  </td>
+                  {/* Columna 5 usuario: Entrenador */}
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      {t.trainer_image && (
+                        <img
+                          src={t.trainer_image}
+                          alt=""
+                          className="h-7 w-7 rounded-full object-cover flex-shrink-0"
+                        />
+                      )}
+                      <span className={t.trainer_name && t.trainer_name !== "Sin entrenador" ? "" : "text-gray-400"}>
+                        {t.trainer_name || "Sin entrenador"}
+                      </span>
+                    </div>
+                  </td>
+                </>
               )}
-            </div>
-            <span className="text-ellipsis overflow-hidden" title={t.name}>
-              {t.name || "Usuario sin nombre"}
-            </span>
-          </div>
-
-          {/* Columna 2: ID */}
-          <div className="w-full flex items-center px-2 overflow-hidden">
-            <span>{t.id ?? t.user_id}</span>
-          </div>
-
-          {/* Columna 3: Email */}
-          <div className="w-full flex items-center px-2 overflow-hidden">
-            <span className="text-ellipsis overflow-hidden">{t.email ?? t.user_email}</span>
-          </div>
-
-          {variant === "trainer" ? (
-            <>
-              {/* Columna 4 trainer: Cantidad usuarios */}
-              <div className="w-full flex items-center px-2 overflow-hidden">
-                <span>{t.usuarios ?? 0} usuario{(t.usuarios ?? 0) !== 1 ? "s" : ""}</span>
-              </div>
-              {/* Columna 5 trainer: Valoración */}
-              <div className="w-full flex items-center px-2 overflow-hidden">
-                {t.valoration ? (
-                  <Stars rating={Number(t.valoration)} size={20} />
-                ) : (
-                  <span className="text-gray-400">Sin valoración</span>
-                )}
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Columna 4 usuario: Plan */}
-              <div className="w-full flex items-center px-2 overflow-hidden">
-                {t.plan || t.plan_id
-                  ? <span>{t.plan || t.plan_id}</span>
-                  : <span className="text-gray-400">Sin plan</span>}
-              </div>
-              {/* Columna 5 usuario: Entrenador */}
-              <div className="flex items-center gap-2 px-2 overflow-hidden">
-                {t.trainer_image && (
-                  <img src={t.trainer_image} alt="" className="h-9 w-9 rounded-full object-cover flex-shrink-0" />
-                )}
-                <span className={t.trainer_name && t.trainer_name !== "Sin entrenador" ? "" : "text-gray-400"}>
-                  {t.trainer_name || "Sin entrenador"}
-                </span>
-              </div>
-            </>
-          )}
-        </div>
-      ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
+
 const InputsModule = { TableList, CardList, Stars };
 export default InputsModule;

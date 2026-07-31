@@ -282,7 +282,7 @@ export default function Payments() {
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-white/10">
-          <table className="w-full text-sm text-left border-collapse min-w-[720px]">
+          <table className="w-full text-base text-left border-collapse min-w-[720px]">
             <thead>
               <tr className="bg-[#282828] text-[#dff400]">
                 <th className="px-4 py-3 font-semibold">Usuario</th>

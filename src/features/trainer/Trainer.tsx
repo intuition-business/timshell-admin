@@ -99,10 +99,7 @@ export default function Trainer() {
         {loading ? (
           <p className="text-center text-gray-400">Cargando entrenadores...</p>
         ) : (
-          <div className="flex flex-col w-full gap-2">
-            <TableList encabezado={EncabezadosData} data={data} columns={5} />
-            <CardList encabezado={EncabezadosData} data={data} columns={5} onCardClick={handleTrainerClick} variant="trainer" />
-          </div>
+          <CardList encabezado={EncabezadosData} data={data} columns={5} onCardClick={handleTrainerClick} variant="trainer" />
         )}
       </div>
 

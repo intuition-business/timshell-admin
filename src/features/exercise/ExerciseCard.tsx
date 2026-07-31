@@ -87,7 +87,7 @@ export default function ExerciseCard({
             <img
               src={`${image}`}
               alt={`${title}`}
-              className="object-cover max-h-[120px] w-full"
+              className="object-cover max-h-[7.5rem] w-full"
             />
           )}
         </div>

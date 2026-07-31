@@ -112,7 +112,7 @@ export default function MiPerfil() {
   return (
     <section className="min-h-screen w-full text-white">
       <div className="mb-8">
-        <h1 className="text-[32px] text-[#dff400] font-bold">Mi perfil</h1>
+        <h1 className="text-[2rem] text-[#dff400] font-bold">Mi perfil</h1>
       </div>
 
       <div className="flex mb-7 items-start">

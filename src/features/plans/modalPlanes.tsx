@@ -146,7 +146,7 @@ export default function ModalPlanes({
 
           <div className="space-y-5">
             <div className="space-y-2">
-              <label htmlFor="nombre-plan" className="text-[15px] font-semibold text-white">
+              <label htmlFor="nombre-plan" className="text-[0.9375rem] font-semibold text-white">
                 Nombre del plan
               </label>
               <input
@@ -154,27 +154,27 @@ export default function ModalPlanes({
                 type="text"
                 value={formData.nombre}
                 onChange={(event) => handleChange("nombre", event.target.value)}
-                className="w-full rounded-[14px] border border-[#5c5c5c] bg-[#2d2d2d] px-4 py-3 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f]"
+                className="w-full rounded-[0.875rem] border border-[#5c5c5c] bg-[#2d2d2d] px-4 py-3 text-[0.9375rem] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f]"
                 placeholder="Ingresa el nombre del plan"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="descripcion-plan" className="text-[15px] font-semibold text-white">
+              <label htmlFor="descripcion-plan" className="text-[0.9375rem] font-semibold text-white">
                 Descripción del plan
               </label>
               <textarea
                 id="descripcion-plan"
                 value={formData.descripcion}
                 onChange={(event) => handleChange("descripcion", event.target.value)}
-                className="min-h-[110px] w-full resize-none rounded-[14px] border border-[#5c5c5c] bg-[#2d2d2d] px-4 py-3 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f]"
+                className="min-h-[6.875rem] w-full resize-none rounded-[0.875rem] border border-[#5c5c5c] bg-[#2d2d2d] px-4 py-3 text-[0.9375rem] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f]"
                 placeholder="Describe este plan"
               />
             </div>
 
             <div className="grid gap-4 md:grid-cols-[1.2fr_1fr] md:items-end">
               <div className="space-y-2">
-                <label htmlFor="precio-plan" className="text-[15px] font-semibold text-white">
+                <label htmlFor="precio-plan" className="text-[0.9375rem] font-semibold text-white">
                   Precio del plan
                 </label>
                 <div className="relative">
@@ -189,14 +189,14 @@ export default function ModalPlanes({
                     onChange={(event) =>
                       handleChange("precio", formatCopInput(event.target.value))
                     }
-                    className="w-full rounded-[14px] border border-[#5c5c5c] bg-[#2d2d2d] py-3 pl-20 pr-4 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f]"
+                    className="w-full rounded-[0.875rem] border border-[#5c5c5c] bg-[#2d2d2d] py-3 pl-20 pr-4 text-[0.9375rem] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f]"
                     placeholder="199.900"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="generaciones-plan" className="text-[15px] font-semibold text-white">
+                <label htmlFor="generaciones-plan" className="text-[0.9375rem] font-semibold text-white">
                   Generaciones permitidas
                 </label>
                 <input
@@ -208,13 +208,13 @@ export default function ModalPlanes({
                     handleChange("generacionesPermitidas", event.target.value)
                   }
                   disabled={isSaving}
-                  className="w-full rounded-[14px] border border-[#5c5c5c] bg-[#2d2d2d] px-4 py-3 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="w-full rounded-[0.875rem] border border-[#5c5c5c] bg-[#2d2d2d] px-4 py-3 text-[0.9375rem] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f] disabled:cursor-not-allowed disabled:opacity-60"
                   placeholder="10"
                 />
               </div>
 
               <div className="space-y-2 md:col-span-2">
-                <span className="text-[15px] font-semibold text-white">Estado</span>
+                <span className="text-[0.9375rem] font-semibold text-white">Estado</span>
                 <button
                   type="button"
                   onClick={() => handleChange("estado", !formData.estado)}
@@ -241,18 +241,18 @@ export default function ModalPlanes({
 
             <div className="border-t border-[#4a4a4a] pt-5">
               <h3 className="text-2xl font-semibold text-[#d8ff1f]">Beneficios incluidos</h3>
-              <p className="mt-2 text-[15px] text-white/80">
+              <p className="mt-2 text-[0.9375rem] text-white/80">
                 Selecciona los beneficios que tendrá este plan
               </p>
 
-              <div className="mt-4 max-h-[250px] space-y-3 overflow-y-auto pr-1">
+              <div className="mt-4 max-h-[15.625rem] space-y-3 overflow-y-auto pr-1">
                 {formData.beneficios.map((beneficio, index) => (
                   <div key={index} className="relative">
                     <input
                       type="text"
                       value={beneficio}
                       onChange={(event) => handleBenefitChange(index, event.target.value)}
-                      className="w-full rounded-[14px] border border-[#5c5c5c] bg-[#2d2d2d] px-4 py-3 pr-24 text-[15px] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f]"
+                      className="w-full rounded-[0.875rem] border border-[#5c5c5c] bg-[#2d2d2d] px-4 py-3 pr-24 text-[0.9375rem] text-white outline-none transition placeholder:text-white/45 focus:border-[#d8ff1f]"
                       placeholder="Describe un beneficio"
                     />
                     <button
@@ -274,7 +274,7 @@ export default function ModalPlanes({
                   type="button"
                   onClick={handleAddBenefit}
                   disabled={isSaving}
-                  className="flex w-full items-center gap-3 rounded-[14px] border border-dashed border-[#5c5c5c] bg-transparent px-4 py-3 text-left text-[15px] font-medium text-white/85 transition hover:border-[#d8ff1f] hover:text-white"
+                  className="flex w-full items-center gap-3 rounded-[0.875rem] border border-dashed border-[#5c5c5c] bg-transparent px-4 py-3 text-left text-[0.9375rem] font-medium text-white/85 transition hover:border-[#d8ff1f] hover:text-white"
                 >
                   <Plus size={18} className="text-[#d8ff1f]" />
                   Añadir beneficio
@@ -284,7 +284,7 @@ export default function ModalPlanes({
           </div>
 
           {errorMessage ? (
-            <p className="mt-5 rounded-[14px] border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+            <p className="mt-5 rounded-[0.875rem] border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
               {errorMessage}
             </p>
           ) : null}
@@ -294,14 +294,14 @@ export default function ModalPlanes({
               type="button"
               onClick={onClose}
               disabled={isSaving}
-              className="min-w-40 rounded-[14px] border border-[#d0d0d0] bg-white px-6 py-3 text-base font-semibold text-[#222222] transition hover:bg-[#f0f0f0]"
+              className="min-w-40 rounded-[0.875rem] border border-[#d0d0d0] bg-white px-6 py-3 text-base font-semibold text-[#222222] transition hover:bg-[#f0f0f0]"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={isSaving}
-              className="min-w-[190px] rounded-[14px] bg-[#d8ff1f] px-6 py-3 text-base font-semibold text-[#202020] shadow-[0_0_20px_rgba(216,255,31,0.25)] transition hover:bg-[#cce81e]"
+              className="min-w-[11.875rem] rounded-[0.875rem] bg-[#d8ff1f] px-6 py-3 text-base font-semibold text-[#202020] shadow-[0_0_20px_rgba(216,255,31,0.25)] transition hover:bg-[#cce81e]"
             >
               {isSaving ? "Guardando..." : "Guardar cambios"}
             </button>

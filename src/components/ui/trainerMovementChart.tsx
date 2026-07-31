@@ -98,7 +98,7 @@ export default function TrainerMovementChart({
     return (
         <div className="bg-[#1f1f1f] rounded-xl p-5 h-full shadow-md">
             <h3 className="text-[#dfff00] text-xl font-bold mb-1">Usuarios mensuales</h3>
-            <p className="text-[16px] text-gray-400 mb-4">
+            <p className="text-[1rem] text-gray-400 mb-4">
                 Tabla que muestra la cantidad de usuarios mensuales que mantiene el entrenador
             </p>
 

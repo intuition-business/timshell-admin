@@ -218,7 +218,7 @@ export default function TrainerDashboard() {
       </div>
 
       <div className="mb-8">
-        <h1 className=" text-[32px] text-[#dff400] font-bold ">Entrenador</h1>
+        <h1 className=" text-[2rem] text-[#dff400] font-bold ">Entrenador</h1>
       </div>
       {/*  <div className="w-full relative">
         <button

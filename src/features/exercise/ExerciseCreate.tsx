@@ -339,7 +339,7 @@ export default function ExerciseCreate({
         </Buttons>
       </div>
       <div className="flex flex-col p-5 min-h-screen lg:flex-row gap-8">
-        <div className="w-full max-w-[380px] ">
+        <div className="w-full max-w-[23.75rem] ">
           <div className="max-h-[70vh] h-full sticky top-11">
             <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00]">
               {title}
@@ -355,7 +355,7 @@ export default function ExerciseCreate({
               </button>
             )}
 
-            <div className="relative aspect-square h-full w-full rounded-xl border border-gray-700 overflow-hidden max-w-[380px]">
+            <div className="relative aspect-square h-full w-full rounded-xl border border-gray-700 overflow-hidden max-w-[23.75rem]">
 
               {/* VIDEO */}
               {exerciseVideo && showVideo ? (
@@ -537,7 +537,7 @@ export default function ExerciseCreate({
                   <button
                     type="button"
                     onClick={handleAddSeries}
-                    className="flex flex-col space-y-2 bg-[#2B2B2B] p-4 rounded-xl text-gray-300 hover:bg-[#3A3A3A] transition items-center justify-center w-full h-full min-h-[145px]"
+                    className="flex flex-col space-y-2 bg-[#2B2B2B] p-4 rounded-xl text-gray-300 hover:bg-[#3A3A3A] transition items-center justify-center w-full h-full min-h-[9.0625rem]"
                   >
                     <span className="text-xl font-semibold text-gray-300">
                       + Agregar serie nueva

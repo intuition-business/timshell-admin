@@ -54,7 +54,7 @@ export default function ChatAudioPlayer({ src, time }: { src: string; time: stri
   const remaining = duration > 0 ? duration - current : 0;
 
   return (
-    <div className="w-[220px] bg-[#232323] rounded-2xl px-4 py-3 flex flex-col gap-2">
+    <div className="w-[13.75rem] bg-[#232323] rounded-2xl px-4 py-3 flex flex-col gap-2">
       <audio ref={audioRef} src={src} preload="metadata" />
 
       {/* Fila play + barra */}
@@ -70,7 +70,7 @@ export default function ChatAudioPlayer({ src, time }: { src: string; time: stri
         <div
           ref={progressRef}
           onClick={handleProgressClick}
-          className="flex-1 relative h-[6px] bg-[#3a3a3a] rounded-full cursor-pointer"
+          className="flex-1 relative h-[0.375rem] bg-[#3a3a3a] rounded-full cursor-pointer"
         >
           <div
             className="absolute top-0 left-0 h-full bg-[#dff400] rounded-full"

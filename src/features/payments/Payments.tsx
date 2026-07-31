@@ -176,7 +176,7 @@ export default function Payments() {
     "bg-[#2B2B2B] border border-[#777777] text-white px-3 py-3 rounded-xl focus:outline-none w-full";
 
   const fieldClass =
-    "flex flex-col gap-1 text-xs text-gray-400 w-full sm:w-auto sm:flex-1 sm:min-w-[180px] sm:max-w-[250px]";
+    "flex flex-col gap-1 text-xs text-gray-400 w-full sm:w-auto sm:flex-1 sm:min-w-[11.25rem] sm:max-w-[15.625rem]";
 
   return (
     <section className="w-full text-white">
@@ -282,7 +282,7 @@ export default function Payments() {
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-white/10">
-          <table className="w-full text-base text-left border-collapse min-w-[720px]">
+          <table className="w-full text-base text-left border-collapse min-w-[45rem]">
             <thead>
               <tr className="bg-[#282828] text-[#dff400]">
                 <th className="px-4 py-3 font-semibold">Usuario</th>

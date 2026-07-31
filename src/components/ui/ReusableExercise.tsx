@@ -23,7 +23,7 @@ export default function ReusableExercise({
       onClick={onClick}
       className="flex items-center p-4 gap-4  bg-[#282828] border-2 border-[#777777] rounded-2xl w-full "
     >
-      <div className="max-w-[130px] w-full bg-gray-900 rounded-lg h-[70px] overflow-hidden">
+      <div className="max-w-[8.125rem] w-full bg-gray-900 rounded-lg h-[4.375rem] overflow-hidden">
         {image && (
           <div className="rounded-xl">
             <img
@@ -31,7 +31,7 @@ export default function ReusableExercise({
               alt={title || "Imagen"}
               width={130}
               height={70}
-              className="object-cover w-full max-w-[130px] max-h-[70px] h-full"
+              className="object-cover w-full max-w-[8.125rem] max-h-[4.375rem] h-full"
             />
           </div>
         )}

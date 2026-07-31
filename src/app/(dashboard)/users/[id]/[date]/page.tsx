@@ -98,7 +98,7 @@ export default function RutinaPage() {
             <ChevronLeft className=" text-white" />
           </Buttons>
         </div>
-        <h2 className="text-[32px] mb-12 font-semibold text-[#D4FF00]">
+        <h2 className="text-[2rem] mb-12 font-semibold text-[#D4FF00]">
           {rutinaName}
         </h2>
 

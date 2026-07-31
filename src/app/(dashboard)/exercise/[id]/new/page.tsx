@@ -189,7 +189,7 @@ export default function ExerciseCreateNew() {
             <div className="flex flex-col p-5 min-h-screen lg:flex-row gap-8">
 
                 {/* PREVIEW */}
-                <div className="w-full max-w-[380px]">
+                <div className="w-full max-w-[23.75rem]">
                     <div className="max-h-[70vh] h-full sticky top-11">
                         <h2 className="text-2xl font-semibold mb-4 text-[#D4FF00]">
                             {title || "Nuevo ejercicio"}
@@ -393,7 +393,7 @@ export default function ExerciseCreateNew() {
                                 type="button"
                                 onClick={() => isExerciseSelected && handleAddSeries()}
                                 disabled={!isExerciseSelected}
-                                className={`bg-[#2B2B2B] p-4 rounded-xl text-gray-300 flex items-center justify-center min-h-[145px]
+                                className={`bg-[#2B2B2B] p-4 rounded-xl text-gray-300 flex items-center justify-center min-h-[9.0625rem]
         ${!isExerciseSelected ? "opacity-40 cursor-not-allowed" : "hover:bg-[#3A3A3A]"}
     `}
                             >

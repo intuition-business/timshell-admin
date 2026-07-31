@@ -42,7 +42,7 @@ export default function Pagination({
         <button
           key={i}
           onClick={() => onChange(i + 1)}
-          className={`w-8 h-8 text-[16px] rounded-md flex justify-center items-center transition ${
+          className={`w-8 h-8 text-[1rem] rounded-md flex justify-center items-center transition ${
             paginaActual === i + 1
               ? "bg-[#dff400] text-black font-bold"
               : "bg-[#222] border border-b-gray-600 hover:bg-[#333]"

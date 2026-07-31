@@ -187,7 +187,7 @@ export default function Dashboard() {
               <InputDate placeholder="Desde" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
               <InputDate placeholder="Hasta" value={dateTo} onChange={e => setDateTo(e.target.value)} />
             </div>
-            <button className="bg-white text-[#1A1A1A] w-full max-w-[200px] flex items-center px-4 py-3 rounded-xl hover:bg-[#d9d9d9] cursor-pointer ms-auto">
+            <button className="bg-white text-[#1A1A1A] w-full max-w-[12.5rem] flex items-center px-4 py-3 rounded-xl hover:bg-[#d9d9d9] cursor-pointer ms-auto">
               <Download className="mr-2" size={18} />
               Descargar Excel
             </button>
@@ -218,7 +218,7 @@ export default function Dashboard() {
               <h3 className="text-[#D4FF00] font-semibold text-xl">Top entrenadores</h3>
               <button
                 onClick={() => router.push("/trainer")}
-                className="font-semibold text-sm hover:text-gray-600 hover:bg-gray-200 cursor-pointer bg-white py-3 px-4 max-w-[230px] w-full rounded-lg"
+                className="font-semibold text-sm hover:text-gray-600 hover:bg-gray-200 cursor-pointer bg-white py-3 px-4 max-w-[14.375rem] w-full rounded-lg"
               >
                 Ver más detalles
               </button>

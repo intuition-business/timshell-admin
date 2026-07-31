@@ -306,7 +306,7 @@ export default function Pages() {
           <UserMovementChart />
         </div>
       </div>
-      <h2 className="text-[16px] my-9 font-bold flex gap-3 ">
+      <h2 className="text-[1rem] my-9 font-bold flex gap-3 ">
         Rutina diaria{" "}
         <span className="text-[#dff400] text-base">plan intermedio</span>
       </h2>

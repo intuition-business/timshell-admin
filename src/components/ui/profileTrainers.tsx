@@ -57,7 +57,7 @@ export default function TrainerInfoCard({
           <img
             src={image || "/logo.png"}
             alt={name}
-            className={`w-ful max-w-[340px] h-[450px]  rounded-xl ${image ? "object-cover" : "object-contain"}`}
+            className={`w-ful max-w-[21.25rem] h-[28.125rem]  rounded-xl ${image ? "object-cover" : "object-contain"}`}
           />
         </div>
 
@@ -65,7 +65,7 @@ export default function TrainerInfoCard({
         <div className="text-white w-full">
 
           <div className="flex items-center justify-between w-full">
-            <h2 className="text-[32px] font-bold text-[#dff400] mb-2">
+            <h2 className="text-[2rem] font-bold text-[#dff400] mb-2">
               {name}
             </h2>
 

@@ -267,9 +267,9 @@ export default function Page() {
       <div className="flex flex-col p-6 ps-16 pb-0 pr-0 lg:flex-row gap-10">
 
         {/* IMAGE UPLOAD */}
-        <div className="w-full max-w-[350px]">
+        <div className="w-full max-w-[21.875rem]">
           <label className="cursor-pointer">
-            <div className={`h-[680px] border-2 border-dashed ${preview ? 'border-gray-700' : ' border-[#D4FF00]'} rounded-xl flex items-center justify-center bg-[#1E1E1E] overflow-hidden`}>
+            <div className={`h-[42.5rem] border-2 border-dashed ${preview ? 'border-gray-700' : ' border-[#D4FF00]'} rounded-xl flex items-center justify-center bg-[#1E1E1E] overflow-hidden`}>
               {preview ? (
                 <div className="relative h-full w-full">
                   <div className="absolute top-3 right-3 z-50 flex gap-2">
@@ -297,7 +297,7 @@ export default function Page() {
 
               ) : (
                 <span className="text-gray-400 text-center">
-                  <CloudUpload className="w-full h-full  max-w-[150px] max-h-20"></CloudUpload> Subir archivo
+                  <CloudUpload className="w-full h-full  max-w-[9.375rem] max-h-20"></CloudUpload> Subir archivo
                 </span>
               )}
             </div>
@@ -315,7 +315,7 @@ export default function Page() {
         </div>
 
         {/* FORM */}
-        <div className="max-w-[470px] min-w-[280px] w-4/12 space-y-6">
+        <div className="max-w-[29.375rem] min-w-[17.5rem] w-4/12 space-y-6">
 
 
 

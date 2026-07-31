@@ -83,7 +83,7 @@ export function CardList({
               <td className="px-4 py-3">{t.id ?? t.user_id}</td>
 
               {/* Columna 3: Email */}
-              <td className="px-4 py-3 truncate max-w-[280px]">
+              <td className="px-4 py-3 truncate max-w-[17.5rem]">
                 {t.email ?? t.user_email}
               </td>
 

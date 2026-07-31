@@ -25,7 +25,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           <img
             src={imageUrl}
             alt={name}
-            className=" w-[67px] h-[67px] object-cover rounded-full border-4 border-[#2a2a2b] shadow-lg"
+            className=" w-[4.1875rem] h-[4.1875rem] object-cover rounded-full border-4 border-[#2a2a2b] shadow-lg"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src = imageUrl ? imageUrl : '/default-avatar.png';

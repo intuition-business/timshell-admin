@@ -126,7 +126,7 @@ export default function ListadoEjercicios({ onEdit, update, setUpdate }: Listado
   };
 
   return (
-    <div className="h-[calc(100vh)] -mt-42 overflow-auto w-full bg-[#282828] text-white p-6 top-0 right-0 max-w-[560px]">
+    <div className="h-[calc(100vh)] -mt-42 overflow-auto w-full bg-[#282828] text-white p-6 top-0 right-0 max-w-[35rem]">
 
       <h1 className="text-2xl font-semibold text-[#D4FF00] mb-6">
         Editar ejercicio

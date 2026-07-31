@@ -18,7 +18,7 @@ interface InputDateProps {
 
 export function SearchInput({ placeholder, onChange, value, wFull }: any) {
   return (
-    <div className={`relative ${wFull ? "w-full" : "w-full max-w-[390px]"}`}>
+    <div className={`relative ${wFull ? "w-full" : "w-full max-w-[24.375rem]"}`}>
       <input
         type="text"
         placeholder={placeholder}
@@ -34,7 +34,7 @@ export function SearchInput({ placeholder, onChange, value, wFull }: any) {
 export function SelectInput({ placeholder, options }: SelectInputProps) {
   return (
     <>
-      <div className="relative flex w-full max-w-[280px]">
+      <div className="relative flex w-full max-w-[17.5rem]">
         <select
           defaultValue=""
           className="bg-[#2B2B2B] border border-[#777777] w-full pl-3 pr-10 py-4  min-w-[100px] rounded-xl focus:outline-none appearance-none"
@@ -56,7 +56,7 @@ export function SelectInput({ placeholder, options }: SelectInputProps) {
 
 export function InputDate({ placeholder, value, onChange }: { placeholder?: string; value?: string; onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
   return (
-    <div className="relative text-white flex w-full max-w-[280px]">
+    <div className="relative text-white flex w-full max-w-[17.5rem]">
       <input
         type="date"
         placeholder={placeholder}

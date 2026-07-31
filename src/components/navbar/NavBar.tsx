@@ -34,12 +34,12 @@ export default function NavBar() {
   if (!role) return null;
 
   return (
-    <nav className="sticky left-0 top-0 h-screen z-10 max-w-[210px] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg text-base rounded-r-[30px]">
+    <nav className="sticky left-0 top-0 h-screen z-10 max-w-[13.125rem] w-full bg-[#282828] text-white flex flex-col justify-between shadow-lg text-base rounded-r-[30px]">
       {/* Logo */}
       {role == 'admin' ? (
         <div>
           <div className="px-0 py-0 mt-8 flex justify-center">
-            <img className="max-w-[120px]" src="/logo.png" alt="Logo" />
+            <img className="max-w-[7.5rem]" src="/logo.png" alt="Logo" />
           </div>
 
           {/* Menú de navegación */}
@@ -132,7 +132,7 @@ export default function NavBar() {
       ) : (
         <div>
           <div className="px-0 py-0 mt-8 flex justify-center">
-            <img className="max-w-[120px]" src="/logo.png" alt="Logo" />
+            <img className="max-w-[7.5rem]" src="/logo.png" alt="Logo" />
           </div>
 
           {/* Menú de navegación */}

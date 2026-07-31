@@ -44,7 +44,7 @@ export function TablaPlan({
         }}
       >
         {columns.map((col, i) => (
-          <span key={i} className="text-sm font-semibold">
+          <span key={i} className="text-xl font-semibold">
             {col.label}
           </span>
         ))}
@@ -94,7 +94,7 @@ function Row({
 
   return (
     <div
-      className="grid items-center bg-[#1a1a1a] hover:bg-[#262626] text-white px-5 py-4 rounded-lg border border-[#2a2a2a] transition"
+      className="grid items-center bg-[#333] hover:bg-[#484848] text-white px-5 py-5 rounded-md transition"
       style={{
         gridTemplateColumns: columns.map((c) => c.width || "1fr").join(" "),
       }}
@@ -103,7 +103,7 @@ function Row({
         /* === COLUMNA ESTADO === */
         if (col.key === "estado") {
           return (
-            <div key={i} className="flex items-center gap-2">
+            <div key={i} className="flex items-center gap-2 px-2">
               <button
                 type="button"
                 onClick={handleToggle}
@@ -118,7 +118,7 @@ function Row({
                   }`}
                 />
               </button>
-              <span className="text-sm">
+              <span className="text-base">
                 {active ? "Activo" : "Inactivo"}
               </span>
             </div>
@@ -128,12 +128,12 @@ function Row({
         /* === COLUMNA ACCIONES === */
         if (col.key === "acciones") {
           return (
-            <div key={i} className="flex justify-end gap-2">
+            <div key={i} className="flex justify-end gap-2 px-2">
               <button
                 type="button"
                 onClick={() => onEdit && onEdit(row)}
                 disabled={isBusy}
-                className="flex items-center gap-2 rounded-md bg-[#2c2c2c] px-4 py-2 text-sm transition hover:bg-[#3a3a3a] disabled:cursor-not-allowed disabled:opacity-60"
+                className="flex items-center gap-2 rounded-md bg-[#2c2c2c] px-4 py-2 text-sm transition hover:bg-[#484848] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Editar
                 <ChevronRight size={16} />
@@ -154,7 +154,7 @@ function Row({
 
         /* === DEFAULT === */
         return (
-          <div key={i} className="text-sm">
+          <div key={i} className="text-[20px] px-2">
             {String(row[col.key as keyof PlanTableRow] ?? "")}
           </div>
         );

@@ -30,7 +30,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
           rel="stylesheet"
         />
         <link
@@ -38,7 +38,7 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css"
         />
       </head>
-      <body suppressHydrationWarning style={{ fontFamily: "'Exo 2', sans-serif" }}>
+      <body suppressHydrationWarning style={{ fontFamily: "'Poppins', sans-serif" }}>
         <AuthProvider>
           <div className={`h-screen w-full bg-[#0f0f0f] overflow-hidden 
               before:content-[''] before:absolute before:top-0 before:left-0 before:w-[200px] before:h-[200px] before:bg-[url('/iconos-layout.png')] before:bg-no-repeat before:bg-cover before:opacity-20 before:blur-[2px]

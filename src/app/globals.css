@@ -3,6 +3,12 @@
 @import "tailwindcss";
 
 
+@media (min-width: 1280px) {
+  html {
+    font-size: 0.85vw;
+  }
+}
+
 body {
   color: #1A1A1A;
   background: #1A1A1A;

@@ -159,7 +159,7 @@ export default function Index() {
                 <ValidacionOtp
                     key="phone-otp"
                     step={step}
-                    phone={phone}
+                    phone={'+57' + phone}
                 />
             )
         default:

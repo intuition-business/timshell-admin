@@ -86,10 +86,12 @@ export default function Page() {
         formData.append("at_home", "true");
         if (video) {
           formData.append("video", video);
-
-          // 🔥 Generar thumbnail automático
-          const thumbnail = await generateThumbnail(video);
-          formData.append("thumbnail", thumbnail);
+          try {
+            const thumbnail = await generateThumbnail(video);
+            formData.append("thumbnail", thumbnail);
+          } catch (thumbErr) {
+            console.warn("Thumbnail no generado, se sube solo el video:", thumbErr);
+          }
         }
       } else {
         formData.append("new_exercise", title);
@@ -98,8 +100,12 @@ export default function Page() {
         formData.append("new_muscle_group", muscleGroup);
         if (video) {
           formData.append("new_video", video);
-          const thumbnail = await generateThumbnail(video);
-          formData.append("new_thumbnail", thumbnail);
+          try {
+            const thumbnail = await generateThumbnail(video);
+            formData.append("new_thumbnail", thumbnail);
+          } catch (thumbErr) {
+            console.warn("Thumbnail no generado, se sube solo el video:", thumbErr);
+          }
         } else if (clearVideo) {
           formData.append("clear_video", "true");
         }
@@ -152,28 +158,35 @@ export default function Page() {
   };
 
   const generateThumbnail = (file: File): Promise<Blob> => {
-    return new Promise((resolve) => {
-      const video = document.createElement("video");
-      video.src = URL.createObjectURL(file);
-      video.currentTime = 1;
+    return new Promise((resolve, reject) => {
+      const objectUrl = URL.createObjectURL(file);
+      const videoEl = document.createElement("video");
+      videoEl.preload = "metadata";
+      videoEl.muted = true;
+      videoEl.src = objectUrl;
 
-      video.onloadeddata = () => {
+      const cleanup = () => URL.revokeObjectURL(objectUrl);
+
+      videoEl.onloadedmetadata = () => {
+        videoEl.currentTime = Math.min(1, videoEl.duration / 2);
+      };
+
+      videoEl.onseeked = () => {
         const canvas = document.createElement("canvas");
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
+        canvas.width = videoEl.videoWidth;
+        canvas.height = videoEl.videoHeight;
         const ctx = canvas.getContext("2d");
-        ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-
+        ctx?.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
         canvas.toBlob((blob) => {
-          if (blob) {
-            console.log("Tamaño en bytes:", blob.size);
-            console.log("Tamaño en KB:", (blob.size / 1024).toFixed(2) + " KB");
-            console.log("Tamaño en MB:", (blob.size / (1024 * 1024)).toFixed(2) + " MB");
-
-            resolve(blob);
-          }
+          cleanup();
+          if (blob) resolve(blob);
+          else reject(new Error("No se pudo generar la miniatura"));
         }, "image/jpeg", 0.8);
+      };
+
+      videoEl.onerror = () => {
+        cleanup();
+        reject(new Error("Error al cargar el video para la miniatura"));
       };
     });
   };

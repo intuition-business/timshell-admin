@@ -101,7 +101,7 @@ export default function Trainer() {
         ) : (
           <div className="flex flex-col w-full gap-2">
             <TableList encabezado={EncabezadosData} data={data} columns={5} />
-            <CardList encabezado={EncabezadosData} data={data} columns={5} onCardClick={handleTrainerClick} />
+            <CardList encabezado={EncabezadosData} data={data} columns={5} onCardClick={handleTrainerClick} variant="trainer" />
           </div>
         )}
       </div>

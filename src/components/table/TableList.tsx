@@ -69,7 +69,8 @@ export function CardList({
   columns,
   encabezado,
   onCardClick,
-}: CardListProps) {
+  variant,
+}: CardListProps & { variant?: "trainer" }) {
   const respuesta = data.map((data) => {
     console.log(Object.keys(data).length);
   });
@@ -120,35 +121,44 @@ export function CardList({
             <span>{t.email ? t.email : t.user_email}</span>
           </div>
 
-          <div className="w-full flex items-center px-2 overflow-hidden">
-            {t.plan || t.plan_id || <span className="text-gray-400">Sin plan</span>}
-          </div>
-          {t.valoration ? (
-            <div className=" flex items-center justify-center w-full px-2 overflow-hidden">
+          {variant === "trainer" ? (
+            <div className="w-full flex items-center px-2 overflow-hidden">
+              <span>{t.usuarios ?? 0} usuario{(t.usuarios ?? 0) !== 1 ? "s" : ""}</span>
+            </div>
+          ) : (
+            <div className="w-full flex items-center px-2 overflow-hidden">
+              {t.plan || t.plan_id || <span className="text-gray-400">Sin plan</span>}
+            </div>
+          )}
 
+          {t.valoration ? (
+            <div className="flex items-center justify-center w-full px-2 overflow-hidden">
               <Stars rating={Number(t.valoration)} size={20} />
             </div>
           ) : (
-            ""
+            <div className="w-full flex items-center px-2 overflow-hidden">
+              <span className="text-gray-400">Sin valoración</span>
+            </div>
           )}
 
-          <div className="flex items-center justify-cente">
-            {t.trainer_name ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <div className="flex items-center gap-2">
-                {t.trainer_image && (
-                  <img
-                    src={t.trainer_image}
-                    alt={`${t.trainer_name}`}
-                    className="h-12 w-12 rounded-full object-cover"
-                  />
-                )}
-                <p>{t.trainer_name}</p>
-              </div>
-            ) : (
-              <p className="text-gray-400">Sin entrenador</p>
-            )}
-          </div>
+          {variant !== "trainer" && (
+            <div className="flex items-center justify-center">
+              {t.trainer_name ? (
+                <div className="flex items-center gap-2">
+                  {t.trainer_image && (
+                    <img
+                      src={t.trainer_image}
+                      alt={`${t.trainer_name}`}
+                      className="h-12 w-12 rounded-full object-cover"
+                    />
+                  )}
+                  <p>{t.trainer_name}</p>
+                </div>
+              ) : (
+                <p className="text-gray-400">Sin entrenador</p>
+              )}
+            </div>
+          )}
         </div>
       ))}
     </div>

@@ -99,10 +99,10 @@ export default function Page() {
         formData.append("new_category", category);
         formData.append("new_muscle_group", muscleGroup);
         if (video) {
-          formData.append("new_video", video);
+          formData.append("video", video);
           try {
             const thumbnail = await generateThumbnail(video);
-            formData.append("new_thumbnail", thumbnail);
+            formData.append("thumbnail", thumbnail);
           } catch (thumbErr) {
             console.warn("Thumbnail no generado, se sube solo el video:", thumbErr);
           }

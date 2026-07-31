@@ -94,70 +94,67 @@ export function CardList({
         >
           {/* Columna 1: Nombre */}
           <div className="flex gap-3 items-center w-full px-2">
-            <div className="h-15 w-15 rounded-full overflow-hidden bg-gray-700 flex items-center justify-between">
+            <div className="h-12 w-12 rounded-full overflow-hidden bg-gray-700 flex-shrink-0">
               {t.image || t.userImage ? (
                 <img
-                  src={t.image ? t.image : t.userImage}
-                  alt={t.name}
+                  src={t.image ?? t.userImage}
+                  alt=""
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <span className="text-gray-400"></span>
+                <div className="h-full w-full flex items-center justify-center text-gray-400 text-sm font-semibold">
+                  {(t.name || "?")[0].toUpperCase()}
+                </div>
               )}
             </div>
-            <span
-              className="max-w-[150px] w-full text-ellipsis overflow-hidden"
-              title={t.name}
-            >
-              {t.name}
+            <span className="text-ellipsis overflow-hidden" title={t.name}>
+              {t.name || "Usuario sin nombre"}
             </span>
           </div>
 
-          <div className="w-full flex items-center  px-2 overflow-hidden">
-            <span>{t.id ? t.id : t.user_id}</span>
+          {/* Columna 2: ID */}
+          <div className="w-full flex items-center px-2 overflow-hidden">
+            <span>{t.id ?? t.user_id}</span>
           </div>
 
+          {/* Columna 3: Email */}
           <div className="w-full flex items-center px-2 overflow-hidden">
-            <span>{t.email ? t.email : t.user_email}</span>
+            <span className="text-ellipsis overflow-hidden">{t.email ?? t.user_email}</span>
           </div>
 
           {variant === "trainer" ? (
-            <div className="w-full flex items-center px-2 overflow-hidden">
-              <span>{t.usuarios ?? 0} usuario{(t.usuarios ?? 0) !== 1 ? "s" : ""}</span>
-            </div>
+            <>
+              {/* Columna 4 trainer: Cantidad usuarios */}
+              <div className="w-full flex items-center px-2 overflow-hidden">
+                <span>{t.usuarios ?? 0} usuario{(t.usuarios ?? 0) !== 1 ? "s" : ""}</span>
+              </div>
+              {/* Columna 5 trainer: Valoración */}
+              <div className="w-full flex items-center px-2 overflow-hidden">
+                {t.valoration ? (
+                  <Stars rating={Number(t.valoration)} size={20} />
+                ) : (
+                  <span className="text-gray-400">Sin valoración</span>
+                )}
+              </div>
+            </>
           ) : (
-            <div className="w-full flex items-center px-2 overflow-hidden">
-              {t.plan || t.plan_id || <span className="text-gray-400">Sin plan</span>}
-            </div>
-          )}
-
-          {t.valoration ? (
-            <div className="flex items-center justify-center w-full px-2 overflow-hidden">
-              <Stars rating={Number(t.valoration)} size={20} />
-            </div>
-          ) : (
-            <div className="w-full flex items-center px-2 overflow-hidden">
-              <span className="text-gray-400">Sin valoración</span>
-            </div>
-          )}
-
-          {variant !== "trainer" && (
-            <div className="flex items-center justify-center">
-              {t.trainer_name ? (
-                <div className="flex items-center gap-2">
-                  {t.trainer_image && (
-                    <img
-                      src={t.trainer_image}
-                      alt={`${t.trainer_name}`}
-                      className="h-12 w-12 rounded-full object-cover"
-                    />
-                  )}
-                  <p>{t.trainer_name}</p>
-                </div>
-              ) : (
-                <p className="text-gray-400">Sin entrenador</p>
-              )}
-            </div>
+            <>
+              {/* Columna 4 usuario: Plan */}
+              <div className="w-full flex items-center px-2 overflow-hidden">
+                {t.plan || t.plan_id
+                  ? <span>{t.plan || t.plan_id}</span>
+                  : <span className="text-gray-400">Sin plan</span>}
+              </div>
+              {/* Columna 5 usuario: Entrenador */}
+              <div className="flex items-center gap-2 px-2 overflow-hidden">
+                {t.trainer_image && (
+                  <img src={t.trainer_image} alt="" className="h-9 w-9 rounded-full object-cover flex-shrink-0" />
+                )}
+                <span className={t.trainer_name && t.trainer_name !== "Sin entrenador" ? "" : "text-gray-400"}>
+                  {t.trainer_name || "Sin entrenador"}
+                </span>
+              </div>
+            </>
           )}
         </div>
       ))}

@@ -14,10 +14,10 @@ export default function Trainer() {
 
   const EncabezadosData = [
     { label: "Nombre", width: "250px" },
-    { label: "ID", width: "100px" },
-    { label: "Correo electrónico", width: "300px" },
-    { label: "Cantidad de usuarios", width: "200px" },
-    { label: "Valoración", width: "150px" },
+    { label: "ID", width: "80px" },
+    { label: "Correo electrónico", width: "minmax(250px, 1fr)" },
+    { label: "Cantidad de usuarios", width: "220px" },
+    { label: "Valoración", width: "180px" },
   ];
 
   const [data, setData] = useState<Entrenador[]>([]);

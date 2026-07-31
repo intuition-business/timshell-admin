@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 
 
-export default function ValidacionOtp({ step, email, phone }: any) {
+export default function ValidacionOtp({ step, email, phone, setCodigoStepDos }: any) {
     const router = useRouter()
     const auth = useAuth();
     const [loading, setLoading] = useState(true);
@@ -73,11 +73,14 @@ export default function ValidacionOtp({ step, email, phone }: any) {
             }
 
             setSuccess('OTP validado correctamente');
-            // actualizar contexto de auth y redirigir
-            auth?.login(data?.token);
-            setTimeout(() => {
-                router.push('/');
-            }, 50);
+            if (step === 2) {
+                setCodigoStepDos(true);
+            } else {
+                auth?.login(data?.token);
+                setTimeout(() => {
+                    router.push('/');
+                }, 50);
+            }
 
         } catch (err: any) {
             setError(err.message || 'Ocurrió un error');

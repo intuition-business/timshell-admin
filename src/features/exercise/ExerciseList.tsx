@@ -157,11 +157,20 @@ export default function ListadoEjercicios({ onEdit, update, setUpdate }: Listado
           >
             {/* LADO IZQUIERDO */}
             <div className="flex items-center gap-4">
-              <img
-                src={item.thumbnail_url}
-                alt={item.exercise}
-                className="w-32 h-24 object-cover rounded-lg"
-              />
+              {item.thumbnail_url ? (
+                <img
+                  src={item.thumbnail_url}
+                  alt={item.exercise}
+                  className="w-32 h-24 object-cover rounded-lg"
+                />
+              ) : (
+                <div className="w-32 h-24 rounded-lg bg-[#1E1E1E] border border-[#3A3A3A] flex flex-col items-center justify-center gap-1 text-gray-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.2} stroke="currentColor" className="w-8 h-8">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+                  </svg>
+                  <span className="text-xs">Sin video</span>
+                </div>
+              )}
 
               <div>
                 <h3 className="text-[#D4FF00] font-semibold text-lg uppercase">

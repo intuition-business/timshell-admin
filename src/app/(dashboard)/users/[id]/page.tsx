@@ -281,7 +281,7 @@ export default function Pages() {
       </div>
 
       <div className="mb-8">
-        <h1 className=" text-[32px] text-[#dff400] font-bold ">Usuarios</h1>
+        <h1 className="text-2xl text-[#dff400] font-bold">Usuarios</h1>
       </div>
       <div className=" flex mb-7">
         <ProfileCard

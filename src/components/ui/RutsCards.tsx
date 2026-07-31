@@ -57,7 +57,7 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
     .sort((a, b) => a - b);
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-6">
       {semanas.map((semana) => {
         const rutinasDeEstaSemana = rutinasPorSemana[semana];
         const primeraFecha = getDatePart(rutinasDeEstaSemana[0]?.fecha);
@@ -70,17 +70,17 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
           <div key={semana}>
             {/* Week header */}
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-white font-bold text-lg">
+              <h3 className="text-white font-bold text-base">
                 Semana {semana}
                 {fechaInicioSemana && (
-                  <span className="text-gray-400 font-normal ml-2 text-base">
+                  <span className="text-gray-400 font-normal ml-2 text-sm">
                     - {fechaInicioSemana}
                   </span>
                 )}
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {rutinasDeEstaSemana.map((rutina, index) => {
                 const fechaBase = getDatePart(rutina.fecha);
                 const fechaLocal = fechaBase ? parseLocalDate(fechaBase) : null;
@@ -108,7 +108,7 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
                         : undefined
                     }
                     key={index}
-                    className={`relative group bg-[#0D0D0D] border border-[#2A2A2A] rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(223,244,0,0.2)] transition-all duration-300 flex flex-col justify-between ${rutina.status !== "completed" ? "cursor-pointer" : "cursor-default"
+                    className={`relative group bg-[#0D0D0D] border border-[#2A2A2A] rounded-xl p-4 shadow-[0_0_20px_rgba(0,0,0,0.4)] hover:shadow-[0_0_25px_rgba(223,244,0,0.2)] transition-all duration-300 flex flex-col justify-between ${rutina.status !== "completed" ? "cursor-pointer" : "cursor-default"
                       }`}
                   >
                     {/* Badge de estado */}
@@ -128,13 +128,13 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
                     </div>
 
                     {/* Contenido principal */}
-                    <div className="mt-6">
-                      <h2 className="text-xl font-bold text-white">
+                    <div className="mt-5">
+                      <h2 className="text-base font-bold text-white">
                         {rutina.nombre || "Rutina sin nombre"}
                       </h2>
-                      <p className="text-lg text-gray-400 mt-1">Fecha: {fechaVisible}</p>
+                      <p className="text-sm text-gray-400 mt-1">Fecha: {fechaVisible}</p>
 
-                      <ul className="text-base text-gray-200 mt-4 space-y-1">
+                      <ul className="text-sm text-gray-200 mt-3 space-y-1">
                         {rutina.ejercicios?.slice(0, 6).map((ej, i) => (
                           <li key={i}>• {ej.nombre_ejercicio}</li>
                         ))}
@@ -142,7 +142,7 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
                     </div>
 
                     {/* Botón */}
-                    <div className="mt-6">
+                    <div className="mt-4">
                       <button
                         onClick={() => {
                           if (rutina.status === "completed") return;
@@ -154,7 +154,7 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
                           router.push(`/users/${user_id}/${fechaFormateada}?name=${cleanName}`);
                         }}
                         disabled={rutina.status === "completed"}
-                        className="w-full border border-[#444] text-white text-[15px] font-semibold py-2 rounded-lg group-hover:bg-[#DFF400] group-hover:text-black transition disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="w-full border border-[#444] text-white text-sm font-semibold py-1.5 rounded-lg group-hover:bg-[#DFF400] group-hover:text-black transition disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         {rutina.status === "completed" ? "completado" : "Ver detalles"}
                       </button>

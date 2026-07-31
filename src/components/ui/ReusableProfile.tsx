@@ -33,7 +33,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           />
         ) : (
           <div className="w-full h-full rounded-full border-4 border-white bg-[#dff400flex items-center justify-center gap-5] flex items-center justify-center shadow-lg">
-            <span className="text-[#dff400] font-bold text-lg w-11 h-11 flex items-center justify-center">
+            <span className="text-[#dff400] font-bold text-sm w-10 h-10 flex items-center justify-center">
               {name
                 .split(" ")
                 .map((n) => n[0])
@@ -45,9 +45,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
       </div>
 
       {/* Información del usuario */}
-      <div className="flex items-center gap-5">
-        <h3 className="text-xl font-bold text-white">{name}</h3>
-        <p className="text-md text-[#dff400] font-medium"> * {role}</p>
+      <div className="flex items-center gap-3">
+        <h3 className="text-base font-bold text-white">{name}</h3>
+        <p className="text-sm text-[#dff400] font-medium">* {role}</p>
       </div>
     </div>
   );

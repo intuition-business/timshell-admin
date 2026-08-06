@@ -9,6 +9,7 @@ import {
 import {
   BicepsFlexed,
   Dumbbell,
+  Flame,
   SquareChartGantt,
   ClipboardMinus,
   MessageCircle,
@@ -89,6 +90,18 @@ export default function NavBar() {
               >
                 <Dumbbell size={18} />
                 Ejercicios
+              </div>
+            </Link>
+
+            <Link href="/warm-ups" passHref>
+              <div
+                className={`flex items-center gap-2 font-semibold transition-colors ${isActive("/warm-ups")
+                  ? "text-lime-400"
+                  : "text-gray-300 hover:text-lime-400"
+                  }`}
+              >
+                <Flame size={18} />
+                Calentamiento
               </div>
             </Link>
 

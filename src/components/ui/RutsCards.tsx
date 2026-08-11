@@ -127,6 +127,13 @@ export const RutsCards: React.FC<RutinasGridProps> = ({ rutinas, user_id, onVerD
                       </span>
                     </div>
 
+                    {/* Badge día de la semana */}
+                    {fechaLocal && (
+                      <div className="absolute top-0 left-0 px-3 py-1 rounded-tl-xl rounded-br-xl bg-[#dff400] text-black text-xs font-bold uppercase tracking-wide">
+                        {format(fechaLocal, "EEEE", { locale: es })}
+                      </div>
+                    )}
+
                     {/* Contenido principal */}
                     <div className="mt-5">
                       <h2 className="text-base font-bold text-white">

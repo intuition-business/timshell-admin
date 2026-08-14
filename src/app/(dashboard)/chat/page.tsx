@@ -154,7 +154,7 @@ export default function ChatPage() {
     } else {
       // admin: carga usuarios + entrenadores en paralelo
       Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=200`, { headers: { "x-access-token": token } }).then((r) => r.json()),
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=100`, { headers: { "x-access-token": token } }).then((r) => r.json()),
         fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}trainers?page=1&limit=100`, { headers: { "x-access-token": token } }).then((r) => r.json()),
       ]).then(([usersJson, trainersJson]) => {
         const users: UserInfo[] = (usersJson?.data || []).map(mapUser);

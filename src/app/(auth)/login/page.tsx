@@ -99,7 +99,7 @@ export default function Index() {
         case 2:
             return (
                 <ValidacionOtp
-                    step={step}
+                    step={1}
                     email={contactType === 'email' ? contactValue : undefined}
                     phone={contactType === 'phone' ? contactValue : undefined}
                 />

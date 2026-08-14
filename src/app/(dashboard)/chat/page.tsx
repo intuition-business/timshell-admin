@@ -103,6 +103,18 @@ export default function ChatPage() {
     } catch { return null; }
   })();
 
+  // auto-abrir el chat más reciente al cargar
+  useEffect(() => {
+    if (!activeReceiverId && chats.length > 0) {
+      const sorted = [...chats].sort((a, b) => {
+        const ta = a.lastMessageTime ? new Date(a.lastMessageTime).getTime() : 0;
+        const tb = b.lastMessageTime ? new Date(b.lastMessageTime).getTime() : 0;
+        return tb - ta;
+      });
+      openChat(sorted[0].receiverId);
+    }
+  }, [chats]);
+
   // scroll al último mensaje
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -359,14 +371,20 @@ export default function ChatPage() {
             // IDs con chat activo
             const chatIds = new Set(chats.map((c) => c.receiverId));
 
-            // Chats activos: usuarios que tienen conversación, ordenados por más reciente
-            const activeChats = chats
-              .map((c) => ({ chat: c, user: allUsers.find((u) => u.id === c.receiverId) }))
-              .filter(({ user }) => user && matchesFilter(user))
+            // Chats activos: TODOS los del socket, enriquecidos con allUsers si existe match
+            const activeChats = [...chats]
               .sort((a, b) => {
-                const ta = a.chat.lastMessageTime ? new Date(a.chat.lastMessageTime).getTime() : 0;
-                const tb = b.chat.lastMessageTime ? new Date(b.chat.lastMessageTime).getTime() : 0;
+                const ta = a.lastMessageTime ? new Date(a.lastMessageTime).getTime() : 0;
+                const tb = b.lastMessageTime ? new Date(b.lastMessageTime).getTime() : 0;
                 return tb - ta;
+              })
+              .map((c) => ({ chat: c, user: allUsers.find((u) => u.id === c.receiverId) }))
+              .filter(({ chat, user }) => {
+                const name = user?.name || chat.receiverName || "";
+                const email = user?.email || "";
+                const matchSearch = !q || name.toLowerCase().includes(q) || email.toLowerCase().includes(q);
+                const matchType = filterType === "all" || (user ? user.type === filterType : true);
+                return matchSearch && matchType;
               });
 
             // Contactos: usuarios SIN chat activo aún
@@ -428,7 +446,16 @@ export default function ChatPage() {
                     <p className="text-gray-500 text-[0.65rem] font-semibold uppercase tracking-widest px-2 pt-1 pb-1">
                       Chats
                     </p>
-                    {activeChats.map(({ user, chat }) => renderItem(user!, chat))}
+                    {activeChats.map(({ user, chat }) => {
+                  const fallback: UserInfo = user ?? {
+                    id: chat.receiverId,
+                    name: chat.receiverName || "Usuario",
+                    email: "",
+                    user_image: chat.receiverImage ?? null,
+                    type: "user",
+                  };
+                  return renderItem(fallback, chat);
+                })}
                   </>
                 )}
                 {contacts.length > 0 && (

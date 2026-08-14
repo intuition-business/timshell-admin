@@ -42,7 +42,7 @@ interface UserInfo {
   rating?: number;
   price?: number;
   phone?: string;
-  type: "user" | "trainer";
+  type: "user" | "trainer" | "admin";
 }
 
 function UserAvatar({ src, name, size = 40 }: { src: string | null; name: string; size?: number }) {
@@ -206,10 +206,10 @@ export default function ChatPage() {
       if (chatEntry) {
         setUserInfo({
           id: activeReceiverId,
-          name: chatEntry.receiverName || "Usuario",
+          name: chatEntry.receiverName || "Administrador",
           email: "",
           user_image: chatEntry.receiverImage ?? null,
-          type: "user",
+          type: "admin",
         });
       }
     }
@@ -425,6 +425,9 @@ export default function ChatPage() {
                     {user.type === "trainer" && (
                       <span className="absolute -bottom-0.5 -right-0.5 bg-[#dff400] text-black text-[0.4rem] font-black rounded-full w-3 h-3 flex items-center justify-center leading-none">E</span>
                     )}
+                    {user.type === "admin" && (
+                      <span className="absolute -bottom-0.5 -right-0.5 bg-white text-black text-[0.4rem] font-black rounded-full w-3 h-3 flex items-center justify-center leading-none">A</span>
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-center gap-1">
@@ -466,12 +469,14 @@ export default function ChatPage() {
                     </p>
                     {activeChats.map(({ user, chat }) => {
                   const trainerIds = new Set(allUsers.filter(u => u.type === "trainer").map(u => String(u.id)));
+                  const userIds = new Set(allUsers.filter(u => u.type === "user").map(u => String(u.id)));
+                  const resolvedType = trainerIds.has(String(chat.receiverId)) ? "trainer" : userIds.has(String(chat.receiverId)) ? "user" : "admin";
                   const fallback: UserInfo = user ?? {
                     id: chat.receiverId,
-                    name: chat.receiverName || "Usuario",
+                    name: chat.receiverName || "Administrador",
                     email: "",
                     user_image: chat.receiverImage ?? null,
-                    type: trainerIds.has(String(chat.receiverId)) ? "trainer" : "user",
+                    type: resolvedType,
                   };
                   return renderItem(fallback, chat);
                 })}
@@ -706,7 +711,13 @@ export default function ChatPage() {
             <div className="h-px bg-[#1e1e1e]" />
 
             {/* Información según tipo */}
-            {userInfo?.type === "trainer" ? (
+            {userInfo?.type === "admin" ? (
+              <div className="flex flex-col items-center gap-3">
+                <span className="bg-[#dff400]/15 text-[#dff400] text-xs font-semibold px-3 py-1 rounded-full border border-[#dff400]/30">
+                  Administrador
+                </span>
+              </div>
+            ) : userInfo?.type === "trainer" ? (
               <div className="flex flex-col gap-4">
                 <h3 className="text-[#dff400] font-bold text-base text-center">Info del entrenador</h3>
                 <div className="flex flex-col gap-3 px-1">

@@ -196,8 +196,22 @@ export default function ChatPage() {
   useEffect(() => {
     if (!activeReceiverId) { setUserInfo(null); return; }
     const found = allUsers.find((u) => u.id === activeReceiverId);
-    if (found) setUserInfo(found);
-  }, [activeReceiverId, allUsers]);
+    if (found) {
+      setUserInfo(found);
+    } else {
+      // fallback: usar datos del socket si no hay match en allUsers
+      const chatEntry = chats.find((c) => c.receiverId === activeReceiverId);
+      if (chatEntry) {
+        setUserInfo({
+          id: activeReceiverId,
+          name: chatEntry.receiverName || "Usuario",
+          email: "",
+          user_image: chatEntry.receiverImage ?? null,
+          type: "user",
+        });
+      }
+    }
+  }, [activeReceiverId, allUsers, chats]);
 
   const handleSend = () => {
     if (!activeReceiverId || !input.trim()) return;

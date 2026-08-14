@@ -34,6 +34,7 @@ interface UserInfo {
   estatura?: number;
   objetivo?: string;
   trainer_name?: string;
+  type: "user" | "trainer";
 }
 
 function UserAvatar({ src, name, size = 40 }: { src: string | null; name: string; size?: number }) {
@@ -66,7 +67,7 @@ export default function ChatPage() {
 
   const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
-  const [filterTrainer, setFilterTrainer] = useState("");
+  const [filterType, setFilterType] = useState<"all" | "user" | "trainer">("all");
   const [allUsers, setAllUsers] = useState<UserInfo[]>([]);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [showEmoji, setShowEmoji] = useState(false);
@@ -126,22 +127,43 @@ export default function ChatPage() {
       estatura: u.estatura,
       objetivo: u.objetivo,
       trainer_name: u.trainer_name || u.entrenador_name || "",
+      type: "user",
     });
 
-    const url = role === "trainer"
-      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/my-users`
-      : `${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=100`;
+    const mapTrainer = (t: any): UserInfo | null => {
+      const authId = t.auth_id?.toString();
+      if (!authId) return null;
+      return {
+        id: authId,
+        name: t.name || "",
+        email: t.email || "",
+        user_image: t.image || null,
+        type: "trainer",
+      };
+    };
 
-    fetch(url, { headers: { "x-access-token": token } })
-      .then((r) => r.json())
-      .then((json) => {
-        const rows = json?.data;
-        if (!rows) return;
-        const mapped: UserInfo[] = rows.map(mapUser);
-        const unique = mapped.filter((u, i, arr) => arr.findIndex((x) => x.id === u.id) === i);
+    if (role === "trainer") {
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}trainers/my-users`, { headers: { "x-access-token": token } })
+        .then((r) => r.json())
+        .then((json) => {
+          const rows = json?.data;
+          if (!rows) return;
+          setAllUsers(rows.map(mapUser));
+        })
+        .catch(() => {});
+    } else {
+      // admin: carga usuarios + entrenadores en paralelo
+      Promise.all([
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}admin/users?page=1&limit=200`, { headers: { "x-access-token": token } }).then((r) => r.json()),
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}trainers?page=1&limit=100`, { headers: { "x-access-token": token } }).then((r) => r.json()),
+      ]).then(([usersJson, trainersJson]) => {
+        const users: UserInfo[] = (usersJson?.data || []).map(mapUser);
+        const trainers: UserInfo[] = (trainersJson?.data || []).map(mapTrainer).filter(Boolean) as UserInfo[];
+        const combined = [...users, ...trainers];
+        const unique = combined.filter((u, i, arr) => arr.findIndex((x) => x.id === u.id) === i);
         setAllUsers(unique);
-      })
-      .catch(() => {});
+      }).catch(() => {});
+    }
   }, []);
 
   // actualizar info del panel derecho cuando cambia el chat activo
@@ -282,33 +304,32 @@ export default function ChatPage() {
           />
         </div>
 
-        {/* Buscador + filtro entrenador */}
-        <div className="px-4 pb-2 flex flex-col gap-1.5">
+        {/* Buscador */}
+        <div className="px-4 pb-1">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar usuario..."
+            placeholder="Buscar..."
             className="w-full bg-[#1c1c1c] text-white placeholder-gray-500 rounded-xl px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#dff400] border border-[#2a2a2a]"
           />
-          {(() => {
-            const trainers = Array.from(
-              new Set(allUsers.map((u) => u.trainer_name).filter(Boolean))
-            ) as string[];
-            if (trainers.length === 0) return null;
-            return (
-              <select
-                value={filterTrainer}
-                onChange={(e) => setFilterTrainer(e.target.value)}
-                className="w-full bg-[#1c1c1c] text-white rounded-xl px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#dff400] border border-[#2a2a2a] cursor-pointer"
-              >
-                <option value="">Todos los entrenadores</option>
-                {trainers.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-            );
-          })()}
+        </div>
+
+        {/* Tabs Todos / Usuarios / Entrenadores */}
+        <div className="px-4 pb-2 flex gap-1">
+          {(["all", "user", "trainer"] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setFilterType(tab)}
+              className={`flex-1 py-1 rounded-lg text-xs font-semibold transition-colors ${
+                filterType === tab
+                  ? "bg-[#dff400] text-black"
+                  : "bg-[#1c1c1c] text-gray-400 hover:text-white border border-[#2a2a2a]"
+              }`}
+            >
+              {tab === "all" ? "Todos" : tab === "user" ? "Usuarios" : "Entrenadores"}
+            </button>
+          ))}
         </div>
 
         <div className="flex-1 overflow-y-auto px-2 pb-2">
@@ -318,8 +339,8 @@ export default function ChatPage() {
               const matchSearch = !q ||
                 u.name.toLowerCase().includes(q) ||
                 u.email.toLowerCase().includes(q);
-              const matchTrainer = !filterTrainer || u.trainer_name === filterTrainer;
-              return matchSearch && matchTrainer;
+              const matchType = filterType === "all" || u.type === filterType;
+              return matchSearch && matchType;
             });
 
             if (filtered.length === 0) {

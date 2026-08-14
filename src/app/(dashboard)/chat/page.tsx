@@ -349,20 +349,32 @@ export default function ChatPage() {
         <div className="flex-1 overflow-y-auto px-2 pb-2">
           {(() => {
             const q = search.toLowerCase();
-            const filtered = allUsers.filter((u) => {
-              const matchSearch = !q ||
-                u.name.toLowerCase().includes(q) ||
-                u.email.toLowerCase().includes(q);
+
+            const matchesFilter = (u: UserInfo) => {
+              const matchSearch = !q || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q);
               const matchType = filterType === "all" || u.type === filterType;
               return matchSearch && matchType;
-            });
+            };
 
-            if (filtered.length === 0) {
-              return <p className="text-gray-500 text-sm text-center mt-10 px-4">Sin resultados</p>;
-            }
+            // IDs con chat activo
+            const chatIds = new Set(chats.map((c) => c.receiverId));
 
-            return filtered.map((user) => {
-              const chatData = chats.find((c) => c.receiverId === user.id);
+            // Chats activos: usuarios que tienen conversación, ordenados por más reciente
+            const activeChats = chats
+              .map((c) => ({ chat: c, user: allUsers.find((u) => u.id === c.receiverId) }))
+              .filter(({ user }) => user && matchesFilter(user))
+              .sort((a, b) => {
+                const ta = a.chat.lastMessageTime ? new Date(a.chat.lastMessageTime).getTime() : 0;
+                const tb = b.chat.lastMessageTime ? new Date(b.chat.lastMessageTime).getTime() : 0;
+                return tb - ta;
+              });
+
+            // Contactos: usuarios SIN chat activo aún
+            const contacts = allUsers
+              .filter((u) => !chatIds.has(u.id) && matchesFilter(u))
+              .sort((a, b) => a.name.localeCompare(b.name));
+
+            const renderItem = (user: UserInfo, chatData?: typeof chats[0]) => {
               const active = activeReceiverId === user.id;
               return (
                 <button
@@ -372,7 +384,12 @@ export default function ChatPage() {
                     active ? "bg-[#1c1c1c] ring-1 ring-[#2f2f2f]" : "hover:bg-[#161616]"
                   }`}
                 >
-                  <UserAvatar src={user.user_image} name={user.name} size={32} />
+                  <div className="relative flex-shrink-0">
+                    <UserAvatar src={user.user_image} name={user.name} size={32} />
+                    {user.type === "trainer" && (
+                      <span className="absolute -bottom-0.5 -right-0.5 bg-[#dff400] text-black text-[0.4rem] font-black rounded-full w-3 h-3 flex items-center justify-center leading-none">E</span>
+                    )}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex justify-between items-center gap-1">
                       <span className="text-white font-semibold text-sm truncate">{user.name}</span>
@@ -384,10 +401,11 @@ export default function ChatPage() {
                     </div>
                     <div className="flex justify-between items-center mt-0.5 gap-1">
                       <span className="text-gray-400 text-xs truncate">
-                        {chatData?.lastMessage ||
-                          (chatData?.attachmentType === "image" ? "📷 Imagen" :
-                           chatData?.attachmentType === "video" ? "🎥 Video" :
-                           user.email || "Sin mensajes")}
+                        {chatData
+                          ? (chatData.lastMessage ||
+                            (chatData.attachmentType === "image" ? "📷 Imagen" :
+                             chatData.attachmentType === "video" ? "🎥 Video" : user.email))
+                          : user.email}
                       </span>
                       {chatData?.unreadCount ? (
                         <span className="bg-[#dff400] text-black text-[0.5625rem] font-bold rounded-full min-w-[1rem] h-[1rem] px-1 flex items-center justify-center flex-shrink-0">
@@ -398,7 +416,31 @@ export default function ChatPage() {
                   </div>
                 </button>
               );
-            });
+            };
+
+            const hasResults = activeChats.length > 0 || contacts.length > 0;
+            if (!hasResults) return <p className="text-gray-500 text-sm text-center mt-10 px-4">Sin resultados</p>;
+
+            return (
+              <>
+                {activeChats.length > 0 && (
+                  <>
+                    <p className="text-gray-500 text-[0.65rem] font-semibold uppercase tracking-widest px-2 pt-1 pb-1">
+                      Chats
+                    </p>
+                    {activeChats.map(({ user, chat }) => renderItem(user!, chat))}
+                  </>
+                )}
+                {contacts.length > 0 && (
+                  <>
+                    <p className="text-gray-500 text-[0.65rem] font-semibold uppercase tracking-widest px-2 pt-3 pb-1">
+                      Contactos
+                    </p>
+                    {contacts.map((user) => renderItem(user))}
+                  </>
+                )}
+              </>
+            );
           })()}
         </div>
       </aside>

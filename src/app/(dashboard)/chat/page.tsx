@@ -33,6 +33,7 @@ interface UserInfo {
   peso?: number;
   estatura?: number;
   objetivo?: string;
+  trainer_name?: string;
 }
 
 function UserAvatar({ src, name, size = 40 }: { src: string | null; name: string; size?: number }) {
@@ -65,6 +66,7 @@ export default function ChatPage() {
 
   const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
+  const [filterTrainer, setFilterTrainer] = useState("");
   const [allUsers, setAllUsers] = useState<UserInfo[]>([]);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [showEmoji, setShowEmoji] = useState(false);
@@ -123,6 +125,7 @@ export default function ChatPage() {
       peso: u.peso,
       estatura: u.estatura,
       objetivo: u.objetivo,
+      trainer_name: u.trainer_name || u.entrenador_name || "",
     });
 
     const url = role === "trainer"
@@ -279,8 +282,8 @@ export default function ChatPage() {
           />
         </div>
 
-        {/* Buscador */}
-        <div className="px-4 pb-2">
+        {/* Buscador + filtro entrenador */}
+        <div className="px-4 pb-2 flex flex-col gap-1.5">
           <input
             type="text"
             value={search}
@@ -288,14 +291,36 @@ export default function ChatPage() {
             placeholder="Buscar usuario..."
             className="w-full bg-[#1c1c1c] text-white placeholder-gray-500 rounded-xl px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#dff400] border border-[#2a2a2a]"
           />
+          {(() => {
+            const trainers = Array.from(
+              new Set(allUsers.map((u) => u.trainer_name).filter(Boolean))
+            ) as string[];
+            if (trainers.length === 0) return null;
+            return (
+              <select
+                value={filterTrainer}
+                onChange={(e) => setFilterTrainer(e.target.value)}
+                className="w-full bg-[#1c1c1c] text-white rounded-xl px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-[#dff400] border border-[#2a2a2a] cursor-pointer"
+              >
+                <option value="">Todos los entrenadores</option>
+                {trainers.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+            );
+          })()}
         </div>
 
         <div className="flex-1 overflow-y-auto px-2 pb-2">
           {(() => {
-            const filtered = allUsers.filter((u) =>
-              u.name.toLowerCase().includes(search.toLowerCase()) ||
-              u.email.toLowerCase().includes(search.toLowerCase())
-            );
+            const q = search.toLowerCase();
+            const filtered = allUsers.filter((u) => {
+              const matchSearch = !q ||
+                u.name.toLowerCase().includes(q) ||
+                u.email.toLowerCase().includes(q);
+              const matchTrainer = !filterTrainer || u.trainer_name === filterTrainer;
+              return matchSearch && matchTrainer;
+            });
 
             if (filtered.length === 0) {
               return <p className="text-gray-500 text-sm text-center mt-10 px-4">Sin resultados</p>;

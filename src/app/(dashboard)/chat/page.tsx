@@ -76,6 +76,7 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState<"all" | "user" | "trainer">("all");
+  const [myRole, setMyRole] = useState<string | null>(null);
   const [allUsers, setAllUsers] = useState<UserInfo[]>([]);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [showEmoji, setShowEmoji] = useState(false);
@@ -137,6 +138,7 @@ export default function ChatPage() {
     try {
       role = JSON.parse(atob(token.split(".")[1]))?.role ?? null;
     } catch {}
+    setMyRole(role);
 
     const mapUser = (u: any): UserInfo => ({
       id: (u.id ?? u.user_id)?.toString(),
@@ -355,22 +357,24 @@ export default function ChatPage() {
           />
         </div>
 
-        {/* Tabs Todos / Usuarios / Entrenadores */}
-        <div className="px-4 pb-2 flex gap-1">
-          {(["all", "user", "trainer"] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setFilterType(tab)}
-              className={`flex-1 py-1 rounded-lg text-xs font-semibold transition-colors ${
-                filterType === tab
-                  ? "bg-[#dff400] text-black"
-                  : "bg-[#1c1c1c] text-gray-400 hover:text-white border border-[#2a2a2a]"
-              }`}
-            >
-              {tab === "all" ? "Todos" : tab === "user" ? "Usuarios" : "Entrenadores"}
-            </button>
-          ))}
-        </div>
+        {/* Tabs Todos / Usuarios / Entrenadores — solo para admin */}
+        {myRole === "admin" && (
+          <div className="px-4 pb-2 flex gap-1">
+            {(["all", "user", "trainer"] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setFilterType(tab)}
+                className={`flex-1 py-1 rounded-lg text-xs font-semibold transition-colors ${
+                  filterType === tab
+                    ? "bg-[#dff400] text-black"
+                    : "bg-[#1c1c1c] text-gray-400 hover:text-white border border-[#2a2a2a]"
+                }`}
+              >
+                {tab === "all" ? "Todos" : tab === "user" ? "Usuarios" : "Entrenadores"}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="flex-1 overflow-y-auto px-2 pb-2">
           {(() => {
@@ -461,12 +465,13 @@ export default function ChatPage() {
                       Chats
                     </p>
                     {activeChats.map(({ user, chat }) => {
+                  const trainerIds = new Set(allUsers.filter(u => u.type === "trainer").map(u => String(u.id)));
                   const fallback: UserInfo = user ?? {
                     id: chat.receiverId,
                     name: chat.receiverName || "Usuario",
                     email: "",
                     user_image: chat.receiverImage ?? null,
-                    type: "user",
+                    type: trainerIds.has(String(chat.receiverId)) ? "trainer" : "user",
                   };
                   return renderItem(fallback, chat);
                 })}

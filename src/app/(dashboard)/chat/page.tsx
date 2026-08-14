@@ -30,10 +30,18 @@ interface UserInfo {
   name: string;
   email: string;
   user_image: string | null;
+  // campos usuario
   peso?: number;
   estatura?: number;
   objetivo?: string;
   trainer_name?: string;
+  // campos entrenador
+  description?: string;
+  goal?: string;
+  experience_years?: number;
+  rating?: number;
+  price?: number;
+  phone?: string;
   type: "user" | "trainer";
 }
 
@@ -138,6 +146,12 @@ export default function ChatPage() {
         name: t.name || "",
         email: t.email || "",
         user_image: t.image || null,
+        description: t.description || "",
+        goal: t.goal || "",
+        experience_years: t.experience_years ?? undefined,
+        rating: t.rating ?? undefined,
+        price: t.price ?? undefined,
+        phone: t.phone || "",
         type: "trainer",
       };
     };
@@ -603,24 +617,74 @@ export default function ChatPage() {
 
             <div className="h-px bg-[#1e1e1e]" />
 
-            {/* Información del usuario */}
-            <div className="flex flex-col gap-4">
-              <h3 className="text-[#dff400] font-bold text-base text-center">Información del usuario</h3>
-              <div className="flex flex-col gap-4 px-1">
-                <div>
-                  <p className="text-white font-semibold text-sm">Objetivo</p>
-                  <p className="text-gray-400 text-sm mt-0.5">{userInfo?.objetivo || "—"}</p>
-                </div>
-                <div>
-                  <p className="text-white font-semibold text-sm">Peso</p>
-                  <p className="text-gray-400 text-sm mt-0.5">{userInfo?.peso ? `${userInfo.peso}kg` : "—"}</p>
-                </div>
-                <div>
-                  <p className="text-white font-semibold text-sm">Altura</p>
-                  <p className="text-gray-400 text-sm mt-0.5">{userInfo?.estatura ? `${userInfo.estatura} cm` : "—"}</p>
+            {/* Información según tipo */}
+            {userInfo?.type === "trainer" ? (
+              <div className="flex flex-col gap-4">
+                <h3 className="text-[#dff400] font-bold text-base text-center">Info del entrenador</h3>
+                <div className="flex flex-col gap-3 px-1">
+                  {userInfo.description && (
+                    <div>
+                      <p className="text-white font-semibold text-sm">Descripción</p>
+                      <p className="text-gray-400 text-xs mt-0.5 leading-relaxed">{userInfo.description}</p>
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-white font-semibold text-sm">Objetivo</p>
+                    <p className="text-gray-400 text-sm mt-0.5">{userInfo.goal || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Experiencia</p>
+                    <p className="text-gray-400 text-sm mt-0.5">
+                      {userInfo.experience_years != null ? `${userInfo.experience_years} años` : "—"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Valoración</p>
+                    <p className="text-gray-400 text-sm mt-0.5">
+                      {userInfo.rating != null ? `⭐ ${userInfo.rating} / 5` : "—"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Precio</p>
+                    <p className="text-gray-400 text-sm mt-0.5">
+                      {userInfo.price != null
+                        ? new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(userInfo.price)
+                        : "—"}
+                    </p>
+                  </div>
+                  {userInfo.phone && (
+                    <div>
+                      <p className="text-white font-semibold text-sm">Teléfono</p>
+                      <p className="text-gray-400 text-sm mt-0.5">{userInfo.phone}</p>
+                    </div>
+                  )}
+                  {userInfo.email && (
+                    <div>
+                      <p className="text-white font-semibold text-sm">Correo</p>
+                      <p className="text-gray-400 text-xs mt-0.5 break-all">{userInfo.email}</p>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex flex-col gap-4">
+                <h3 className="text-[#dff400] font-bold text-base text-center">Info del usuario</h3>
+                <div className="flex flex-col gap-4 px-1">
+                  <div>
+                    <p className="text-white font-semibold text-sm">Objetivo</p>
+                    <p className="text-gray-400 text-sm mt-0.5">{userInfo?.objetivo || "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Peso</p>
+                    <p className="text-gray-400 text-sm mt-0.5">{userInfo?.peso ? `${userInfo.peso}kg` : "—"}</p>
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Altura</p>
+                    <p className="text-gray-400 text-sm mt-0.5">{userInfo?.estatura ? `${userInfo.estatura} cm` : "—"}</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </aside>

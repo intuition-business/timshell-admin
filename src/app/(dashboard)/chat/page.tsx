@@ -195,12 +195,12 @@ export default function ChatPage() {
   // actualizar info del panel derecho cuando cambia el chat activo
   useEffect(() => {
     if (!activeReceiverId) { setUserInfo(null); return; }
-    const found = allUsers.find((u) => u.id === activeReceiverId);
+    const found = allUsers.find((u) => String(u.id) === String(activeReceiverId));
     if (found) {
       setUserInfo(found);
     } else {
       // fallback: usar datos del socket si no hay match en allUsers
-      const chatEntry = chats.find((c) => c.receiverId === activeReceiverId);
+      const chatEntry = chats.find((c) => String(c.receiverId) === String(activeReceiverId));
       if (chatEntry) {
         setUserInfo({
           id: activeReceiverId,
